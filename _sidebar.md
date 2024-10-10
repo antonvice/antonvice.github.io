@@ -1,5 +1,5 @@
 - [Home](/)
-- **Blog Posts**
+- **Posts**
   - [Let's Talk About DBSCAN and OPTICS Clustering Algorithms](posts/2024-06-05-let-s-talk-about-dbscan-and-optics-clustering-algorithms.md)
   - [How to Train a KAN Model on the Titanic Dataset for Kaggle](posts/2024-05-17-how-to-train-a-kan-model-on-the-titanic-dataset-for-kaggle.md)
   - [The Mystery Behind why LLMs Use the Word "Delve" So Often](posts/2024-04-21-the-mystery-behind-why-llms-use-the-word--delve--so-often.md)

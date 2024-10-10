@@ -1,4 +1,12 @@
-# AI Whisperer
+# Anton Vice
+
+<div class="carousel">
+  <ul class="carousel__list">
+    <li>ML Engineer</li>
+    <li>Developer</li>
+    <li>AI Whisperer</li>
+  </ul>
+</div>
 
 > Exploring the Frontiers of Human-AI Symbiosis
 
@@ -7,4 +15,4 @@
 - Ethical considerations in AI development
 
 [GitHub](https://github.com/antonvice/)
-[Get Started](#welcome-to-the-neural-nexus)
+[Get Started](#docsify)

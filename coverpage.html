@@ -1,61 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Anton Vice- The AI Whisperer</title>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <meta name="description" content="Exploring the frontiers of AI and human-machine symbiosis">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;700&family=VT323&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css">
   <style>
-    /* Main Styles */
-    :root {
-      --theme-color: #e8615a;
-      --sidebar-nav-link-color: #2be4ea;
-      --sidebar-nav-link-color--active: #fed33f;
-      --sidebar-name-color: #e8615a;
-      --sidebar-width: 300px;
-    }
-    body {
-      font-family: 'VT323', sans-serif;
-      background-color: #191a1e;
-      color: #e8615a;
-      font-size: 1.2em;
-    }
-    .sidebar {
-      background-color: #1e181e;
-      border-right: 1px solid #5e2122;
-    }
-    .sidebar-nav li > a {
-      font-family: 'VT323', sans-serif;
-      font-size: 1.1rem;
-      margin-right: 10px;
-    }
-    .sidebar > h1 {
-      font-family: 'Cyberpunk', monospace;
-      font-size: 2rem;
-    }
-    .markdown-section {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 2rem;
-      background-color: #1e181e;
-      border: 1px solid #5e2122;
-    }
-    .markdown-section h1, .markdown-section h2, .markdown-section h3 {
-      color: #fed33f;
-      font-family: 'Cyberpunk', sans-serif;
-    }
-    .markdown-section p {
-      color: #f4908b;
-    }
-    .markdown-section code {
-      background-color: #3c181a;
-      color: #2be4ea;
-    }
-    section.cover {
-      display: flex !important;
+    /* Coverpage Styles */
+    .cover-main {
+      display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
@@ -75,19 +24,19 @@
       font-size: 1.3em;
       line-height: 1.3;
       color: #fff;
+      text-shadow: -1px 1px 8px #ffc, 1px -1px 8px #fff;
     }
-    section.cover .cover-main {
+    .cover-main > * {
       max-width: 800px;
       width: 90%;
       text-align: center;
     }
-    section.cover h1 {
+    .cover-main h1 {
       font-family: "Cyberpunk", sans-serif;
       font-size: 5rem;
       color: cyan;
       margin-bottom: 1rem;
       animation: glitch 5s step-end infinite alternate, glitch-skew 5s step-end infinite alternate;
-      text-shadow: -1px 1px 8px #ffc, 1px -1px 8px #fff;
     }
     .carousel {
       height: 1.5em;
@@ -103,11 +52,22 @@
       margin: 0;
       animation: carousel 8s infinite;
     }
-    section.cover p {
+    @keyframes carousel {
+      0%, 33% { transform: translateY(0); }
+      33%, 66% { transform: translateY(-1.5em); }
+      66%, 100% { transform: translateY(-3em); }
+    }
+    .cover-main p {
       margin-bottom: 10px;
       color: #f4908b;
     }
-    section.cover .cover-main > p:last-child a {
+    .cover-main .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .cover-main .buttons a {
       position: relative;
       padding: 1rem 2rem;
       border: 1px solid #dc3545;
@@ -118,9 +78,8 @@
       cursor: pointer;
       overflow: hidden;
       transition: all 0.5s;
-      margin: 0.5rem;
     }
-    section.cover .cover-main > p:last-child a::before {
+    .cover-main .buttons a::before {
       content: "";
       position: absolute;
       top: 0;
@@ -135,17 +94,12 @@
       );
       transition: all 0.5s;
     }
-    section.cover .cover-main > p:last-child a:hover::before {
+    .cover-main .buttons a:hover::before {
       left: 100%;
     }
-    section.cover .cover-main > p:last-child a:hover {
+    .cover-main .buttons a:hover {
       background-color: #dc3545;
       color: #17141d;
-    }
-    @keyframes carousel {
-      0%, 33% { transform: translateY(0); }
-      33%, 66% { transform: translateY(-1.5em); }
-      66%, 100% { transform: translateY(-3em); }
     }
     @keyframes glitch {
       13% { clip-path: polygon(90% 55%, 20% 97%, 85% 42%, 20% 62%, 6% 55%, 76% 74%, 68% 67%, 49% 32%, 47% 41%, 2% 16%, 95% 73%, 68% 14%, 35% 81%, 31% 57%, 29% 24%, 57% 63%, 52% 91%, 45% 82%, 6% 81%, 82% 88%, 30% 61%, 70% 18%, 15% 36%, 16% 67%, 74% 84%, 21% 81%); }
@@ -173,22 +127,25 @@
   </style>
 </head>
 <body>
-  <div id="app"></div>
-  <script>
-    window.$docsify = {
-      name: 'AI Whisperer',
-      repo: 'antonvice/my-blog',
-      loadSidebar: true,
-      subMaxLevel: 2,
-      coverpage: true,
-      onlyCover: false,
-      themeable: {
-        readyTransition: true,
-        responsiveTables: true
-      }
-    }
-  </script>
-  <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
-  <script src="https://cdn.jsdelivr.net/npm/docsify-themeable@0"></script>
+  <div class="cover-main">
+    <div>
+      <h1>Anton Vice</h1>
+      <div class="carousel">
+        <ul class="carousel__list">
+          <li>ML Engineer</li>
+          <li>Developer</li>
+          <li>AI Whisperer</li>
+        </ul>
+      </div>
+      <p>Exploring the Frontiers of Human-AI Symbiosis</p>
+      <p>Cutting-edge AI research and applications</p>
+      <p>Insights into machine learning and neural networks</p>
+      <p>Ethical considerations in AI development</p>
+      <div class="buttons">
+        <a href="https://github.com/antonvice/my-blog" target="_blank">GitHub</a>
+        <a href="#/README">Get Started</a>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
