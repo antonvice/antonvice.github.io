@@ -1,0 +1,3 @@
+- [Home](/)
+- Posts
+  - [My First Post](posts/first-post.md)
