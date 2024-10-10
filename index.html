@@ -2,34 +2,178 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Document</title>
+  <title>AI Whisperer Blog</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <meta name="description" content="Description">
+  <meta name="description" content="Exploring the frontiers of AI and human-machine symbiosis">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css">
+  <style>
+    /* Main Styles */
+    :root {
+      --theme-color: #e8615a;
+      --sidebar-nav-link-color: #2be4ea;
+      --sidebar-nav-link-color--active: #fed33f;
+      --sidebar-name-color: #e8615a;
+      --sidebar-width: 300px;
+    }
+    body {
+      font-family: 'Cyberpunk', sans-serif;
+      background-color: #191a1e;
+      color: #e8615a;
+    }
+    .sidebar {
+      background-color: #1e181e;
+      border-right: 1px solid #5e2122;
+    }
+    .sidebar-nav li > a {
+      font-family: 'VT323', monospace;
+      font-size: 1.1rem;
+      margin-right: 10px;
+    }
+    .sidebar > h1 {
+      font-family: 'VT323', monospace;
+      font-size: 2rem;
+    }
+    .markdown-section {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+      background-color: #1e181e;
+      border: 1px solid #5e2122;
+    }
+    .markdown-section h1, .markdown-section h2, .markdown-section h3 {
+      color: #fed33f;
+      font-family: 'VT323', monospace;
+    }
+    .markdown-section p {
+      color: #f4908b;
+    }
+    .markdown-section code {
+      background-color: #3c181a;
+      color: #2be4ea;
+    }
+
+    /* Coverpage Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    .clearfix:after {
+      visibility: hidden;
+      display: block;
+      font-size: 0;
+      content: " ";
+      clear: both;
+      height: 0;
+    }
+    .clearfix { display: inline-block; }
+    * html .clearfix { height: 1%; }
+    .clearfix { display: block; }
+    
+    .cover-main {
+      background: linear-gradient(183deg, rgba(141,35,46,0.5) 1%, rgba(141,35,46,0) 60%), 
+                  linear-gradient(250deg, rgba(141,35,46,0) 21%, rgba(141,35,46,0.2) 20%, rgba(11,35,47,0.2) 50%),
+                  linear-gradient(250deg, rgba(141,35,46,0) 23%, rgba(141,35,46,0.2) 20%, rgba(11,35,47,0.2) 50%),
+                  linear-gradient(250deg, rgba(141,35,46,0) 25%, rgba(141,35,46,0.2) 20%, rgba(11,35,47,0.2) 50%),
+                  repeating-linear-gradient(179deg, rgba(255,255,255,0.1), rgba(255,255,255,0.1) 3px, rgba(0,0,0,0.1) 3px, rgba(0,0,0,0.1) 5px);
+      background-color: #0b232f;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+    .cover-main ::selection {
+      color: #ff1493;
+      background: #9932cc;
+    }
+    .cover-main {
+      font-family: 'VT323', monospace;
+      font-size: 1.3em;
+      line-height: 1.3;
+      color: #fff;
+      text-shadow: -1px 1px 8px #ffc, 1px -1px 8px #fff;
+    }
+    .cover-main h1 {
+      font-family: "Cyberpunk", sans-serif;
+      font-size: 12vw;
+      color: cyan;
+      animation: glitch 5s step-end infinite alternate, glitch-skew 5s step-end infinite alternate;
+    }
+    .cover-main blockquote {
+      font-style: italic;
+      margin: 20px 0;
+    }
+    .cover-main ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    .cover-main p {
+      margin-bottom: 10px;
+    }
+    @keyframes glitch {
+      13% { 
+        clip-path: polygon(90% 55%, 20% 97%, 85% 42%, 20% 62%, 6% 55%, 76% 74%, 68% 67%, 49% 32%, 47% 41%, 2% 16%, 95% 73%, 68% 14%, 35% 81%, 31% 57%, 29% 24%, 57% 63%, 52% 91%, 45% 82%, 6% 81%, 82% 88%, 30% 61%, 70% 18%, 15% 36%, 16% 67%, 74% 84%, 21% 81%);
+      }
+      53% { 
+        clip-path: polygon(46% 96%, 51% 63%, 92% 0%, 47% 85%, 26% 37%, 15% 6%, 16% 15%, 64% 28%, 69% 88%, 50% 49%, 29% 17%, 91% 74%, 54% 36%, 85% 94%, 89% 92%, 96% 22%, 47% 75%, 51% 12%, 12% 37%, 1% 41%, 63% 33%, 90% 52%, 48% 18%, 5% 56%, 77% 80%, 60% 48%);
+      }
+      37% {
+        clip-path: polygon(73% 96%, 32% 94%, 26% 33%, 40% 16%, 69% 28%, 72% 42%, 32% 33%, 22% 3%, 55% 64%, 79% 57%, 57% 39%, 0% 44%, 27% 36%, 17% 32%, 47% 35%, 53% 10%, 65% 96%, 72% 51%, 15% 56%, 61% 21%, 66% 29%, 33% 7%, 8% 86%, 47% 89%, 43% 56%, 98% 7%);
+      }
+      62% {
+        clip-path: polygon(44% 98%, 91% 91%, 90% 18%, 72% 50%, 63% 5%, 36% 64%, 23% 8%, 43% 19%, 88% 86%, 7% 22%, 37% 99%, 71% 21%, 76% 50%, 100% 73%, 5% 41%, 65% 26%, 19% 55%, 36% 5%, 11% 83%, 28% 48%, 36% 36%, 9% 64%, 64% 22%, 66% 38%, 80% 68%, 69% 76%);
+      }
+      78% {
+        clip-path: polygon(24% 46%, 40% 79%, 28% 54%, 98% 82%, 87% 67%, 36% 71%, 37% 29%, 89% 26%, 89% 21%, 8% 8%, 61% 35%, 4% 23%, 90% 77%, 46% 98%, 82% 6%, 76% 94%, 17% 52%, 59% 22%, 76% 92%, 39% 44%, 74% 97%, 16% 6%, 89% 84%, 80% 52%, 85% 55%, 7% 91%);
+      }
+      14%, 39%, 56%, 64%, 79% { 
+        clip-path: none;
+      }
+    }
+    @keyframes glitch-skew {
+      13% { 
+        transform: skew(10deg, 10deg) scale(.6);
+      }
+      53% { 
+        transform: skew(20deg, 50deg) scale(.6);
+      }
+      37% {
+        transform: skew(-83deg, 17deg) scale(0.6);
+      }
+      78% {
+        transform: skew(289deg, 18deg) scale(0.6);
+      }
+      14%, 39%, 56%, 64%, 79% { 
+        transform: none;
+      }
+    }
+    @font-face {
+      font-family: "Cyberpunk";
+      src: 
+        url(https://assets.codepen.io/2585/Cyberpunk-Regular.svg#Cyberpunk) format('svg'),
+        url(https://assets.codepen.io/2585/Cyberpunk-Regular.ttf) format('truetype');
+      font-weight: normal; 
+      font-style: normal;
+    }
+  </style>
 </head>
 <body>
   <div id="app"></div>
   <script>
     window.$docsify = {
-      name: 'My Blog',
-      repo: 'yourusername/my-blog',
+      name: 'AI Whisperer',
+      repo: 'antonvice/my-blog',
       loadSidebar: true,
       subMaxLevel: 2,
       coverpage: true,
-      formatUpdated: '{MM}/{DD} {HH}:{mm}',
-      plugins: [
-        function(hook, vm) {
-          hook.beforeEach(function(html) {
-            var url = 'https://github.com/yourusername/my-blog/blob/master/' + vm.route.file
-            var editHtml = '[:memo: Edit Document](' + url + ')\n'
-            return editHtml + html
-          })
-        }
-      ]
+      onlyCover: false,
+      themeable: {
+        readyTransition: true,
+        responsiveTables: true
+      }
     }
   </script>
-  <!-- Docsify v4 -->
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify-themeable@0"></script>
 </body>
 </html>

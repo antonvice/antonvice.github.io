@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Whisperer Blog</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="Exploring the frontiers of AI and human-machine symbiosis">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css">
+  <style>
+    :root {
+      --colors-bg--300: #1e181e;
+      --colors-bg--500: #191a1e;
+      --colors-primary--200: #f4908b;
+      --colors-primary--300: #ea6f69;
+      --colors-primary--500: #e8615a;
+      --colors-primary--600: #9c3230;
+      --colors-primary--700: #5e2122;
+      --colors-primary--800: #451717;
+      --colors-primary--900: #3c181a;
+      --colors-secondary--500: #2be4ea;
+      --colors-secondary--900: #295459;
+      --colors-tertiary--500: #fed33f;
+      --colors-on_bg--500: var(--colors-primary--500);
+      --colors-on_tertiary--500: var(--colors-bg--300);
+      --colors-on_primary--500: var(--colors-primary--200);
+      --colors-active--500: #2bfea0;
+      --fonts-primary: "Rajdhani", sans-serif;
+      --fonts-secondary: "VT323", monospace;
+      --ui-glow: 0 0 5px var(--colors-primary--500);
+      --ui-glow-borders--500: 0 0 3px var(--colors-primary--500);
+      --ui-glow-color: currentcolor;
+      --ui-glow-text: -9px -6px 40px var(--ui-glow-color);
+      --ui-glow-text--dimmed: -9px -6px 40px var(--ui-glow-color);
+    }
+  
+    body {
+      font-family: var(--fonts-primary);
+      background-color: var(--colors-bg--500);
+      background-image: radial-gradient(
+        ellipse at 33% 10%,
+        #461616 0%,
+        transparent 75%
+      );
+      background-repeat: no-repeat;
+      color: var(--colors-on_bg--500);
+      line-height: 1.4;
+      margin: 0;
+      min-height: 100vh;
+    }
+  
+    .sidebar {
+      background-color: var(--colors-bg--300);
+      border-right: 1px solid var(--colors-primary--600);
+      width: 300px;
+      padding: 20px;
+      box-shadow: var(--ui-glow-borders--500);
+    }
+  
+    .sidebar-nav {
+      width: 100%;
+    }
+  
+    .sidebar-nav li > a {
+      font-family: var(--fonts-secondary);
+      font-size: 0.9rem;
+      color: var(--colors-secondary--500);
+      padding: 5px 0;
+      display: block;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(156, 50, 48, 0.3);
+      transition: all 0.3s ease;
+    }
+  
+    .sidebar-nav li > a:hover {
+      background-color: var(--colors-primary--800);
+      color: var(--colors-on_primary--500);
+      text-shadow: var(--ui-glow-text);
+    }
+  
+    .app-header__anchor__text {
+      color: var(--colors-primary--300);
+      font-size: 1.5rem;
+      text-shadow: var(--ui-glow-text);
+    }
+  
+    .nav-section__title {
+      color: var(--colors-tertiary--500);
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      text-shadow: var(--ui-glow-text--dimmed);
+    }
+  
+    .markdown-section {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+      background-color: var(--colors-bg--300);
+      border: 1px solid var(--colors-primary--600);
+      box-shadow: var(--ui-glow);
+    }
+  
+    .markdown-section h1, .markdown-section h2, .markdown-section h3 {
+      color: var(--colors-primary--300);
+      font-family: var(--fonts-secondary);
+      text-shadow: var(--ui-glow-text);
+    }
+  
+    .markdown-section p {
+      color: var(--colors-on_bg--500);
+    }
+  
+    .markdown-section code {
+      background-color: var(--colors-bg--500);
+      color: var(--colors-secondary--500);
+    }
+  
+    /* Adjust content area to match sidebar width */
+    .content {
+      margin-left: 300px;
+    }
+  
+    @media screen and (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+      }
+      .content {
+        margin-left: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script>
+    window.$docsify = {
+      name: 'AI Whisperer',
+      repo: 'antonvice/my-blog',
+      loadSidebar: true,
+      subMaxLevel: 2,
+      themeable: {
+        readyTransition: true,
+        responsiveTables: true
+      }
+    }
+  </script>
+  <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify-themeable@0"></script>
+</body>
+</html>
