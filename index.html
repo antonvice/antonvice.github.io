@@ -2,9 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Anton Vice- The AI Whisperer</title>
+  <title>Anton Vice - AI Whisperer | ML & AI Blog</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <meta name="description" content="Exploring the frontiers of AI and human-machine symbiosis">
+  <meta name="description" content="Anton Vice, the AI Whisperer, explores the frontiers of AI, machine learning, neural networks, and human-machine symbiosis. Discover cutting-edge research, insights, and ethical considerations.">
+  <meta name="keywords" content="Anton Vice, AI Whisperer, Machine Learning, Artificial Intelligence, Neural Networks, GPT-3, KAN Models, Quantization, AI Ethics, AI Blog, Tech Blog, Developer, ML Engineer, AI Research, Human-AI Symbiosis, Deep Learning">
+  <meta name="author" content="Anton Vice">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;700&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css">
@@ -16,6 +18,12 @@
       --sidebar-nav-link-color--active: #fed33f;
       --sidebar-name-color: #e8615a;
       --sidebar-width: 300px;
+
+      /* Glassmorphism Variables */
+      --glass-blur: 10px;
+      --glass-bg-color: rgba(30, 24, 30, 0.6); /* Sidebar/element background */
+      --glass-border-color: rgba(94, 33, 34, 0.5); /* #5e2122 with alpha */
+      --glass-code-bg-color: rgba(60, 24, 26, 0.65); /* Code block background */
     }
     body {
       font-family: 'VT323', sans-serif;
@@ -23,10 +31,22 @@
       color: #e8615a;
       font-size: 1.2em;
     }
+
+    /* Sidebar Enhancements with Glassmorphism */
     .sidebar {
-      background-color: #1e181e;
-      border-right: 1px solid #5e2122;
+      background-color: var(--glass-bg-color);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur)); /* Safari support */
+      border-right: 1px solid var(--glass-border-color);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2); /* Optional subtle shadow */
     }
+    /* Fallback for browsers that don't support backdrop-filter */
+    @supports not ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+      .sidebar {
+        background-color: #1e181e; /* Original solid color */
+      }
+    }
+
     .sidebar-nav li > a {
       font-family: 'VT323', sans-serif;
       font-size: 1.1rem;
@@ -36,6 +56,8 @@
       font-family: 'Cyberpunk', monospace;
       font-size: 2rem;
     }
+
+    /* Content Area Styling */
     .markdown-section {
       max-width: 800px;
       margin: 0 auto;
@@ -50,10 +72,103 @@
     .markdown-section p {
       color: #f4908b;
     }
+
+    /* Code Blocks with Glassmorphism */
+    .markdown-section pre { /* Target the <pre> element for code blocks */
+      background-color: var(--glass-code-bg-color) !important; /* Override theme styles if necessary */
+      backdrop-filter: blur(calc(var(--glass-blur) / 2)); /* Slightly less blur for code */
+      -webkit-backdrop-filter: blur(calc(var(--glass-blur) / 2));
+      border: 1px solid var(--glass-border-color);
+      border-radius: 5px; /* Optional rounded corners */
+      padding: 1em;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.15);
+    }
     .markdown-section code {
-      background-color: #3c181a;
+      background-color: transparent !important; /* Make inline code transparent if pre has bg */
       color: #2be4ea;
     }
+    /* Fallback for code blocks */
+    @supports not ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+      .markdown-section pre {
+        background-color: #3c181a !important; /* Original solid color */
+      }
+    }
+
+
+    .markdown-section a {
+      color: var(--sidebar-nav-link-color);
+    }
+    .markdown-section a:hover {
+      color: var(--sidebar-nav-link-color--active);
+    }
+
+    /* Search Bar Styling */
+    .sidebar .search {
+        margin-bottom: 20px;
+        padding: 0 15px;
+    }
+    .sidebar .search .input-wrap {
+        display: flex;
+        align-items: center;
+        border: 1px solid var(--glass-border-color);
+        border-radius: 5px;
+        background-color: var(--glass-bg-color); /* Glassy search bar */
+        backdrop-filter: blur(var(--glass-blur));
+        -webkit-backdrop-filter: blur(var(--glass-blur));
+    }
+    @supports not ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+      .sidebar .search .input-wrap {
+        background-color: #1e181e;
+      }
+    }
+    .sidebar .search input {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        outline: none;
+        background-color: transparent;
+        color: #f4908b; /* Text color inside search */
+        font-family: 'VT323', sans-serif;
+        font-size: 1em;
+    }
+    .sidebar .search input::placeholder {
+        color: #e8615a; /* Placeholder color */
+        opacity: 0.7;
+    }
+    .sidebar .search .clear-button {
+        padding: 10px;
+        cursor: pointer;
+    }
+    .sidebar .search .clear-button svg {
+        fill: #e8615a;
+    }
+    .results-panel { /* Styling for search results dropdown */
+        background-color: var(--glass-bg-color) !important;
+        backdrop-filter: blur(var(--glass-blur)) !important;
+        -webkit-backdrop-filter: blur(var(--glass-blur)) !important;
+        border: 1px solid var(--glass-border-color) !important;
+        border-top: none !important; /* Assuming it's below the search bar */
+    }
+    @supports not ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+      .results-panel {
+        background-color: #1e181e !important;
+      }
+    }
+    .results-panel .matching-post {
+        border-bottom: 1px solid var(--glass-border-color) !important;
+    }
+    .results-panel .matching-post:last-child {
+        border-bottom: none !important;
+    }
+    .results-panel .matching-post a {
+        color: var(--sidebar-nav-link-color) !important;
+    }
+    .results-panel .matching-post a .keywords {
+        color: var(--sidebar-nav-link-color--active) !important;
+    }
+
+
+    /* Cover Page Specific Styling (preserved from previous) */
     section.cover {
       display: flex !important;
       justify-content: center;
@@ -62,7 +177,7 @@
       width: 100%;
       padding: 0;
       margin: 0;
-      background: linear-gradient(183deg, rgba(141,35,46,0.5) 1%, rgba(141,35,46,0) 60%), 
+      background: linear-gradient(183deg, rgba(141,35,46,0.5) 1%, rgba(141,35,46,0) 60%),
                   linear-gradient(250deg, rgba(141,35,46,0) 21%, rgba(141,35,46,0.2) 20%, rgba(11,35,47,0.2) 50%),
                   linear-gradient(250deg, rgba(141,35,46,0) 23%, rgba(141,35,46,0.2) 20%, rgba(11,35,47,0.2) 50%),
                   linear-gradient(250deg, rgba(141,35,46,0) 25%, rgba(141,35,46,0.2) 20%, rgba(11,35,47,0.2) 50%),
@@ -144,8 +259,8 @@
     }
     @keyframes carousel {
       0%, 33% { transform: translateY(0); }
-      33%, 66% { transform: translateY(-1.5em); }
-      66%, 100% { transform: translateY(-3em); }
+      33.01%, 66% { transform: translateY(-1.5em); }
+      66.01%, 100% { transform: translateY(-3em); }
     }
     @keyframes glitch {
       13% { clip-path: polygon(90% 55%, 20% 97%, 85% 42%, 20% 62%, 6% 55%, 76% 74%, 68% 67%, 49% 32%, 47% 41%, 2% 16%, 95% 73%, 68% 14%, 35% 81%, 31% 57%, 29% 24%, 57% 63%, 52% 91%, 45% 82%, 6% 81%, 82% 88%, 30% 61%, 70% 18%, 15% 36%, 16% 67%, 74% 84%, 21% 81%); }
@@ -164,11 +279,14 @@
     }
     @font-face {
       font-family: "Cyberpunk";
-      src: 
+      src:
         url(https://assets.codepen.io/2585/Cyberpunk-Regular.svg#Cyberpunk) format('svg'),
         url(https://assets.codepen.io/2585/Cyberpunk-Regular.ttf) format('truetype');
-      font-weight: normal; 
+      font-weight: normal;
       font-style: normal;
+    }
+    .content {
+      color: #f4908b;
     }
   </style>
 </head>
@@ -185,10 +303,23 @@
       themeable: {
         readyTransition: true,
         responsiveTables: true
+      },
+      alias: {
+        '/.*/_sidebar.md': '/_sidebar.md'
+      },
+      search: {
+        maxAge: 86400000, // Expiration time, Milliseconds, (1 day)
+        paths: 'auto', // Search all files
+        placeholder: 'Search Neural Nexus...', // Placeholder text
+        noData: 'No transmissions found.', // Message if no results
+        // Headline depth, 1 - 6
+        depth: 3, // How deep to search headers (H1 to H3)
+        hideOtherSidebarContent: false, // Don't hide sidebar when searching
       }
     }
   </script>
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
   <script src="https://cdn.jsdelivr.net/npm/docsify-themeable@0"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
 </body>
 </html>

@@ -15,4 +15,4 @@
 - Ethical considerations in AI development
 
 [GitHub](https://github.com/antonvice/)
-[Get Started](#docsify)
+[Get Started](#/README.md)
