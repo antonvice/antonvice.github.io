@@ -1,5 +1,6 @@
 # The Demise of the Browser: Why AI Agents Are Forging a New Digital Frontier
-> in response to [Bessemer Ventures predictions](https://www.bvp.com/atlas/the-state-of-ai-2025)
+- in response to [Bessemer Ventures predictions](https://www.bvp.com/atlas/the-state-of-ai-2025)
+
 > _"The web was built for humans to read. But the future belongs to machines that speak in protocols."_  
 > — A grain of cyberpunk truth in the age of AI
 
