@@ -1,325 +1,309 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Anton Vice - AI Whisperer | ML & AI Blog</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <meta name="description" content="Anton Vice, the AI Whisperer, explores the frontiers of AI, machine learning, neural networks, and human-machine symbiosis. Discover cutting-edge research, insights, and ethical considerations.">
-  <meta name="keywords" content="Anton Vice, AI Whisperer, Machine Learning, Artificial Intelligence, Neural Networks, GPT-3, KAN Models, Quantization, AI Ethics, AI Blog, Tech Blog, Developer, ML Engineer, AI Research, Human-AI Symbiosis, Deep Learning">
-  <meta name="author" content="Anton Vice">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;700&family=VT323&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=VT323&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css" />
+
   <style>
-    /* Main Styles */
-    :root {
-      --theme-color: #e8615a;
-      --sidebar-nav-link-color: #2be4ea;
-      --sidebar-nav-link-color--active: #fed33f;
-      --sidebar-name-color: #e8615a;
-      --sidebar-width: 300px;
+    :root{
+      --theme-color:#e8615a;
+      --sidebar-width:300px;
+      --sidebar-nav-link-color:#2be4ea;
+      --sidebar-nav-link-color--active:#fed33f;
+      --sidebar-name-color:#e8615a;
+      --glass-blur:12px;
+      --glass-bg-color:rgba(30,24,30,.55);
+      --glass-border-color:rgba(94,33,34,.5);
+      --glass-code-bg-color:rgba(60,24,26,.65);
+      --card-bg:rgba(17,18,22,.75);
+      --card-border:rgba(255,255,255,.06);
+    }
+    html,body{background:#0f1216;color:#e8615a;font-family:'VT323', monospace;font-size:18px;}
 
-      /* Glassmorphism Variables */
-      --glass-blur: 10px;
-      --glass-bg-color: rgba(30, 24, 30, 0.6); /* Sidebar/element background */
-      --glass-border-color: rgba(94, 33, 34, 0.5); /* #5e2122 with alpha */
-      --glass-code-bg-color: rgba(60, 24, 26, 0.65); /* Code block background */
+    /* Sticky neon topbar */
+    .topbar{
+      position:sticky;top:0;z-index:9999;
+      display:flex;align-items:center;gap:.75rem;
+      padding:.6rem 1rem;border-bottom:1px solid rgba(94,33,34,.6);
+      background:linear-gradient(180deg, rgba(10,10,12,.85), rgba(10,10,12,.65));
+      backdrop-filter:blur(8px);
     }
-    body {
-      font-family: 'VT323', sans-serif;
-      background-color: #191a1e;
-      color: #e8615a;
-      font-size: 1.2em;
+    .topbar .brand{
+      font-family:"Cyberpunk", monospace;
+      letter-spacing:.5px;color:#2be4ea;text-shadow:0 0 8px rgba(43,228,234,.5);
+      font-size:1.35rem;white-space:nowrap;
     }
+    .topbar .tag{font-size:.95rem;color:#fed33f;opacity:.9}
+    .topbar .spacer{flex:1}
+    .topbar a.cta{
+      border:1px solid #dc3545;padding:.35rem .7rem;text-decoration:none;color:#fff;
+      transition:.25s; font-size:.95rem
+    }
+    .topbar a.cta:hover{background:#dc3545;color:#17141d}
 
-    /* Sidebar Enhancements with Glassmorphism */
-    .sidebar {
-      background-color: var(--glass-bg-color);
-      backdrop-filter: blur(var(--glass-blur));
-      -webkit-backdrop-filter: blur(var(--glass-blur)); /* Safari support */
-      border-right: 1px solid var(--glass-border-color);
-      box-shadow: 0 2px 10px rgba(0,0,0,0.2); /* Optional subtle shadow */
-    }
-    /* Fallback for browsers that don't support backdrop-filter */
-    @supports not ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
-      .sidebar {
-        background-color: #1e181e; /* Original solid color */
-      }
-    }
-
-    .sidebar-nav li > a {
-      font-family: 'VT323', sans-serif;
-      font-size: 1.1rem;
-      margin-right: 10px;
-    }
-    .sidebar > h1 {
-      font-family: 'Cyberpunk', monospace;
-      font-size: 2rem;
+    /* Reading progress */
+    .progress{
+      position:fixed;top:0;left:0;height:3px;width:0%;
+      background:linear-gradient(90deg,#2be4ea,#fed33f,#e8615a);
+      box-shadow:0 0 12px rgba(46,228,234,.7);
+      z-index:10000;transition:width .1s linear;
     }
 
-    /* Content Area Styling */
-    .markdown-section {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 2rem;
-      background-color: #1e181e;
-      border: 1px solid #5e2122;
+    /* Sidebar glass */
+    .sidebar{background:var(--glass-bg-color);backdrop-filter:blur(var(--glass-blur));
+      border-right:1px solid var(--glass-border-color);}
+    @supports not ((backdrop-filter:none)){.sidebar{background:#1e181e}}
+
+    .sidebar>h1{font-family:"Cyberpunk", monospace;font-size:1.6rem}
+    .sidebar-nav li>a{font-size:1.05rem}
+
+    /* Content area */
+    .markdown-section{
+      max-width:900px;margin:0 auto;padding:2rem 1.25rem;
     }
-    .markdown-section h1, .markdown-section h2, .markdown-section h3 {
-      color: #fed33f;
-      font-family: 'Cyberpunk', sans-serif;
+    .markdown-section h1,.markdown-section h2,.markdown-section h3{
+      color:#fed33f;font-family:'Rajdhani',sans-serif;letter-spacing:.4px
     }
-    .markdown-section p {
-      color: #f4908b;
+    .markdown-section p,.markdown-section li{color:#f4908b;line-height:1.55}
+
+    /* Code blocks */
+    .markdown-section pre{
+      background:var(--glass-code-bg-color)!important;border:1px solid var(--glass-border-color);
+      border-radius:8px;padding:1rem 1.2rem;box-shadow:0 4px 16px rgba(0,0,0,.25)
+    }
+    .markdown-section code{background:transparent!important;color:#2be4ea}
+
+    /* Blog card look for lists of posts/sections */
+    /* Pattern: a list of links under an H2 will look like cards */
+    .markdown-section h2 + ul>li{
+      list-style:none;margin:0 0 1rem 0;
+    }
+    .markdown-section h2 + ul>li>a{
+      display:block;padding:1rem 1.1rem;border:1px solid var(--card-border);
+      border-radius:12px;background:var(--card-bg);text-decoration:none;color:#e6b0ac;
+      transition:transform .15s ease, box-shadow .15s ease, border-color .2s;
+    }
+    .markdown-section h2 + ul>li>a:hover{
+      transform:translateY(-2px);
+      box-shadow:0 10px 24px rgba(0,0,0,.35), inset 0 0 24px rgba(232,97,90,.12);
+      border-color:#e8615a;
+      color:#fff;
+    }
+    .markdown-section h2 + ul>li>a small{
+      display:block;color:#2be4ea;opacity:.8;margin-top:.25rem;font-size:.95rem
     }
 
-    /* Code Blocks with Glassmorphism */
-    .markdown-section pre { /* Target the <pre> element for code blocks */
-      background-color: var(--glass-code-bg-color) !important; /* Override theme styles if necessary */
-      backdrop-filter: blur(calc(var(--glass-blur) / 2)); /* Slightly less blur for code */
-      -webkit-backdrop-filter: blur(calc(var(--glass-blur) / 2));
-      border: 1px solid var(--glass-border-color);
-      border-radius: 5px; /* Optional rounded corners */
-      padding: 1em;
-      box-shadow: 0 1px 5px rgba(0,0,0,0.15);
-    }
-    .markdown-section code {
-      background-color: transparent !important; /* Make inline code transparent if pre has bg */
-      color: #2be4ea;
-    }
-    /* Fallback for code blocks */
-    @supports not ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
-      .markdown-section pre {
-        background-color: #3c181a !important; /* Original solid color */
-      }
-    }
-
-
-    .markdown-section a {
-      color: var(--sidebar-nav-link-color);
-    }
-    .markdown-section a:hover {
-      color: var(--sidebar-nav-link-color--active);
-    }
-
-    /* Search Bar Styling */
-    .sidebar .search {
-        margin-bottom: 20px;
-        padding: 0 15px;
-    }
-    .sidebar .search .input-wrap {
-        display: flex;
-        align-items: center;
-        border: 1px solid var(--glass-border-color);
-        border-radius: 5px;
-        background-color: var(--glass-bg-color); /* Glassy search bar */
-        backdrop-filter: blur(var(--glass-blur));
-        -webkit-backdrop-filter: blur(var(--glass-blur));
-    }
-    @supports not ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
-      .sidebar .search .input-wrap {
-        background-color: #1e181e;
-      }
-    }
-    .sidebar .search input {
-        flex: 1;
-        padding: 10px;
-        border: none;
-        outline: none;
-        background-color: transparent;
-        color: #f4908b; /* Text color inside search */
-        font-family: 'VT323', sans-serif;
-        font-size: 1em;
-    }
-    .sidebar .search input::placeholder {
-        color: #e8615a; /* Placeholder color */
-        opacity: 0.7;
-    }
-    .sidebar .search .clear-button {
-        padding: 10px;
-        cursor: pointer;
-    }
-    .sidebar .search .clear-button svg {
-        fill: #e8615a;
-    }
-    .results-panel { /* Styling for search results dropdown */
-        background-color: var(--glass-bg-color) !important;
-        backdrop-filter: blur(var(--glass-blur)) !important;
-        -webkit-backdrop-filter: blur(var(--glass-blur)) !important;
-        border: 1px solid var(--glass-border-color) !important;
-        border-top: none !important; /* Assuming it's below the search bar */
-    }
-    @supports not ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
-      .results-panel {
-        background-color: #1e181e !important;
-      }
-    }
-    .results-panel .matching-post {
-        border-bottom: 1px solid var(--glass-border-color) !important;
-    }
-    .results-panel .matching-post:last-child {
-        border-bottom: none !important;
-    }
-    .results-panel .matching-post a {
-        color: var(--sidebar-nav-link-color) !important;
-    }
-    .results-panel .matching-post a .keywords {
-        color: var(--sidebar-nav-link-color--active) !important;
-    }
-
-
-    /* Cover Page Specific Styling (preserved from previous) */
+    /* Cover (hero) – slimmer & with jump */
     section.cover {
-      display: flex !important;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      width: 100%;
-      padding: 0;
-      margin: 0;
-      background: linear-gradient(183deg, rgba(141,35,46,0.5) 1%, rgba(141,35,46,0) 60%),
-                  linear-gradient(250deg, rgba(141,35,46,0) 21%, rgba(141,35,46,0.2) 20%, rgba(11,35,47,0.2) 50%),
-                  linear-gradient(250deg, rgba(141,35,46,0) 23%, rgba(141,35,46,0.2) 20%, rgba(11,35,47,0.2) 50%),
-                  linear-gradient(250deg, rgba(141,35,46,0) 25%, rgba(141,35,46,0.2) 20%, rgba(11,35,47,0.2) 50%),
-                  repeating-linear-gradient(179deg, rgba(255,255,255,0.1), rgba(255,255,255,0.1) 3px, rgba(0,0,0,0.1) 3px, rgba(0,0,0,0.1) 5px);
-      background-color: #0b232f;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      background-size: cover;
-      font-family: 'VT323', monospace;
-      font-size: 1.3em;
-      line-height: 1.3;
-      color: #fff;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    min-height: 70vh;
+    padding: 0;
+    margin: 0;
+    /* DARKENED BACKGROUND for readability */
+    background: 
+      linear-gradient(183deg, rgba(10,10,14,0.85) 0%, rgba(10,10,14,0.6) 100%),
+      linear-gradient(250deg, rgba(141,35,46,.25) 20%, rgba(11,35,47,.25) 60%),
+      repeating-linear-gradient(179deg, rgba(255,255,255,0.06), rgba(255,255,255,0.06) 3px, rgba(0,0,0,0.15) 3px, rgba(0,0,0,0.15) 5px);
+    background-color: #0b232f;
+    background-size: cover;
+    color: #fff;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.9); /* 👈 strong dark shadow */
+  }
+
+  section.cover h1 {
+    font-family: "Cyberpunk", sans-serif;
+    font-size: 4rem;
+    margin-bottom: 0.5rem;
+    color: #2be4ea; /* bright cyan */
+    text-shadow: 0 0 6px rgba(0,255,255,0.8), 0 0 20px rgba(0,255,255,0.4), 0 2px 8px rgba(0,0,0,1); /* 👈 neon + dark */
+  }
+
+  section.cover p {
+    margin: 0.4rem 0;
+    color: #fed33f; /* yellow-gold accent instead of pale pink */
+    text-shadow: 0 1px 6px rgba(0,0,0,0.8);
+  }
+
+  section.cover .carousel {
+    font-size: 1.2rem;
+    color: #ff4c92; /* neon magenta carousel */
+    text-shadow: 0 0 6px rgba(0,0,0,0.9);
+  }
+
+  section.cover .cta-row a {
+    background: rgba(20,20,25,0.7); /* dark pill behind buttons */
+    border: 1px solid #dc3545;
+    color: #fff;
+    text-shadow: none;
+  }
+  section.cover .cta-row a:hover {
+    background: #dc3545;
+    color: #17141d;
+  }
+
+    .jump{
+      display:inline-flex;gap:.4rem;align-items:center;margin-top:.8rem;
+      font-size:1rem;color:#fed33f;text-decoration:none;border-bottom:1px dashed #fed33f;
     }
-    section.cover .cover-main {
-      max-width: 800px;
-      width: 90%;
-      text-align: center;
+    .jump:hover{opacity:.85}
+
+    /* Mobile-first changes */
+    @media (max-width: 767px) {
+    section.cover {
+      background: 
+        linear-gradient(180deg, rgba(10,10,14,0.95) 0%, rgba(10,10,14,0.75) 100%),
+        repeating-linear-gradient(179deg, rgba(255,255,255,0.04), rgba(255,255,255,0.04) 3px, rgba(0,0,0,0.2) 3px, rgba(0,0,0,0.2) 5px);
     }
     section.cover h1 {
-      font-family: "Cyberpunk", sans-serif;
-      font-size: 5rem;
-      color: cyan;
-      margin-bottom: 1rem;
-      animation: glitch 5s step-end infinite alternate, glitch-skew 5s step-end infinite alternate;
-      text-shadow: -1px 1px 8px #ffc, 1px -1px 8px #fff;
+      font-size: 2.6rem;
     }
-    .carousel {
-      height: 1.5em;
-      line-height: 1.5em;
-      overflow: hidden;
-      font-size: 1.5rem;
-      color: #2be4ea;
-      margin-bottom: 1rem;
-    }
-    .carousel__list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      animation: carousel 8s infinite;
-    }
-    section.cover p {
-      margin-bottom: 10px;
-      color: #f4908b;
-    }
-    section.cover .cover-main > p:last-child a {
-      position: relative;
-      padding: 1rem 2rem;
-      border: 1px solid #dc3545;
-      font-size: 1rem;
-      font-weight: 500;
-      text-decoration: none;
-      color: white;
-      cursor: pointer;
-      overflow: hidden;
-      transition: all 0.5s;
-      margin: 0.5rem;
-    }
-    section.cover .cover-main > p:last-child a::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(
-        120deg,
-        transparent,
-        rgba(220, 53, 69, 0.4),
-        transparent
-      );
-      transition: all 0.5s;
-    }
-    section.cover .cover-main > p:last-child a:hover::before {
-      left: 100%;
-    }
-    section.cover .cover-main > p:last-child a:hover {
-      background-color: #dc3545;
-      color: #17141d;
-    }
-    @keyframes carousel {
-      0%, 33% { transform: translateY(0); }
-      33.01%, 66% { transform: translateY(-1.5em); }
-      66.01%, 100% { transform: translateY(-3em); }
-    }
-    @keyframes glitch {
-      13% { clip-path: polygon(90% 55%, 20% 97%, 85% 42%, 20% 62%, 6% 55%, 76% 74%, 68% 67%, 49% 32%, 47% 41%, 2% 16%, 95% 73%, 68% 14%, 35% 81%, 31% 57%, 29% 24%, 57% 63%, 52% 91%, 45% 82%, 6% 81%, 82% 88%, 30% 61%, 70% 18%, 15% 36%, 16% 67%, 74% 84%, 21% 81%); }
-      53% { clip-path: polygon(46% 96%, 51% 63%, 92% 0%, 47% 85%, 26% 37%, 15% 6%, 16% 15%, 64% 28%, 69% 88%, 50% 49%, 29% 17%, 91% 74%, 54% 36%, 85% 94%, 89% 92%, 96% 22%, 47% 75%, 51% 12%, 12% 37%, 1% 41%, 63% 33%, 90% 52%, 48% 18%, 5% 56%, 77% 80%, 60% 48%); }
-      37% { clip-path: polygon(73% 96%, 32% 94%, 26% 33%, 40% 16%, 69% 28%, 72% 42%, 32% 33%, 22% 3%, 55% 64%, 79% 57%, 57% 39%, 0% 44%, 27% 36%, 17% 32%, 47% 35%, 53% 10%, 65% 96%, 72% 51%, 15% 56%, 61% 21%, 66% 29%, 33% 7%, 8% 86%, 47% 89%, 43% 56%, 98% 7%); }
-      62% { clip-path: polygon(44% 98%, 91% 91%, 90% 18%, 72% 50%, 63% 5%, 36% 64%, 23% 8%, 43% 19%, 88% 86%, 7% 22%, 37% 99%, 71% 21%, 76% 50%, 100% 73%, 5% 41%, 65% 26%, 19% 55%, 36% 5%, 11% 83%, 28% 48%, 36% 36%, 9% 64%, 64% 22%, 66% 38%, 80% 68%, 69% 76%); }
-      78% { clip-path: polygon(24% 46%, 40% 79%, 28% 54%, 98% 82%, 87% 67%, 36% 71%, 37% 29%, 89% 26%, 89% 21%, 8% 8%, 61% 35%, 4% 23%, 90% 77%, 46% 98%, 82% 6%, 76% 94%, 17% 52%, 59% 22%, 76% 92%, 39% 44%, 74% 97%, 16% 6%, 89% 84%, 80% 52%, 85% 55%, 7% 91%); }
-      14%, 39%, 56%, 64%, 79% { clip-path: none; }
-    }
-    @keyframes glitch-skew {
-      13% { transform: skew(10deg, 10deg) scale(.6); }
-      53% { transform: skew(20deg, 50deg) scale(.6); }
-      37% { transform: skew(-83deg, 17deg) scale(0.6); }
-      78% { transform: skew(289deg, 18deg) scale(0.6); }
-      14%, 39%, 56%, 64%, 79% { transform: none; }
-    }
-    @font-face {
-      font-family: "Cyberpunk";
-      src:
-        url(https://assets.codepen.io/2585/Cyberpunk-Regular.svg#Cyberpunk) format('svg'),
-        url(https://assets.codepen.io/2585/Cyberpunk-Regular.ttf) format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
-    .content {
-      color: #f4908b;
+  }
+
+
+    /* Glitch + carousel (unchanged core, eased timing) */
+    @keyframes carousel{0%,33%{transform:translateY(0)}33.01%,66%{transform:translateY(-1.6em)}66.01%,100%{transform:translateY(-3.2em)}}
+    @keyframes glitch{13%{clip-path:polygon(90% 55%,20% 97%,85% 42%,20% 62%,6% 55%,76% 74%,68% 67%,49% 32%,47% 41%,2% 16%,95% 73%,68% 14%,35% 81%,31% 57%,29% 24%,57% 63%,52% 91%,45% 82%,6% 81%,82% 88%,30% 61%,70% 18%,15% 36%,16% 67%,74% 84%,21% 81%)}53%{clip-path:polygon(46% 96%,51% 63%,92% 0%,47% 85%,26% 37%,15% 6%,16% 15%,64% 28%,69% 88%,50% 49%,29% 17%,91% 74%,54% 36%,85% 94%,89% 92%,96% 22%,47% 75%,51% 12%,12% 37%,1% 41%,63% 33%,90% 52%,48% 18%,5% 56%,77% 80%,60% 48%)}37%{clip-path:polygon(73% 96%,32% 94%,26% 33%,40% 16%,69% 28%,72% 42%,32% 33%,22% 3%,55% 64%,79% 57%,57% 39%,0% 44%,27% 36%,17% 32%,47% 35%,53% 10%,65% 96%,72% 51%,15% 56%,61% 21%,66% 29%,33% 7%,8% 86%,47% 89%,43% 56%,98% 7%)}62%{clip-path:polygon(44% 98%,91% 91%,90% 18%,72% 50%,63% 5%,36% 64%,23% 8%,43% 19%,88% 86%,7% 22%,37% 99%,71% 21%,76% 50%,100% 73%,5% 41%,65% 26%,19% 55%,36% 5%,11% 83%,28% 48%,36% 36%,9% 64%,64% 22%,66% 38%,80% 68%,69% 76%)}78%{clip-path:polygon(24% 46%,40% 79%,28% 54%,98% 82%,87% 67%,36% 71%,37% 29%,89% 26%,89% 21%,8% 8%,61% 35%,4% 23%,90% 77%,46% 98%,82% 6%,76% 94%,17% 52%,59% 22%,76% 92%,39% 44%,74% 97%,16% 6%,89% 84%,80% 52%,85% 55%,7% 91%)}14%,39%,56%,64%,79%{clip-path:none}}
+    @keyframes glitch-skew{13%{transform:skew(10deg,10deg) scale(.95)}53%{transform:skew(12deg,18deg) scale(.95)}37%{transform:skew(-8deg,6deg) scale(.95)}78%{transform:skew(6deg,3deg) scale(.95)}14%,39%,56%,64%,79%{transform:none}}
+
+    /* Cyberpunk font */
+    @font-face{
+      font-family:"Cyberpunk";
+      src:url(https://assets.codepen.io/2585/Cyberpunk-Regular.svg#Cyberpunk) format('svg'),
+          url(https://assets.codepen.io/2585/Cyberpunk-Regular.ttf) format('truetype');
+      font-weight:normal;font-style:normal;
     }
   </style>
 </head>
 <body>
+  <!-- sticky top bar + progress -->
+  <div class="progress" id="progress"></div>
+  <div class="topbar">
+    <div class="brand">Anton Vice</div>
+    <div class="tag">AI Whisperer · ML Engineer</div>
+    <div class="spacer"></div>
+    <a class="cta" href="https://github.com/antonvice/my-blog" target="_blank" rel="noreferrer">GitHub</a>
+  </div>
+
   <div id="app"></div>
+
   <script>
+    // 1) Mobile: disable coverpage so users land on content
+    var isMobile = window.matchMedia('(max-width: 767px)').matches;
+    // 2) Docsify config
     window.$docsify = {
       name: 'AI Whisperer',
       repo: 'antonvice/my-blog',
       loadSidebar: true,
       subMaxLevel: 2,
-      coverpage: true,
+      coverpage: !isMobile,     // ✅ no cover on mobile
       onlyCover: false,
-      themeable: {
-        readyTransition: true,
-        responsiveTables: true
-      },
-      alias: {
-        '/.*/_sidebar.md': '/_sidebar.md'
-      },
+      themeable: { readyTransition:true, responsiveTables:true },
+      alias: { '/.*/_sidebar.md': '/_sidebar.md' },
       search: {
-        maxAge: 86400000, // Expiration time, Milliseconds, (1 day)
-        paths: 'auto', // Search all files
-        placeholder: 'Search Neural Nexus...', // Placeholder text
-        noData: 'No transmissions found.', // Message if no results
-        // Headline depth, 1 - 6
-        depth: 3, // How deep to search headers (H1 to H3)
-        hideOtherSidebarContent: false, // Don't hide sidebar when searching
-      }
-    }
+        maxAge: 86400000, paths: 'auto',
+        placeholder: 'Search Neural Nexus…', noData: 'No transmissions found.',
+        depth: 3, hideOtherSidebarContent: false,
+      },
+      plugins: [
+        // Jump link wiring on hero
+        function(hook, vm){
+          hook.doneEach(function(){
+            // Attach jump link if on cover route
+            if (document.querySelector('section.cover')) {
+              let jump = document.querySelector('.jump');
+              if (!jump) {
+                const ctaWrap = document.querySelector('section.cover .cover-main');
+                const a = document.createElement('a');
+                a.className = 'jump';
+                a.href = '#/README';
+                a.innerHTML = '↓ Read the latest';
+                ctaWrap && ctaWrap.appendChild(a);
+              }
+            }
+          });
+        },
+        // Reading progress
+        function(hook, vm){
+          const bar = document.getElementById('progress');
+          function onScroll(){
+            const el = document.querySelector('.content');
+            if(!el) return;
+            const h = el.scrollHeight - window.innerHeight;
+            const p = Math.max(0, Math.min(1, window.scrollY / (h || 1)));
+            bar.style.width = (p * 100).toFixed(2) + '%';
+          }
+          window.addEventListener('scroll', onScroll, { passive:true });
+          hook.doneEach(onScroll);
+        }
+      ]
+    };
   </script>
+
+  <!-- Docsify -->
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
   <script src="https://cdn.jsdelivr.net/npm/docsify-themeable@0"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+
+  <!-- Desktop hero content injection (keeps your existing copy) -->
+  <script>
+    // Decorate cover with your original hero content when cover is enabled
+    if (!isMobile) {
+      document.addEventListener('DOMContentLoaded', () => {
+        // Docsify generates <section class="cover"> from _coverpage.md or config;
+        // We rely on your current cover content in Markdown.
+        // If you want a custom hard-coded hero instead, uncomment below:
+
+        /*
+        const cover = document.querySelector('section.cover .cover-main');
+        if (cover) {
+          cover.innerHTML = `
+            <h1>Anton Vice</h1>
+            <div class="carousel">
+              <ul class="carousel__list">
+                <li>ML Engineer</li>
+                <li>Developer</li>
+                <li>AI Whisperer</li>
+              </ul>
+            </div>
+            <p>Exploring the Frontiers of Human-AI Symbiosis</p>
+            <p>Cutting-edge AI research and applications</p>
+            <p>Insights into machine learning and neural networks</p>
+            <p>Ethical considerations in AI development</p>
+            <div class="cta-row">
+              <a href="https://github.com/antonvice/my-blog" target="_blank" rel="noreferrer">GitHub</a>
+              <a href="#/README">Get Started</a>
+            </div>
+            <a class="jump" href="#/README">↓ Read the latest</a>
+          `;
+        }
+        */
+      });
+    }
+  </script>
+
+  <!-- Optional: smooth scroll for in-page hashes -->
+  <script>
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest('a[href^="#/"]');
+      if(!a) return;
+      // Let docsify handle routing; extra smoothness not required here.
+    }, { passive: true });
+  </script>
+
+  <!-- Cyberpunk font -->
+  <style>
+    @font-face{
+      font-family:"Cyberpunk";
+      src:url(https://assets.codepen.io/2585/Cyberpunk-Regular.svg#Cyberpunk) format('svg'),
+          url(https://assets.codepen.io/2585/Cyberpunk-Regular.ttf) format('truetype');
+      font-weight:normal;font-style:normal;
+    }
+  </style>
 </body>
 </html>

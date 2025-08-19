@@ -6,7 +6,7 @@ I am Anton, I coined the term "AI Whisperer" and now represent this subset of de
 
 ## Latest Highlights
 
-- [The World's First AI-Powered Journalist (The Rise of the AI Whisperer)](posts/2022-08-08-the-worlds-first-ai-powered-journalist.md)
+- [The Demise of Ai Browsers](posts/2025-08-19-Demise-of-AI-Browsers.md)
 - [Quantum Quandary: The Blockchain Battle Against 100,000 Qubits](posts/2023-05-31-quantum-quandary--the-blockchain-battle-against-100-000-qubits.md)
 - [How to Train a KAN Model on the Titanic Dataset for Kaggle (Synaptic Surge)](posts/2024-05-17-how-to-train-a-kan-model-on-the-titanic-dataset-for-kaggle.md)
 - [Quantization Deep Dive](posts/2024-03-23-quantization-deep-dive.md)
