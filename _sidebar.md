@@ -1,5 +1,6 @@
 - [Home](/)
 - **Posts**
+  - [The Demise of Ai Browsers](posts/2025-08-19-Demise-of-AI-Browsers.md)
   - [Handmade Transformer in Rust](posts/2025-05-04-handmade-transformer-in-rust.md)
   - [Let's Talk About DBSCAN and OPTICS Clustering Algorithms](posts/2024-06-05-let-s-talk-about-dbscan-and-optics-clustering-algorithms.md)
   - [How to Train a KAN Model on the Titanic Dataset for Kaggle](posts/2024-05-17-how-to-train-a-kan-model-on-the-titanic-dataset-for-kaggle.md)
