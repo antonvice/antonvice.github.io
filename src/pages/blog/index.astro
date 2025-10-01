@@ -1,0 +1,193 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import { getAllPosts, formatDate } from '../../lib/posts';
+import GlassCard from '../../components/GlassCard';
+
+// Get all blog posts
+const allPosts = getAllPosts();
+
+// Sort posts by date (newest first)
+const sortedPosts = allPosts.sort((a, b) => 
+  new Date(b.date).valueOf() - new Date(a.date).valueOf()
+);
+
+// Get featured posts (first 3 for now)
+const featuredPosts = sortedPosts.slice(0, 3);
+
+// Extract unique tags from content (simple approach)
+const uniqueTags = ['AI', 'Machine Learning', 'Deep Learning', 'Python', 'GPT', 'Neural Networks', 'Philosophy', 'Technology'];
+const categories = ['AI & ML', 'Technical', 'Philosophy', 'Programming'];
+---
+
+<MainLayout title="Blog - Anton Vice" description="Explore cutting-edge AI research, machine learning insights, and thoughts on human-AI collaboration from Anton Vice.">
+  
+  <main id="main-content" class="pt-16">
+    <!-- Hero Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-dark via-dark/95 to-dark relative overflow-hidden">
+      <div class="max-w-7xl mx-auto relative z-10">
+        <div class="text-center mb-12">
+          <h1 class="text-5xl md:text-7xl font-bold text-neon-blue neon-blue-glow mb-6 font-cyberpunk" style="letter-spacing: 0.5px;">
+            Neural Nexus
+          </h1>
+          <p class="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8">
+            Exploring the frontiers of AI, machine learning, and human-computer symbiosis. 
+            Welcome to the digital consciousness feed.
+          </p>
+        </div>
+        
+        <!-- Stats -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+          <GlassCard padding="large" className="text-center">
+            <div class="text-3xl font-bold text-neon-blue mb-2">{allPosts.length}</div>
+            <div class="text-gray-400 text-sm">Posts</div>
+          </GlassCard>
+          <GlassCard padding="large" className="text-center">
+            <div class="text-3xl font-bold text-accent-yellow mb-2">{categories.length}</div>
+            <div class="text-gray-400 text-sm">Categories</div>
+          </GlassCard>
+          <GlassCard padding="large" className="text-center">
+            <div class="text-3xl font-bold text-accent-coral mb-2">{uniqueTags.length}</div>
+            <div class="text-gray-400 text-sm">Tags</div>
+          </GlassCard>
+          <GlassCard padding="large" className="text-center">
+            <div class="text-3xl font-bold text-electric-blue mb-2">∞</div>
+            <div class="text-gray-400 text-sm">Ideas</div>
+          </GlassCard>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Posts -->
+    {featuredPosts.length > 0 && (
+      <section class="py-20 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+          <h2 class="text-3xl md:text-4xl font-bold text-electric-blue electric-blue-glow mb-12 text-center">
+            Featured Transmissions
+          </h2>
+          
+          <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {featuredPosts.map((post) => (
+              <GlassCard padding="large" className="group hover:scale-105 transition-all duration-300">
+                <div class="space-y-4">
+                  {/* Category & Date */}
+                  <div class="flex items-center justify-between text-sm">
+                    <span class="px-2 py-1 bg-accent-coral/20 text-accent-coral border border-accent-coral/30 rounded">
+                      AI & Tech
+                    </span>
+                    <time class="text-gray-400" datetime={post.date.toISOString()}>
+                      {formatDate(post.date)}
+                    </time>
+                  </div>
+                  
+                  {/* Title */}
+                  <h3 class="text-xl font-semibold text-accent-cyan neon-glow group-hover:animate-glitch">
+                    <a href={`/blog/${post.slug}`} class="hover:text-accent-yellow transition-colors duration-300">
+                      {post.title}
+                    </a>
+                  </h3>
+                  
+                  {/* Description */}
+                  <p class="text-gray-300 text-sm leading-relaxed">
+                    {post.excerpt}
+                  </p>
+                  
+                  {/* Tags */}
+                  <div class="flex flex-wrap gap-2">
+                    <span class="text-xs px-2 py-1 bg-accent-cyan/10 text-accent-cyan border border-accent-cyan/20 rounded">
+                      #AI
+                    </span>
+                    <span class="text-xs px-2 py-1 bg-accent-cyan/10 text-accent-cyan border border-accent-cyan/20 rounded">
+                      #Tech
+                    </span>
+                  </div>
+                  
+                  {/* Read More */}
+                  <div class="pt-4">
+                    <a 
+                      href={`/blog/${post.slug}`}
+                      class="inline-flex items-center text-accent-yellow hover:text-accent-cyan transition-colors duration-300"
+                    >
+                      Access Data →
+                    </a>
+                  </div>
+                </div>
+              </GlassCard>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- All Posts -->
+    <section class="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-transparent via-accent-coral/5 to-transparent">
+      <div class="max-w-7xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold text-accent-coral neon-glow mb-12 text-center">
+          All Transmissions
+        </h2>
+        
+        <div class="space-y-8">
+          {sortedPosts.map((post) => (
+            <GlassCard padding="large" className="group transition-all duration-300">
+              <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center gap-4 mb-2">
+                    <time class="text-gray-400 text-sm whitespace-nowrap" datetime={post.date.toISOString()}>
+                      {formatDate(post.date)}
+                    </time>
+                    <span class="px-2 py-1 bg-accent-yellow/20 text-accent-yellow border border-accent-yellow/30 rounded text-xs">
+                      AI & Tech
+                    </span>
+                  </div>
+                  
+                  <h3 class="text-xl md:text-2xl font-semibold text-white mb-2 group-hover:text-accent-cyan transition-colors duration-300">
+                    <a href={`/blog/${post.slug}`} class="hover:neon-glow">
+                      {post.title}
+                    </a>
+                  </h3>
+                  
+                  <p class="text-gray-400 mb-3">
+                    {post.excerpt}
+                  </p>
+                  
+                  <div class="flex flex-wrap gap-2">
+                    <span class="text-xs px-2 py-1 bg-dark border border-gray-700 text-gray-400 rounded">
+                      #AI
+                    </span>
+                    <span class="text-xs px-2 py-1 bg-dark border border-gray-700 text-gray-400 rounded">
+                      #Tech
+                    </span>
+                  </div>
+                </div>
+                
+                <div class="flex-shrink-0">
+                  <a 
+                    href={`/blog/${post.slug}`}
+                    class="inline-flex items-center px-4 py-2 border border-accent-cyan text-accent-cyan hover:bg-accent-cyan hover:text-dark transition-all duration-300"
+                  >
+                    Read More →
+                  </a>
+                </div>
+              </div>
+            </GlassCard>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Tags Cloud -->
+    <section class="py-20 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-3xl font-bold text-neon-blue neon-blue-glow mb-8">
+          Neural Tags
+        </h2>
+        <div class="flex flex-wrap justify-center gap-3">
+          {uniqueTags.map((tag) => (
+            <span key={tag} class="px-3 py-2 bg-gradient-to-r from-accent-cyan/10 to-accent-coral/10 border border-accent-cyan/20 text-accent-cyan hover:border-accent-cyan hover:bg-accent-cyan/20 transition-all duration-300 cursor-pointer rounded">
+              #{tag}
+            </span>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+</MainLayout>

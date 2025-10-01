@@ -1,0 +1,282 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import MarkdownPost from '../../components/MarkdownPost';
+import { getAllPosts, getPostBySlug, formatDate } from '../../lib/posts';
+import GlassCard from '../../components/GlassCard';
+
+export async function getStaticPaths() {
+  const posts = getAllPosts();
+  
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { postData: post },
+  }));
+}
+
+const { postData } = Astro.props;
+const post = postData;
+
+if (!post) {
+  throw new Error(`Post not found`);
+}
+
+if (!post.title) {
+  throw new Error(`Post title not found. Post keys: ${Object.keys(post || {}).join(', ')}`);
+}
+
+// Get related posts (first 3 other posts for now)
+const allPosts = getAllPosts();
+const relatedPosts = allPosts
+  .filter(p => p.slug !== post.slug)
+  .slice(0, 3);
+---
+
+<MainLayout 
+  title={`${post.title} - Anton Vice`} 
+  description={post.description || post.excerpt || `${post.title} - A blog post by Anton Vice`}
+>
+  
+  <main id="main-content" class="pt-16">
+    <!-- Article Header -->
+    <article class="py-12 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-4xl mx-auto">
+        <!-- Back Button -->
+        <div class="mb-6">
+          <a 
+            href="/blog"
+            class="inline-flex items-center px-4 py-2 text-nav-link hover:text-nav-active transition-colors duration-300 border border-nav-link hover:border-nav-active rounded"
+          >
+            ← Back to Neural Nexus
+          </a>
+        </div>
+        
+        <!-- Meta Information -->
+        <div class="mb-8">
+          <div class="flex flex-wrap items-center gap-4 mb-6">
+            <time class="text-accent-cyan font-semibold" datetime={post.date.toISOString()}>
+              {formatDate(post.date)}
+            </time>
+            <span class="px-3 py-1 bg-accent-coral/20 text-accent-coral border border-accent-coral/30 rounded">
+              AI & Tech
+            </span>
+          </div>
+          
+          <!-- Title -->
+          <h1 class="text-4xl md:text-6xl font-bold text-accent-cyan neon-glow mb-6 leading-tight font-rajdhani">
+            {post.title}
+          </h1>
+          
+          <p class="text-xl text-gray-300 leading-relaxed mb-8">
+            {post.excerpt}
+          </p>
+          
+          <div class="flex flex-wrap gap-2">
+            <span class="px-3 py-1 bg-accent-cyan/10 text-accent-cyan border border-accent-cyan/20 rounded">
+              #AI
+            </span>
+            <span class="px-3 py-1 bg-accent-cyan/10 text-accent-cyan border border-accent-cyan/20 rounded">
+              #Tech
+            </span>
+          </div>
+        </div>
+        
+        <!-- Article Content -->
+        <GlassCard className="p-0">
+          <div class="p-8 md:p-12">
+          <MarkdownPost post={post} client:load />
+          </div>
+        </GlassCard>
+        
+        <!-- Article Footer -->
+        <div class="mt-12 pt-8 border-t border-gray-700">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-gray-400 mb-2">Written by</p>
+              <p class="text-accent-yellow font-semibold">Anton [The AI Whisperer] Vice</p>
+            </div>
+            <div class="flex items-center space-x-4">
+              <a 
+                href="https://twitter.com/la_haine_d_arte" 
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-accent-cyan hover:text-accent-yellow transition-colors duration-300"
+              >
+                Share on Twitter
+              </a>
+              <a 
+                href={`https://linkedin.com/sharing/share-offsite/?url=${Astro.url}`}
+                target="_blank"
+                rel="noopener noreferrer" 
+                class="text-accent-cyan hover:text-accent-yellow transition-colors duration-300"
+              >
+                Share on LinkedIn
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Related Posts -->
+    {relatedPosts.length > 0 && (
+      <section class="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-transparent via-accent-coral/5 to-transparent">
+        <div class="max-w-6xl mx-auto">
+          <h2 class="text-3xl font-bold text-accent-coral neon-glow mb-12 text-center">
+            Related Transmissions
+          </h2>
+          
+          <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {relatedPosts.map((relatedPost) => (
+              <article key={relatedPost.slug} class="card-glass p-6 hover:scale-105 transition-all duration-300 hover:border-accent-cyan/30 group">
+                <div class="space-y-4">
+                  {/* Category & Date */}
+                  <div class="flex items-center justify-between text-sm">
+                    <span class="px-2 py-1 bg-accent-yellow/20 text-accent-yellow border border-accent-yellow/30 rounded">
+                      AI & Tech
+                    </span>
+                    <time class="text-gray-400" datetime={relatedPost.date.toISOString()}>
+                      {formatDate(relatedPost.date)}
+                    </time>
+                  </div>
+                  
+                  {/* Title */}
+                  <h3 class="text-lg font-semibold text-white group-hover:text-accent-cyan transition-colors duration-300">
+                    <a href={`/blog/${relatedPost.slug}`}>
+                      {relatedPost.title}
+                    </a>
+                  </h3>
+                  
+                  {/* Description */}
+                  <p class="text-gray-400 text-sm leading-relaxed">
+                    {relatedPost.excerpt}
+                  </p>
+                  
+                  {/* Read More */}
+                  <div class="pt-2">
+                    <a 
+                      href={`/blog/${relatedPost.slug}`}
+                      class="inline-flex items-center text-accent-cyan hover:text-accent-yellow transition-colors duration-300"
+                    >
+                      Read More →
+                    </a>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- Navigation -->
+    <section class="py-12 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-4xl mx-auto">
+        <div class="flex items-center justify-between">
+          <a 
+            href="/blog"
+            class="inline-flex items-center px-6 py-3 border border-accent-cyan text-accent-cyan hover:bg-accent-cyan hover:text-dark transition-all duration-300"
+          >
+            ← Back to Blog
+          </a>
+          <a 
+            href="/"
+            class="inline-flex items-center px-6 py-3 border border-accent-yellow text-accent-yellow hover:bg-accent-yellow hover:text-dark transition-all duration-300"
+          >
+            Home
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+</MainLayout>
+
+<style>
+  /* Custom prose styles for blog content */
+  .prose {
+    color: #e5e7eb;
+  }
+  
+  .prose h2 {
+    color: #fed33f;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 8px rgba(254, 211, 63, 0.5);
+  }
+  
+  .prose h3 {
+    color: #2be4ea;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .prose p {
+    color: #d1d5db;
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+  }
+  
+  .prose strong {
+    color: #e8615a;
+  }
+  
+  .prose em {
+    color: #fed33f;
+  }
+  
+  .prose code {
+    background: rgba(43, 228, 234, 0.1);
+    color: #2be4ea;
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.25rem;
+    font-size: 0.875em;
+  }
+  
+  .prose pre {
+    background: rgba(17, 18, 22, 0.75) !important;
+    border: 1px solid rgba(94, 33, 34, 0.5);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    overflow-x: hidden;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+  }
+  
+  .prose pre code {
+    background: transparent;
+    color: #2be4ea;
+    padding: 0;
+  }
+  
+  .prose blockquote {
+    border-left: 4px solid #fed33f;
+    padding-left: 1rem;
+    margin-left: 0;
+    font-style: italic;
+    color: #fed33f;
+  }
+  
+  .prose a {
+    color: #2be4ea;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .prose a:hover {
+    color: #fed33f;
+    text-shadow: 0 0 8px rgba(254, 211, 63, 0.5);
+  }
+  
+  .prose ul, .prose ol {
+    margin: 1rem 0;
+  }
+  
+  .prose li {
+    margin: 0.5rem 0;
+  }
+  
+  .prose img {
+    border-radius: 0.5rem;
+    margin: 2rem 0;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+  }
+</style>
