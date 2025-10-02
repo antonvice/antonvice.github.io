@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import DecryptedText from './DecryptedText';
+import '../styles/lanyard-card.css';
 
 interface LanyardCardProps {
   name: string;
@@ -85,7 +86,7 @@ const LanyardCard: React.FC<LanyardCardProps> = ({
       {/* Card Container */}
       <div
         ref={cardRef}
-        className="relative mt-32"
+        className="relative mt-32 transform-style-preserve-3d"
         onMouseEnter={() => setIsHovered(true)}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
@@ -201,14 +202,15 @@ const LanyardCard: React.FC<LanyardCardProps> = ({
             
             {/* Social Links */}
             {socials.length > 0 && (
-              <div className="flex justify-center gap-4 mt-2 pt-2">
+<div className="flex justify-center gap-4 mt-2 pt-2 relative z-50">
                 {socials.map((social, index) => (
                   <a
                     key={index}
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-10 h-10 rounded-full bg-gray-800 border border-accent-cyan/30 flex items-center justify-center text-accent-cyan hover:bg-accent-cyan hover:text-dark transition-all duration-300 hover:scale-110"
+                    className="w-10 h-10 rounded-full bg-gray-800 border border-accent-cyan/30 flex items-center justify-center text-accent-cyan hover:bg-accent-cyan hover:text-dark transition-all duration-300 hover:scale-110 relative z-50 cursor-pointer social-link"
+                    onClick={(e) => e.stopPropagation()}
                     aria-label={social.label}
                   >
                     <span dangerouslySetInnerHTML={{ __html: social.icon }} />

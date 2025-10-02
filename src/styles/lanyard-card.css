@@ -1,0 +1,15 @@
+/* Social link styles */
+.social-link {
+  position: relative;
+  isolation: isolate;
+  transform: translateZ(1px);
+}
+
+.social-link:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 2px;
+}
+
+.social-link:active {
+  transform: translateZ(1px) scale(0.95);
+}
