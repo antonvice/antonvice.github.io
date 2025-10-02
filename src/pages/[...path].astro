@@ -1,0 +1,17 @@
+---
+export const prerender = true;
+
+import MainLayout from "../layouts/MainLayout.astro";
+
+export function getStaticPaths() {
+  return [
+    { params: { path: undefined } },
+    { params: { path: "404" } },
+  ];
+}
+---
+
+<MainLayout title="Redirecting...">
+  <meta http-equiv="refresh" content="0;url=/" />
+  <script>window.location.replace("/");</script>
+</MainLayout>
