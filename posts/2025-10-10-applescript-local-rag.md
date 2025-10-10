@@ -130,16 +130,6 @@ Everything runs locally:
 
 No data leaves your machine. Your documents, voice commands, and personal information stay private.
 
-## Performance That Surprises
-
-The system is remarkably fast:
-- Voice transcription: ~2 seconds for 15-second audio
-- Document processing: ~2 seconds per page
-- Knowledge graph extraction: ~0.5 seconds per chunk
-- Vector + graph search: <100ms combined
-
-The AppleScript execution is nearly instantaneous since it's native macOS integration.
-
 ## Building Your Own: The Key Components
 
 - Voice Interface: Faster-Whisper + PyAudio for recording
