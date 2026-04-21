@@ -6,6 +6,7 @@ interface LanyardCardProps {
   name: string;
   title: string;
   subtitle?: string;
+  xlabUrl?: string;
   description?: string[];
   avatar?: string;
   socials?: Array<{
@@ -25,6 +26,7 @@ const LanyardCard: React.FC<LanyardCardProps> = ({
   name,
   title,
   subtitle,
+  xlabUrl,
   description = [],
   avatar,
   socials = []
@@ -164,7 +166,19 @@ const LanyardCard: React.FC<LanyardCardProps> = ({
               </div>
               {subtitle && (
                 <div className="text-gray-400 text-[11px] mt-0.5 leading-tight">
-                  {subtitle}
+                  {xlabUrl ? (
+                    <a 
+                      href={xlabUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="hover:text-accent-cyan transition-colors"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {subtitle}
+                    </a>
+                  ) : (
+                    subtitle
+                  )}
                 </div>
               )}
             </div>
