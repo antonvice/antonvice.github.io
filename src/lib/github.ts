@@ -13,15 +13,13 @@ const GitHubRepoSchema = z.object({
   forks_count: z.number(),
   created_at: z.string(),
   updated_at: z.string(),
-  topics: z.array(z.string()),
+  topics: z.array(z.string()).optional().default([]),
   fork: z.boolean(),
   private: z.boolean(),
   homepage: z.string().nullable(),
 });
 
 export type GitHubRepo = z.infer<typeof GitHubRepoSchema>;
-
-const GitHubReposSchema = z.array(GitHubRepoSchema);
 
 /**
  * Get programming language color
@@ -100,505 +98,159 @@ export function getLanguageColor(language: string | null): string {
   return colors[language] || '#6b7280';
 }
 
-class GitHubService {
-  private baseURL = 'https://api.github.com';
-  private username = 'antonvice';
-  private cache: Map<string, { data: any; timestamp: number }> = new Map();
-  private cacheTimeout = 5 * 60 * 1000; // 5 minutes cache
-  
-  constructor() {
-    // Configure axios with default headers
-    axios.defaults.headers.common['Accept'] = 'application/vnd.github.v3+json';
-    axios.defaults.headers.common['User-Agent'] = 'vice-portfolio';
-    
-    // Add GitHub token if available (optional, increases rate limit)
-    const token = process.env.GITHUB_TOKEN;
-    if (token) {
-      axios.defaults.headers.common['Authorization'] = `token ${token}`;
-    }
-  }
+const GITHUB_USERNAME = 'antonvice';
+const GITHUB_TOKEN = import.meta.env.GITHUB_TOKEN;
 
-  /**
-   * Check if cached data is still valid
-   */
-  private isCacheValid(key: string): boolean {
-    const cached = this.cache.get(key);
-    if (!cached) return false;
-    return Date.now() - cached.timestamp < this.cacheTimeout;
-  }
+/**
+ * Fetch all public repositories for a user with pagination
+ */
+export async function getAllRepos(username: string = GITHUB_USERNAME): Promise<GitHubRepo[]> {
+  const allRepos: GitHubRepo[] = [];
+  let page = 1;
+  const perPage = 100;
 
-  /**
-   * Get cached data if valid
-   */
-  private getCached<T>(key: string): T | null {
-    if (this.isCacheValid(key)) {
-      return this.cache.get(key)?.data || null;
-    }
-    return null;
-  }
-
-  /**
-   * Set cache data
-   */
-  private setCache(key: string, data: any): void {
-    this.cache.set(key, {
-      data,
-      timestamp: Date.now(),
-    });
-  }
-
-  /**
-   * Format repository data for display
-   */
-  formatRepository(repo: GitHubRepo) {
-    return {
-      ...repo,
-      languageColor: getLanguageColor(repo.language),
-      formattedDate: new Date(repo.updated_at).toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric'
-      })
-    };
-  }
-
-  /**
-   * Get all repositories sorted into categories
-   */
-  async getAllRepositoriesSorted() {
-    const cacheKey = 'all-repos-sorted';
-    
-    // Check cache first
-    const cached = this.getCached<any>(cacheKey);
-    if (cached) {
-      console.log('Using cached sorted repositories');
-      return cached;
-    }
-
-    try {
-      const [repos, pinnedNames] = await Promise.all([
-        this.getRepositories(),
-        this.getPinnedRepositories()
-      ]);
-
-      const pinnedSet = new Set(pinnedNames);
-      const featuredNames = new Set([
-        'selflayer-dash',
-        'pocker',
-        'vice',
-        'pytorch',
-        'slbrowser',
-        'v07'
-      ]);
-
-      // Categorize repositories
-      const pinned = repos.filter(r => pinnedSet.has(r.name));
-      const featured = repos.filter(r => !pinnedSet.has(r.name) && featuredNames.has(r.name));
-      const others = repos.filter(r => !pinnedSet.has(r.name) && !featuredNames.has(r.name));
-
-      // Sort pinned by the order in pinnedNames
-      pinned.sort((a, b) => {
-        const aIndex = pinnedNames.indexOf(a.name);
-        const bIndex = pinnedNames.indexOf(b.name);
-        return aIndex - bIndex;
+  try {
+    while (true) {
+      const response = await axios.get(`https://api.github.com/users/${username}/repos`, {
+        params: {
+          per_page: perPage,
+          page: page,
+          sort: 'updated',
+          direction: 'desc'
+        },
+        headers: GITHUB_TOKEN ? {
+          Authorization: `token ${GITHUB_TOKEN}`
+        } : {}
       });
 
-      // Sort featured and others by stars and recency
-      const sortByActivity = (a: GitHubRepo, b: GitHubRepo) => {
-        const aScore = a.stargazers_count * 2 + (new Date(a.updated_at).getTime() / 1000000);
-        const bScore = b.stargazers_count * 2 + (new Date(b.updated_at).getTime() / 1000000);
-        return bScore - aScore;
-      };
-
-      featured.sort(sortByActivity);
-      others.sort(sortByActivity);
-
-      const all = [...pinned, ...featured, ...others];
-
-      const result = {
-        pinned,
-        featured,
-        others,
-        all
-      };
-
-      // Cache for 10 minutes
-      this.setCache(cacheKey, result);
-
-      return result;
-    } catch (error) {
-      console.error('Error getting sorted repositories:', error);
-      return {
-        pinned: [],
-        featured: [],
-        others: [],
-        all: []
-      };
-    }
-  }
-
-  /**
-   * Fetches all public repositories for the user
-   */
-  async getRepositories(): Promise<GitHubRepo[]> {
-    const cacheKey = 'repositories';
-    
-    // Check cache first
-    const cached = this.getCached<GitHubRepo[]>(cacheKey);
-    if (cached) {
-      console.log('Using cached repositories');
-      return cached;
+      if (response.data.length === 0) break;
+      
+      allRepos.push(...response.data);
+      if (response.data.length < perPage) break;
+      page++;
     }
 
-    try {
-      const response = await axios.get(
-        `${this.baseURL}/users/${this.username}/repos`,
-        {
-          params: {
-            type: 'public',
-            sort: 'updated',
-            direction: 'desc',
-            per_page: 100,
-          },
-          timeout: 10000, // 10 second timeout
-        }
-      );
-
-      // Validate the response data
-      const repos = GitHubReposSchema.parse(response.data);
-      
-      // Filter out forked repositories and private ones
-      const filtered = repos.filter(repo => !repo.fork && !repo.private);
-      
-      // Cache the result
-      this.setCache(cacheKey, filtered);
-      
-      return filtered;
-    } catch (error) {
-      console.error('Error fetching GitHub repositories:', error);
-      
-      // Return cached data even if expired as fallback
-      const fallback = this.cache.get(cacheKey)?.data;
-      if (fallback) {
-        console.log('Using expired cache as fallback');
-        return fallback;
-      }
-      
-      return [];
-    }
-  }
-
-  /**
-   * Fetches pinned repositories from GitHub profile
-   */
-  async getPinnedRepositories(): Promise<string[]> {
-    try {
-      // GitHub doesn't have a direct API for pinned repos, but we can use GraphQL
-      // For now, we'll use a predefined list that you can update
-      return [
-        'DreamDiffusion',
-        'SelfTUI',
-        'moondream',
-        'my-blog',
-        'arasaka2',
-        'mondr'
-      ];
-    } catch (error) {
-      console.error('Error fetching pinned repositories:', error);
-      return [];
-    }
-  }
-
-  /**
-   * Fetches featured repositories (you can customize this logic)
-   */
-  async getFeaturedRepositories(): Promise<GitHubRepo[]> {
-    const cacheKey = 'featured-repositories';
-    
-    // Check cache first
-    const cached = this.getCached<GitHubRepo[]>(cacheKey);
-    if (cached) {
-      console.log('Using cached featured repositories');
-      return cached;
-    }
-
-    const allRepos = await this.getRepositories();
-    const pinnedNames = await this.getPinnedRepositories();
-    
-    // Additional featured repositories based on criteria
-    const additionalFeatured = [
-      'selflayer-dash',
-      'pocker',
-      'vice',
-      'pytorch',
-      'slbrowser',
-      'v07'
-    ];
-    
-    // Combine pinned and additional featured names
-    const featuredNames = [...new Set([...pinnedNames, ...additionalFeatured])];
-    
-    // Separate pinned and other repos
-    const pinnedRepos = allRepos.filter(repo => pinnedNames.includes(repo.name));
-    const otherFeaturedRepos = allRepos.filter(repo => 
-      !pinnedNames.includes(repo.name) && (
-        additionalFeatured.includes(repo.name) || 
-        repo.stargazers_count > 5 ||
-        (repo.topics && repo.topics.length > 2)
-      )
-    );
-    
-    // Sort pinned repos by the order in pinnedNames
-    pinnedRepos.sort((a, b) => {
-      const aIndex = pinnedNames.indexOf(a.name);
-      const bIndex = pinnedNames.indexOf(b.name);
-      return aIndex - bIndex;
-    });
-    
-    // Sort other repos by stars and recent activity
-    otherFeaturedRepos.sort((a, b) => {
-      const aScore = a.stargazers_count * 2 + (new Date(a.updated_at).getTime() / 1000000);
-      const bScore = b.stargazers_count * 2 + (new Date(b.updated_at).getTime() / 1000000);
-      return bScore - aScore;
-    });
-    
-    // Combine: pinned first, then other featured repos
-    const featured = [...pinnedRepos, ...otherFeaturedRepos].slice(0, 12);
-    
-    // Cache the result
-    this.setCache(cacheKey, featured);
-    
-    return featured;
-  }
-
-  /**
-   * Get repository languages statistics
-   */
-  async getRepositoryLanguages(repoName: string): Promise<Record<string, number>> {
-    const cacheKey = `languages-${repoName}`;
-    
-    // Check cache first
-    const cached = this.getCached<Record<string, number>>(cacheKey);
-    if (cached) {
-      return cached;
-    }
-
-    try {
-      const response = await axios.get(
-        `${this.baseURL}/repos/${this.username}/${repoName}/languages`,
-        { timeout: 5000 }
-      );
-      
-      // Cache the result
-      this.setCache(cacheKey, response.data);
-      
-      return response.data;
-    } catch (error) {
-      console.error(`Error fetching languages for ${repoName}:`, error);
-      return {};
-    }
-  }
-
-  /**
-   * Get repository statistics (commits, contributors, etc.)
-   */
-  async getRepositoryStats(repoName: string): Promise<any> {
-    const cacheKey = `stats-${repoName}`;
-    
-    // Check cache first
-    const cached = this.getCached<any>(cacheKey);
-    if (cached) {
-      return cached;
-    }
-
-    try {
-      const [commits, contributors] = await Promise.all([
-        axios.get(`${this.baseURL}/repos/${this.username}/${repoName}/commits`, {
-          params: { per_page: 1 },
-          timeout: 5000,
-        }),
-        axios.get(`${this.baseURL}/repos/${this.username}/${repoName}/contributors`, {
-          params: { per_page: 100 },
-          timeout: 5000,
-        }),
-      ]);
-
-      const stats = {
-        total_commits: parseInt(commits.headers.link?.match(/page=(\d+)>; rel="last"/)?.[1] || '1'),
-        contributors_count: contributors.data.length,
-      };
-      
-      // Cache the result
-      this.setCache(cacheKey, stats);
-      
-      return stats;
-    } catch (error) {
-      console.error(`Error fetching stats for ${repoName}:`, error);
-      return { total_commits: 0, contributors_count: 0 };
-    }
-  }
-
-  /**
-   * Format repository data for display
-   */
-  formatRepository(repo: GitHubRepo) {
-    return {
-      ...repo,
-      formattedDate: new Intl.DateTimeFormat('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-      }).format(new Date(repo.updated_at)),
-      
-      languageColor: this.getLanguageColor(repo.language),
-      
-      shortDescription: repo.description 
-        ? repo.description.length > 100 
-          ? repo.description.substring(0, 100) + '...'
-          : repo.description
-        : 'No description available',
-    };
-  }
-
-  /**
-   * Get color for programming languages
-   */
-  private getLanguageColor(language: string | null): string {
-    const colors: Record<string, string> = {
-      'JavaScript': '#f7df1e',
-      'TypeScript': '#3178c6',
-      'Python': '#3776ab',
-      'Go': '#00add8',
-      'Rust': '#dea584',
-      'Java': '#ed8b00',
-      'C++': '#00599c',
-      'C': '#a8b9cc',
-      'C#': '#178600',
-      'Swift': '#fa7343',
-      'Kotlin': '#7f52ff',
-      'PHP': '#777bb4',
-      'Ruby': '#cc342d',
-      'CSS': '#1572b6',
-      'SCSS': '#c6538c',
-      'HTML': '#e34c26',
-      'Vue': '#4fc08d',
-      'React': '#61dafb',
-      'Svelte': '#ff3e00',
-      'Astro': '#ff5a05',
-      'Shell': '#89e051',
-      'Bash': '#89e051',
-      'Dart': '#00b4ab',
-      'Flutter': '#02569b',
-      'Jupyter Notebook': '#da5b0b',
-      'Scala': '#dc322f',
-      'Elixir': '#6e4a7e',
-      'Haskell': '#5e5086',
-      'Lua': '#000080',
-      'Perl': '#0298c3',
-      'R': '#198ce7',
-      'MATLAB': '#e16737',
-      'Julia': '#a270ba',
-      'Objective-C': '#438eff',
-      'Clojure': '#db5855',
-      'Vim Script': '#199f4b',
-      'PowerShell': '#012456',
-      'Assembly': '#6e4c13',
-      'Makefile': '#427819',
-      'Dockerfile': '#384d54',
-      'YAML': '#cb171e',
-      'JSON': '#292929',
-      'XML': '#0060ac',
-      'Markdown': '#083fa1',
-      'TeX': '#3d6117',
-      'GLSL': '#5686a5'
-    };
-    
-    return language ? (colors[language] || '#6b7280') : '#6b7280';
-  }
-
-  /**
-   * Get all repositories sorted and categorized
-   * Returns repositories grouped by pinned, featured, and others
-   */
-  async getAllRepositoriesSorted(): Promise<{
-    pinned: GitHubRepo[];
-    featured: GitHubRepo[];
-    others: GitHubRepo[];
-    all: GitHubRepo[];
-  }> {
-    const cacheKey = 'all-repositories-sorted';
-    
-    // Check cache first
-    const cached = this.getCached<any>(cacheKey);
-    if (cached) {
-      console.log('Using cached sorted repositories');
-      return cached;
-    }
-
-    const allRepos = await this.getRepositories();
-    const pinnedNames = await this.getPinnedRepositories();
-    
-    // Additional featured repositories
-    const featuredNames = [
-      'selflayer-dash',
-      'pocker',
-      'vice',
-      'slbrowser',
-      'v07',
-      'sf_bot',
-      'sl_landings'
-    ];
-    
-    // Categorize repositories
-    const pinned: GitHubRepo[] = [];
-    const featured: GitHubRepo[] = [];
-    const others: GitHubRepo[] = [];
-    
-    allRepos.forEach(repo => {
-      if (pinnedNames.includes(repo.name)) {
-        pinned.push(repo);
-      } else if (featuredNames.includes(repo.name) || 
-                 repo.stargazers_count > 5 || 
-                 (repo.topics && repo.topics.length > 2)) {
-        featured.push(repo);
-      } else {
-        others.push(repo);
-      }
-    });
-    
-    // Sort each category
-    // Pinned: maintain order from pinnedNames
-    pinned.sort((a, b) => {
-      const aIndex = pinnedNames.indexOf(a.name);
-      const bIndex = pinnedNames.indexOf(b.name);
-      return aIndex - bIndex;
-    });
-    
-    // Featured: sort by stars and recent activity
-    featured.sort((a, b) => {
-      const aScore = a.stargazers_count * 2 + (new Date(a.updated_at).getTime() / 1000000);
-      const bScore = b.stargazers_count * 2 + (new Date(b.updated_at).getTime() / 1000000);
-      return bScore - aScore;
-    });
-    
-    // Others: sort by update date
-    others.sort((a, b) => {
-      return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
-    });
-    
-    const result = {
-      pinned,
-      featured,
-      others,
-      all: [...pinned, ...featured, ...others]
-    };
-    
-    // Cache the result
-    this.setCache(cacheKey, result);
-    
-    return result;
+    return allRepos;
+  } catch (error) {
+    console.error('Error fetching GitHub repos:', error);
+    return [];
   }
 }
 
-// Export singleton instance
-export const githubService = new GitHubService();
+/**
+ * Get pinned repositories using GraphQL API
+ */
+export async function getPinnedRepos(username: string = GITHUB_USERNAME): Promise<GitHubRepo[]> {
+  if (!GITHUB_TOKEN) {
+    // Fallback to top repositories if no token
+    const repos = await getAllRepos(username);
+    return repos.filter(r => !r.fork).slice(0, 6);
+  }
+
+  const query = `
+    query($username: String!) {
+      user(login: $username) {
+        pinnedItems(first: 6, types: [REPOSITORY]) {
+          nodes {
+            ... on Repository {
+              id: databaseId
+              name
+              full_name: nameWithOwner
+              description
+              html_url: url
+              stargazers_count: stargazerCount
+              forks_count: forkCount
+              language: primaryLanguage {
+                name
+              }
+              created_at: createdAt
+              updated_at: updatedAt
+              homepage: homepageUrl
+              topics: repositoryTopics(first: 10) {
+                nodes {
+                  topic {
+                    name
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  try {
+    const response = await axios.post('https://api.github.com/graphql', 
+      { query, variables: { username } },
+      { headers: { Authorization: `Bearer ${GITHUB_TOKEN}` } }
+    );
+
+    const nodes = response.data?.data?.user?.pinnedItems?.nodes || [];
+    return nodes.map((node: any) => ({
+      ...node,
+      language: node.language?.name || null,
+      topics: node.topics?.nodes?.map((t: any) => t.topic.name) || [],
+      fork: false,
+      private: false
+    }));
+  } catch (error) {
+    console.error('Error fetching pinned repos:', error);
+    return [];
+  }
+}
+/**
+ * githubService object to wrap all GitHub related functionality
+ */
+export const githubService = {
+  getAllRepos,
+  getPinnedRepos,
+  getLanguageColor,
+
+  /**
+   * Fetch all repositories and sort them into categories
+   */
+  async getAllRepositoriesSorted() {
+    const all = await getAllRepos();
+    const pinned = await getPinnedRepos();
+    
+    // Featured are pinned or high star count
+    const featured = all.filter(repo => 
+      pinned.some(p => p.id === repo.id) || repo.stargazers_count >= 5
+    ).sort((a, b) => b.stargazers_count - a.stargazers_count);
+
+    // Others are the rest
+    const others = all.filter(repo => !featured.some(f => f.id === repo.id));
+
+    return {
+      pinned,
+      featured,
+      others,
+      all
+    };
+  },
+
+  /**
+   * Format repository for display
+   */
+  formatRepository(repo: GitHubRepo) {
+    return {
+      id: repo.id,
+      name: repo.name,
+      title: repo.name, // Keep for backward compatibility
+      description: repo.description || 'No description provided.',
+      tags: repo.language ? [repo.language] : [],
+      language: repo.language,
+      stargazers_count: repo.stargazers_count,
+      forks_count: repo.forks_count,
+      stars: repo.stargazers_count, // Keep for backward compatibility
+      forks: repo.forks_count, // Keep for backward compatibility
+      html_url: repo.html_url,
+      link: repo.html_url, // Keep for backward compatibility
+      github: repo.html_url, // Keep for backward compatibility
+      updatedAt: repo.updated_at,
+      isFork: repo.fork,
+      topics: repo.topics
+    };
+  }
+};

@@ -5,21 +5,13 @@ import React, { useRef, useEffect } from 'react';
  * 
  * Creates an animated matrix-style background with glitching letters.
  * This component is designed to persist through Astro View Transitions.
- * 
- * @param {LetterGlitchProps} props - Component properties
  */
 interface LetterGlitchProps {
-  /** Array of hex colors for the glitch effect */
   glitchColors?: string[];
-  /** Speed of character changes in milliseconds */
   glitchSpeed?: number;
-  /** Whether to show a center vignette overlay */
   centerVignette?: boolean;
-  /** Whether to show an outer vignette overlay */
   outerVignette?: boolean;
-  /** Whether to use smooth color transitions */
   smooth?: boolean;
-  /** Characters to use in the matrix effect */
   characters?: string;
 }
 
@@ -141,11 +133,9 @@ const LetterGlitch = ({
       const x = (index % grid.current.columns) * charWidth;
       const y = Math.floor(index / grid.current.columns) * charHeight;
       
-      // Add slight opacity variation for depth
-      const opacity = 0.15 + Math.random() * 0.15;
       const rgb = hexToRgb(letter.color);
       if (rgb) {
-        ctx.fillStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${opacity})`;
+        ctx.fillStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.25)`;
       } else {
         ctx.fillStyle = letter.color;
       }
@@ -157,7 +147,7 @@ const LetterGlitch = ({
   const updateLetters = () => {
     if (!letters.current || letters.current.length === 0) return;
 
-    const updateCount = Math.max(1, Math.floor(letters.current.length * 0.03));
+    const updateCount = Math.max(1, Math.floor(letters.current.length * 0.015));
 
     for (let i = 0; i < updateCount; i++) {
       const index = Math.floor(Math.random() * letters.current.length);
@@ -175,95 +165,74 @@ const LetterGlitch = ({
     }
   };
 
-  const handleSmoothTransitions = () => {
-    let needsRedraw = false;
+  const handleSmoothTransitions = (): boolean => {
+    let active = false;
     letters.current.forEach(letter => {
       if (letter.colorProgress < 1) {
-        letter.colorProgress += 0.08;
+        active = true;
+        letter.colorProgress += 0.05;
         if (letter.colorProgress > 1) letter.colorProgress = 1;
 
         const startRgb = hexToRgb(letter.color);
         const endRgb = hexToRgb(letter.targetColor);
         if (startRgb && endRgb) {
           letter.color = interpolateColor(startRgb, endRgb, letter.colorProgress);
-          needsRedraw = true;
         }
       }
     });
-
-    if (needsRedraw) {
-      drawLetters();
-    }
+    return active;
   };
 
   const animate = () => {
     const now = Date.now();
+    let needsRedraw = false;
+
     if (now - lastGlitchTime.current >= glitchSpeed) {
       updateLetters();
-      drawLetters();
+      needsRedraw = true;
       lastGlitchTime.current = now;
     }
 
     if (smooth) {
-      handleSmoothTransitions();
+      const transitioning = handleSmoothTransitions();
+      if (transitioning) needsRedraw = true;
+    }
+
+    if (needsRedraw) {
+      drawLetters();
     }
 
     animationRef.current = requestAnimationFrame(animate);
   };
 
   useEffect(() => {
-    // Check for reduced motion preference
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) {
-      // Don't initialize animation if user prefers reduced motion
-      return;
-    }
+    if (prefersReducedMotion) return;
     
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) return;
     
     context.current = ctx;
     
-    // Check if animation is already running (persisted state)
-    const isAnimationRunning = canvas.getAttribute('data-animation-running') === 'true';
-    
-    // Small delay to ensure DOM is ready
     const initTimeout = setTimeout(() => {
-      if (!isAnimationRunning) {
-        resizeCanvas();
-        animate();
-        canvas.setAttribute('data-animation-running', 'true');
-      }
+      resizeCanvas();
+      animate();
     }, 100);
 
-    let resizeTimeout: NodeJS.Timeout;
-
     const handleResize = () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(() => {
-        // Only restart if animation was already running
-        if (animationRef.current) {
-          cancelAnimationFrame(animationRef.current);
-        }
-        resizeCanvas();
-        animate();
-      }, 100);
+      if (animationRef.current) cancelAnimationFrame(animationRef.current);
+      resizeCanvas();
+      animate();
     };
 
     window.addEventListener('resize', handleResize);
 
     return () => {
       clearTimeout(initTimeout);
-      // Don't clear animation on unmount if component is being persisted
-      // The animation will continue across page transitions
-      const isPersisted = document.getElementById('matrix-background-wrapper')?.hasAttribute('transition:persist');
-      if (!isPersisted && animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-        canvas.setAttribute('data-animation-running', 'false');
-      }
+      if (animationRef.current) cancelAnimationFrame(animationRef.current);
       window.removeEventListener('resize', handleResize);
     };
   }, [glitchSpeed, smooth]);

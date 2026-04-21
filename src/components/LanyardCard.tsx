@@ -97,9 +97,9 @@ const LanyardCard: React.FC<LanyardCardProps> = ({
         }}
       >
         {/* Card */}
-        <div className="relative w-[380px] h-[540px] bg-gradient-to-br from-gray-900/40 via-gray-800/40 to-gray-900/40 rounded-2xl shadow-2xl border border-accent-cyan/30 overflow-hidden">
+        <div className="relative w-[380px] h-[540px] bg-white/5 backdrop-blur-xl rounded-2xl shadow-2xl border border-accent-cyan/20 overflow-hidden">
           {/* Holographic Effect */}
-          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-accent-cyan/10 to-transparent animate-pulse" />
+          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-accent-cyan/5 to-transparent animate-pulse" />
           
           {/* Circuit Pattern Background */}
           <div className="absolute inset-0 opacity-10">

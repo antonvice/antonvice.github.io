@@ -16,7 +16,7 @@ const formattedAll = all.map(repo => githubService.formatRepository(repo));
   
   <main id="main-content" class="pt-16">
     <!-- Hero Section -->
-    <section class="py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-dark via-dark/95 to-dark relative overflow-hidden">
+    <section class="py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       <div class="max-w-6xl mx-auto relative z-10">
         <div class="text-center mb-8">
           <h1 class="text-5xl md:text-6xl font-bold text-electric-blue electric-blue-glow mb-4 font-cyberpunk" style="letter-spacing: 0.5px; min-width: max-content;">
@@ -79,7 +79,6 @@ const formattedAll = all.map(repo => githubService.formatRepository(repo));
               { name: 'Kubernetes', color: '#326ce5' },
             ].map((tech) => (
               <GlassCard 
-                key={tech.name}
                 className="inline-flex items-center gap-2 px-4 py-2 hover:scale-105 transition-all duration-300 hover:border-electric-blue/30"
               >
                 <div 
