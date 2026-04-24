@@ -34,7 +34,7 @@ const LanyardCard: React.FC<LanyardCardProps> = ({
   const cardRef = useRef<HTMLDivElement>(null);
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
-  const animationFrameRef = useRef<number>();
+  const animationFrameRef = useRef<number | null>(null);
   
   useEffect(() => {
     if (!cardRef.current) return;
