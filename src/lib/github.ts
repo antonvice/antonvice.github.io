@@ -26,7 +26,7 @@ export type GitHubRepo = z.infer<typeof GitHubRepoSchema>;
  */
 export function getLanguageColor(language: string | null): string {
   if (!language) return '#6b7280';
-  
+
   const colors: Record<string, string> = {
     JavaScript: '#f1e05a',
     TypeScript: '#2b7489',
@@ -94,12 +94,12 @@ export function getLanguageColor(language: string | null): string {
     JSX: '#f1e05a',
     MDX: '#fcb32c'
   };
-  
+
   return colors[language] || '#6b7280';
 }
 
 const GITHUB_USERNAME = 'antonvice';
-const GITHUB_TOKEN = import.meta.env.GITHUB_TOKEN;
+const GH_TOKEN = import.meta.env.GH_TOKEN;
 
 /**
  * Fetch all public repositories for a user with pagination
@@ -118,13 +118,13 @@ export async function getAllRepos(username: string = GITHUB_USERNAME): Promise<G
           sort: 'updated',
           direction: 'desc'
         },
-        headers: GITHUB_TOKEN ? {
-          Authorization: `token ${GITHUB_TOKEN}`
+        headers: GH_TOKEN ? {
+          Authorization: `token ${GH_TOKEN}`
         } : {}
       });
 
       if (response.data.length === 0) break;
-      
+
       allRepos.push(...response.data);
       if (response.data.length < perPage) break;
       page++;
@@ -141,7 +141,7 @@ export async function getAllRepos(username: string = GITHUB_USERNAME): Promise<G
  * Get pinned repositories using GraphQL API
  */
 export async function getPinnedRepos(username: string = GITHUB_USERNAME): Promise<GitHubRepo[]> {
-  if (!GITHUB_TOKEN) {
+  if (!GH_TOKEN) {
     // Fallback to top repositories if no token
     const repos = await getAllRepos(username);
     return repos.filter(r => !r.fork).slice(0, 6);
@@ -181,9 +181,9 @@ export async function getPinnedRepos(username: string = GITHUB_USERNAME): Promis
   `;
 
   try {
-    const response = await axios.post('https://api.github.com/graphql', 
+    const response = await axios.post('https://api.github.com/graphql',
       { query, variables: { username } },
-      { headers: { Authorization: `Bearer ${GITHUB_TOKEN}` } }
+      { headers: { Authorization: `Bearer ${GH_TOKEN}` } }
     );
 
     const nodes = response.data?.data?.user?.pinnedItems?.nodes || [];
@@ -213,9 +213,9 @@ export const githubService = {
   async getAllRepositoriesSorted() {
     const all = await getAllRepos();
     const pinned = await getPinnedRepos();
-    
+
     // Featured are pinned or high star count
-    const featured = all.filter(repo => 
+    const featured = all.filter(repo =>
       pinned.some(p => p.id === repo.id) || repo.stargazers_count >= 5
     ).sort((a, b) => b.stargazers_count - a.stargazers_count);
 

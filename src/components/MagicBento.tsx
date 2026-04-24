@@ -623,6 +623,7 @@ const GlobalSpotlight: React.FC<{
   glowColor = DEFAULT_GLOW_COLOR
 }) => {
     const cardsRef = useRef<HTMLElement[]>([]);
+    const spotlightRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
       if (disableAnimations || !gridRef?.current || !enabled) return;
