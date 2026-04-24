@@ -43,6 +43,8 @@ jobs:
         run: pnpm install
 
       - name: Build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           rm -rf dist
           pnpm build
