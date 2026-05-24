@@ -220,4 +220,4 @@ We must continue to exercise ethical considerations when using
 artificial intelligence in order to ensure that it is doing no harm and
 maximizing prosperity for all individuals.
 
-*By Anton [The AI Whisperer] Vice*
+*By Anton Vice*

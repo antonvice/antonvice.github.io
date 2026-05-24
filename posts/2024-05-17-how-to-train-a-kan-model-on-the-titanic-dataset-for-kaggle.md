@@ -364,4 +364,4 @@ Regularization:
 -   [Lambda and Entropy: Fine-tune regularization parameters to avoid
     overfitting.]
 
-*By Anton [The AI Whisperer] Vice*
+*By Anton Vice*

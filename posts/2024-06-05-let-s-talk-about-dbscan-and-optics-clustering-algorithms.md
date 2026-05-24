@@ -175,4 +175,4 @@ Can be slower due to the reachability plot construction.
 
 ## I hope this overview has been helpful!
 
-*By Anton [The AI Whisperer] Vice*
+*By Anton Vice*

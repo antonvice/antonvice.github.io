@@ -111,4 +111,4 @@ AGI is a challenging task, the progress made in natural language
 processing with models such as GPT-3 gives hope that we are on the right
 path towards building machines that can match human intelligence.
 
-*By Anton [The AI Whisperer] Vice*
+*By Anton Vice*

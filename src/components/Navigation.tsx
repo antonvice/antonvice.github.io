@@ -29,8 +29,8 @@ export default function Navigation({ currentPath = '/' }: NavigationProps) {
           <div className="flex-shrink-0">
             <a 
               href="/" 
-              className="text-nav-link font-cyberpunk text-3xl hover:animate-glitch transition-all duration-300"
-              style={{ textShadow: '0 0 8px rgba(43,228,234,0.5)', letterSpacing: '0.5px' }}
+              className="text-nav-link text-3xl transition-all duration-300"
+              style={{ textShadow: '0 0 6px rgba(43,228,234,0.25)' }}
             >
               Anton Vice
             </a>

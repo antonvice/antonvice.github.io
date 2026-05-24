@@ -137,4 +137,4 @@ explore its potential. Unless you are a die-hard fan of the memoir, it
 may be better to skip this one and find another movie that offers a more
 fulfilling viewing experience.
 
-*By Anton [The AI Whisperer] Vice*
+*By Anton Vice*

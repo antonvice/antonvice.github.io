@@ -96,4 +96,4 @@ techniques, we can expect even more impressive results in the near
 future. The combination of transformers and quantization is a powerful
 one, and we're excited to see what new breakthroughs lie ahead!
 
-*By Anton [The AI Whisperer] Vice*
+*By Anton Vice*

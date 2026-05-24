@@ -869,4 +869,4 @@ this little guide will make it slightly easier for you to choose the
 most suitable quantization method. Remember, all approaches are good in
 their way; the main thing is to "cook" them correctly ;)
 
-*By Anton [The AI Whisperer] Vice*
+*By Anton Vice*

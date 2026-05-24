@@ -86,4 +86,4 @@ with its tantalizing secrets, inviting me to explore its depths once
 more, and unravel the enigma that was the intersection of technology and
 humanity. The end... or
 
-*By Anton [The AI Whisperer] Vice*
+*By Anton Vice*

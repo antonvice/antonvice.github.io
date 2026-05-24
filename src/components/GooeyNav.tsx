@@ -21,7 +21,7 @@ export interface GooeyNavProps {
  * GooeyNav Component
  * 
  * Creates a liquid/gooey effect navigation with morphing background
- * that follows the active nav item. Perfect for cyberpunk themes.
+ * that follows the active nav item.
  */
 const GooeyNav: React.FC<GooeyNavProps> = ({
   items,

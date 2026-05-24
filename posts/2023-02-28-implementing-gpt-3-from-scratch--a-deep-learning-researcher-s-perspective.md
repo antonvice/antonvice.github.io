@@ -433,4 +433,4 @@ area. I believe that these models have the potential to revolutionize
 various natural language processing applications and contribute to
 advancing the field of artificial intelligence.
 
-*By Anton [The AI Whisperer] Vice*
+*By Anton Vice*

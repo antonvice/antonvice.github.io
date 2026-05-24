@@ -37,4 +37,4 @@ responses using that word ("delve deeper"), and then their feedback is
 fed back to the model for pre-training. There llm memorizes that word as
 "good".
 
-*By Anton [The AI Whisperer] Vice*
+*By Anton Vice*

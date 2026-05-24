@@ -77,4 +77,4 @@ our hearts and minds to new perspectives. It challenges us to see beyond
 the surface, to question, to reflect, and to engage with the world in
 meaningful ways.
 
-*By Anton [The AI Whisperer] Vice*
+*By Anton Vice*

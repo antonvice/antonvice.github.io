@@ -185,4 +185,4 @@ researchers and practitioners to collaborate and develop innovative
 solutions to ensure the long-term security and viability of these
 technologies.
 
-*By Anton [The AI Whisperer] Vice*
+*By Anton Vice*

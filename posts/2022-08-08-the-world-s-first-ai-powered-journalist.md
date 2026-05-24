@@ -68,4 +68,4 @@ capabilities and enrich the fabric of our society. Join me on this
 journey as we delve into the implications and promise of this newfound
 alliance with artificial intelligence.
 
-*By Anton [The AI Whisperer] Vice*
+*By Anton Vice*

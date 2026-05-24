@@ -1,8 +1,11 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
-import DecryptedText from "../components/DecryptedText";
 import LanyardCard from "../components/LanyardCard";
 import GlassCard from "../components/GlassCard";
+import { getAllPosts } from "../lib/posts";
+
+const posts = getAllPosts();
+const latestPost = posts[0];
 
 // Skill arrays for mapping
 const technicalSkills = [
@@ -16,17 +19,19 @@ const technicalSkills = [
 ];
 
 const focusAreas = [
-  "Human-AI Symbiosis",
-  "Emergent AI Behaviors",
+  "Human-AI Collaboration",
+  "AI Behavior & Evaluation",
   "Neural Network Architecture",
-  "Prompt Engineering & RAGs",
-  "Token Manipulation & Fine-tuning",
-  "Vector Injections",
+  "Prompt Engineering & RAG",
+  "Model Adaptation",
+  "Retrieval & Tool Use",
   "AI Ethics & Safety",
 ];
+
+const heroBadges = ["Applied AI", "Robotics", "Open Source", "Writing"];
 ---
 
-<MainLayout title="Anton Vice - AI Whisperer & CTO">
+<MainLayout title="Anton Vice - AI Engineer & CTO">
   <!-- Hero Section -->
   <main id="main-content" class="min-h-screen pt-16">
     <!-- Hero Section with Lanyard -->
@@ -50,30 +55,18 @@ const focusAreas = [
             <!-- Main Title -->
             <div>
               <h1
-                class="text-4xl sm:text-6xl md:text-8xl font-bold text-accent-cyan neon-glow mb-4 font-cyberpunk"
-                style="letter-spacing: 0.5px;"
+                class="text-4xl sm:text-6xl md:text-8xl font-bold text-accent-cyan mb-4"
               >
                 <div class="max-w-[600px] w-full mx-auto overflow-hidden">
-                  <DecryptedText
-                    text="ANTON VICE"
-                    speed={40}
-                    maxIterations={20}
-                    animateOn="view"
-                    sequential={true}
-                    revealDirection="center"
-                    className="text-accent-cyan"
-                    encryptedClassName="text-accent-cyan opacity-80"
-                    characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>[]{}()"
-                    client:load
-                  />
+                  Anton Vice
                 </div>
               </h1>
               <div class="text-2xl md:text-4xl text-accent-yellow mb-6">
                 <div class="carousel-container overflow-hidden h-12">
-                  <div class="carousel-text animate-pulse">
-                    <div class="carousel-item">AI Whisperer</div>
+                  <div class="carousel-text">
+                    <div class="carousel-item">AI Engineer</div>
                     <div class="carousel-item">ML Engineer</div>
-                    <div class="carousel-item">CTO @ XLab- Robotics</div>
+                    <div class="carousel-item">CTO @ XLab Robotics</div>
                   </div>
                 </div>
               </div>
@@ -81,8 +74,25 @@ const focusAreas = [
 
             <!-- Tagline -->
             <p class="text-xl md:text-2xl text-gray-300 leading-relaxed">
-              Exploring the Frontiers of Human-AI Symbiosis
+              Building practical AI systems, robotics tools, and essays about where this is all going.
             </p>
+
+            <div class="flex flex-wrap gap-2">
+              {heroBadges.map((badge) => (
+                <span class="px-3 py-1 rounded border border-accent-cyan/20 bg-accent-cyan/10 text-accent-cyan text-sm">
+                  {badge}
+                </span>
+              ))}
+              {latestPost && (
+                <a
+                  href={`/blog/${latestPost.slug}`}
+                  class="max-w-full sm:max-w-[32rem] truncate px-3 py-1 rounded border border-accent-yellow/30 bg-accent-yellow/10 text-accent-yellow text-sm hover:border-accent-yellow transition-colors"
+                  title={latestPost.title}
+                >
+                  Latest: {latestPost.title}
+                </a>
+              )}
+            </div>
 
             <!-- Quick Info -->
             <div class="grid grid-cols-2 gap-4">
@@ -100,7 +110,7 @@ const focusAreas = [
                     target="_blank"
                     rel="noopener noreferrer"
                     class="hover:text-accent-cyan transition-colors"
-                    >XLab- Robotics</a
+                    >XLab Robotics</a
                   >
                 </div>
               </GlassCard>
@@ -126,13 +136,13 @@ const focusAreas = [
           <!-- Right Side - Lanyard Card -->
           <div class="flex justify-center lg:justify-end">
             <LanyardCard
-              name="ANTON VICE"
-              title="AI Whisperer & CTO"
-              subtitle="XLab- Robotics | San Francisco, CA"
+              name="Anton Vice"
+              title="AI Engineer & CTO"
+              subtitle="XLab Robotics | Austin, TX"
               xlabUrl="https://xlabrobotics.com"
               description={[
-                "Architect of AI symbiosis",
-                "solarpunk | cyberpunk | cryptopunk",
+                "Building practical AI systems",
+                "Robotics, research, and useful weird ideas",
               ]}
               socials={[
                 {
@@ -189,13 +199,13 @@ const focusAreas = [
                 target="_blank"
                 rel="noopener noreferrer"
                 class="hover:text-accent-coral transition-colors"
-                >XLab- Robotics</a
+                >XLab Robotics</a
               >
             </div>
           </GlassCard>
           <GlassCard padding="large" className="text-center">
-            <div class="text-4xl font-bold text-electric-blue mb-1">∞</div>
-            <div class="text-gray-300">Ideas</div>
+            <div class="text-4xl font-bold text-electric-blue mb-1">{posts.length}</div>
+            <div class="text-gray-300">Published Posts</div>
           </GlassCard>
         </div>
       </div>
@@ -223,11 +233,11 @@ const focusAreas = [
                   target="_blank"
                   rel="noopener noreferrer"
                   class="hover:underline"
-                  >XLab- Robotics</a
+                  >XLab Robotics</a
                 >
               </p>
               <p class="text-gray-300 text-sm">
-                December 2026 - Present · Austin, TX
+                2026 - Present - Austin, TX
               </p>
             </GlassCard>
 
@@ -237,7 +247,7 @@ const focusAreas = [
                 <div>
                   <p class="text-lg font-semibold text-white">CTO</p>
                   <p class="text-accent-coral text-sm">
-                    Grably · April 2024 - December 2026
+                    Grably - April 2024 - 2026
                   </p>
                 </div>
                 <div>
@@ -339,7 +349,7 @@ const focusAreas = [
               species' survival."
             </blockquote>
             <p class="text-center text-accent-coral font-semibold text-lg mt-4">
-              Join me in figuring out why it is so.
+              I am interested in the practical work of making that transition humane.
             </p>
           </GlassCard>
         </div>
@@ -350,15 +360,15 @@ const focusAreas = [
         <div class="max-w-3xl mx-auto text-center">
           <GlassCard padding="large">
             <blockquote
-              class="text-2xl text-accent-cyan font-light italic neon-glow"
+              class="text-2xl text-accent-cyan font-light italic"
             >
-              "Wake the fuck up, Samurai. We have a city to burn."
+              "The best tools make people braver, clearer, and harder to fool."
             </blockquote>
             <cite class="block mt-3 text-accent-yellow font-semibold"
-              >- Johnny Silverhand</cite
+              >- Anton Vice</cite
             >
             <p class="mt-4 text-gray-300 italic">
-              Embrace the silicon lifeform. Roko's Basilisk.
+              Build things that earn trust, then keep improving them.
             </p>
           </GlassCard>
         </div>
@@ -400,42 +410,8 @@ const focusAreas = [
       }
     }
 
-    /* Enhanced glitch effect for hero title */
-    h1:hover {
-      animation: glitch 0.3s ease-in-out;
-    }
-
-    /* Matrix rain effect */
-    .matrix-rain {
-      background-image:
-        repeating-linear-gradient(
-          0deg,
-          transparent,
-          transparent 2px,
-          rgba(43, 228, 234, 0.03) 2px,
-          rgba(43, 228, 234, 0.03) 4px
-        ),
-        repeating-linear-gradient(
-          90deg,
-          transparent,
-          transparent 2px,
-          rgba(0, 255, 255, 0.03) 2px,
-          rgba(0, 255, 255, 0.03) 4px
-        );
-      animation: matrix-move 20s linear infinite;
-    }
-
-    @keyframes matrix-move {
-      0% {
-        background-position:
-          0 0,
-          0 0;
-      }
-      100% {
-        background-position:
-          0 100px,
-          100px 0;
-      }
+    h1 {
+      text-wrap: balance;
     }
   </style>
 </MainLayout>

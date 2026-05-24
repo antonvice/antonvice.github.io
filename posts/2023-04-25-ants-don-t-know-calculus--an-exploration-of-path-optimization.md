@@ -147,4 +147,4 @@ unwavering determination in the face of adversity. And let us remember,
 always, that even the smallest of beings can teach us great things if
 only we are willing to listen.
 
-*By Anton [The AI Whisperer] Vice*
+*By Anton Vice*

@@ -3,7 +3,7 @@ import React, { useRef, useEffect } from 'react';
 /**
  * LetterGlitch Component
  * 
- * Creates an animated matrix-style background with glitching letters.
+ * Creates a quiet animated letterfield background.
  * This component is designed to persist through Astro View Transitions.
  */
 interface LetterGlitchProps {
@@ -16,12 +16,12 @@ interface LetterGlitchProps {
 }
 
 const LetterGlitch = ({
-  glitchColors = ['#2be4ea', '#fed33f', '#e8615a', '#0099ff', '#00ffff'],
-  glitchSpeed = 40,
+  glitchColors = ['#5bbac3', '#d7b95e', '#d4766f', '#6aa4c8'],
+  glitchSpeed = 150,
   centerVignette = false,
   outerVignette = true,
   smooth = true,
-  characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$&*()-_+=/[]{};:<>.,0123456789'
+  characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 }: LetterGlitchProps) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const animationRef = useRef<number | null>(null);
@@ -39,9 +39,9 @@ const LetterGlitch = ({
 
   const lettersAndSymbols = Array.from(characters);
 
-  const fontSize = 14;
-  const charWidth = 9;
-  const charHeight = 18;
+  const fontSize = 12;
+  const charWidth = 12;
+  const charHeight = 22;
 
   const getRandomChar = () => {
     return lettersAndSymbols[Math.floor(Math.random() * lettersAndSymbols.length)];
@@ -135,7 +135,7 @@ const LetterGlitch = ({
       
       const rgb = hexToRgb(letter.color);
       if (rgb) {
-        ctx.fillStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.25)`;
+        ctx.fillStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.14)`;
       } else {
         ctx.fillStyle = letter.color;
       }
@@ -147,7 +147,7 @@ const LetterGlitch = ({
   const updateLetters = () => {
     if (!letters.current || letters.current.length === 0) return;
 
-    const updateCount = Math.max(1, Math.floor(letters.current.length * 0.015));
+    const updateCount = Math.max(1, Math.floor(letters.current.length * 0.004));
 
     for (let i = 0; i < updateCount; i++) {
       const index = Math.floor(Math.random() * letters.current.length);
@@ -239,8 +239,8 @@ const LetterGlitch = ({
 
   return (
     <div className="absolute inset-0 max-w-full overflow-hidden pointer-events-none z-0" style={{ width: '100vw', height: '100vh' }}>
-      <div className="absolute inset-0 bg-gradient-to-br from-neon-blue/5 via-transparent to-electric-blue/5"></div>
-      <canvas ref={canvasRef} className="block max-w-full h-full opacity-30" style={{ width: '100%' }} />
+      <div className="absolute inset-0 bg-gradient-to-br from-neon-blue/[0.025] via-transparent to-electric-blue/[0.025]"></div>
+      <canvas ref={canvasRef} className="block max-w-full h-full opacity-20" style={{ width: '100%' }} />
       {outerVignette && (
         <div className="absolute top-0 left-0 w-full h-full pointer-events-none bg-[radial-gradient(circle,_rgba(15,18,22,0)_40%,_rgba(15,18,22,0.8)_100%)]"></div>
       )}

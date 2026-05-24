@@ -23,7 +23,7 @@ interface DecryptedTextProps extends Omit<MotionProps, 'children'> {
 /**
  * DecryptedText Component
  * 
- * Creates a cyberpunk-style text animation that decrypts text on hover or view.
+ * Creates a text reveal animation that resolves random characters into readable text.
  * Perfect for project titles and descriptions in a tech portfolio.
  * 
  * @component

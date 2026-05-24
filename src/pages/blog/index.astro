@@ -1,13 +1,14 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
 import { getAllPosts, formatDate } from '../../lib/posts';
+import type { BlogPost } from '../../lib/posts';
 import GlassCard from '../../components/GlassCard';
 
 // Get all blog posts
 const allPosts = getAllPosts();
 
 // Sort posts by date (newest first)
-const sortedPosts = allPosts.sort((a, b) => 
+const sortedPosts = [...allPosts].sort((a, b) =>
   new Date(b.date).valueOf() - new Date(a.date).valueOf()
 );
 
@@ -17,21 +18,34 @@ const featuredPosts = sortedPosts.slice(0, 3);
 // Extract unique tags from content (simple approach)
 const uniqueTags = ['AI', 'Machine Learning', 'Deep Learning', 'Python', 'GPT', 'Neural Networks', 'Philosophy', 'Technology'];
 const categories = ['AI & ML', 'Technical', 'Philosophy', 'Programming'];
+
+const readingMinutes = (post: BlogPost) => Math.max(2, Math.ceil(post.content.split(/\s+/).length / 220));
+const getPostBadges = (post: BlogPost): string[] => {
+  const text = `${post.title} ${post.excerpt}`.toLowerCase();
+  const badges = [];
+
+  if (/rust|python|swift|code|programming|interview|rag/.test(text)) badges.push('Engineering');
+  if (/transformer|gpt|llm|ai|machine learning|neural/.test(text)) badges.push('AI');
+  if (/philosophy|ethic|future|anthropocentric|browser/.test(text)) badges.push('Essay');
+  if (/clustering|quantization|kan|dbscan|optics/.test(text)) badges.push('Deep Dive');
+
+  return (badges.length ? badges : ['Notes']).slice(0, 3);
+};
 ---
 
-<MainLayout title="Blog - Anton Vice" description="Explore cutting-edge AI research, machine learning insights, and thoughts on human-AI collaboration from Anton Vice.">
+<MainLayout title="Blog - Anton Vice" description="Essays, build notes, and practical AI research from Anton Vice.">
   
   <main id="main-content" class="pt-16">
     <!-- Hero Section -->
     <section class="py-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       <div class="max-w-7xl mx-auto relative z-10">
         <div class="text-center mb-12">
-          <h1 class="text-5xl md:text-7xl font-bold text-neon-blue neon-blue-glow mb-6 font-cyberpunk" style="letter-spacing: 0.5px;">
-            Neural Nexus
+          <h1 class="text-5xl md:text-7xl font-bold text-neon-blue neon-blue-glow mb-6">
+            Anton's Blog
           </h1>
           <p class="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8">
-            Exploring the frontiers of AI, machine learning, and human-computer symbiosis. 
-            Welcome to the digital consciousness feed.
+            Essays, build notes, and field reports from the places where AI, software,
+            robotics, and ordinary human judgment keep bumping into each other.
           </p>
         </div>
         
@@ -50,8 +64,8 @@ const categories = ['AI & ML', 'Technical', 'Philosophy', 'Programming'];
             <div class="text-gray-400 text-sm">Tags</div>
           </GlassCard>
           <GlassCard padding="large" className="text-center">
-            <div class="text-3xl font-bold text-electric-blue mb-2">∞</div>
-            <div class="text-gray-400 text-sm">Ideas</div>
+            <div class="text-3xl font-bold text-electric-blue mb-2">{sortedPosts[0] ? readingMinutes(sortedPosts[0]) : 0}</div>
+            <div class="text-gray-400 text-sm">Min Latest</div>
           </GlassCard>
         </div>
       </div>
@@ -62,17 +76,17 @@ const categories = ['AI & ML', 'Technical', 'Philosophy', 'Programming'];
       <section class="py-20 px-4 sm:px-6 lg:px-8">
         <div class="max-w-7xl mx-auto">
           <h2 class="text-3xl md:text-4xl font-bold text-electric-blue electric-blue-glow mb-12 text-center">
-            Featured Transmissions
+            Featured Posts
           </h2>
           
           <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {featuredPosts.map((post) => (
+            {featuredPosts.map((post, index) => (
               <GlassCard padding="large" className="group hover:scale-105 transition-all duration-300">
                 <div class="space-y-4">
                   {/* Category & Date */}
                   <div class="flex items-center justify-between text-sm">
                     <span class="px-2 py-1 bg-accent-coral/20 text-accent-coral border border-accent-coral/30 rounded">
-                      AI & Tech
+                      {index === 0 ? 'Latest' : 'Featured'}
                     </span>
                     <time class="text-gray-400" datetime={post.date.toISOString()}>
                       {formatDate(post.date)}
@@ -80,7 +94,7 @@ const categories = ['AI & ML', 'Technical', 'Philosophy', 'Programming'];
                   </div>
                   
                   {/* Title */}
-                  <h3 class="text-xl font-semibold text-accent-cyan neon-glow group-hover:animate-glitch">
+                  <h3 class="text-xl font-semibold text-accent-cyan neon-glow">
                     <a href={`/blog/${post.slug}`} class="hover:text-accent-yellow transition-colors duration-300">
                       {post.title}
                     </a>
@@ -93,11 +107,13 @@ const categories = ['AI & ML', 'Technical', 'Philosophy', 'Programming'];
                   
                   {/* Tags */}
                   <div class="flex flex-wrap gap-2">
-                    <span class="text-xs px-2 py-1 bg-accent-cyan/10 text-accent-cyan border border-accent-cyan/20 rounded">
-                      #AI
-                    </span>
-                    <span class="text-xs px-2 py-1 bg-accent-cyan/10 text-accent-cyan border border-accent-cyan/20 rounded">
-                      #Tech
+                    {getPostBadges(post).map((badge) => (
+                      <span class="text-xs px-2 py-1 bg-accent-cyan/10 text-accent-cyan border border-accent-cyan/20 rounded">
+                        {badge}
+                      </span>
+                    ))}
+                    <span class="text-xs px-2 py-1 bg-accent-yellow/10 text-accent-yellow border border-accent-yellow/20 rounded">
+                      {readingMinutes(post)} min
                     </span>
                   </div>
                   
@@ -107,7 +123,7 @@ const categories = ['AI & ML', 'Technical', 'Philosophy', 'Programming'];
                       href={`/blog/${post.slug}`}
                       class="inline-flex items-center text-accent-yellow hover:text-accent-cyan transition-colors duration-300"
                     >
-                      Access Data →
+                      Read Essay →
                     </a>
                   </div>
                 </div>
@@ -122,7 +138,7 @@ const categories = ['AI & ML', 'Technical', 'Philosophy', 'Programming'];
     <section class="py-20 px-4 sm:px-6 lg:px-8">
       <div class="max-w-7xl mx-auto">
         <h2 class="text-3xl md:text-4xl font-bold text-accent-coral neon-glow mb-12 text-center">
-          All Transmissions
+          Latest Posts
         </h2>
         
         <div class="space-y-8">
@@ -135,7 +151,7 @@ const categories = ['AI & ML', 'Technical', 'Philosophy', 'Programming'];
                       {formatDate(post.date)}
                     </time>
                     <span class="px-2 py-1 bg-accent-yellow/20 text-accent-yellow border border-accent-yellow/30 rounded text-xs">
-                      AI & Tech
+                      {readingMinutes(post)} min read
                     </span>
                   </div>
                   
@@ -150,12 +166,11 @@ const categories = ['AI & ML', 'Technical', 'Philosophy', 'Programming'];
                   </p>
                   
                   <div class="flex flex-wrap gap-2">
-                    <span class="text-xs px-2 py-1 bg-dark border border-gray-700 text-gray-400 rounded">
-                      #AI
-                    </span>
-                    <span class="text-xs px-2 py-1 bg-dark border border-gray-700 text-gray-400 rounded">
-                      #Tech
-                    </span>
+                    {getPostBadges(post).map((badge) => (
+                      <span class="text-xs px-2 py-1 bg-dark border border-gray-700 text-gray-400 rounded">
+                        {badge}
+                      </span>
+                    ))}
                   </div>
                 </div>
                 
@@ -178,7 +193,7 @@ const categories = ['AI & ML', 'Technical', 'Philosophy', 'Programming'];
     <section class="py-20 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto text-center">
         <h2 class="text-3xl font-bold text-neon-blue neon-blue-glow mb-8">
-          Neural Tags
+          Topics
         </h2>
         <div class="flex flex-wrap justify-center gap-3">
           {uniqueTags.map((tag) => (

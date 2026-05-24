@@ -69,4 +69,4 @@ taken too soon but also serves as an inspiring reminder about living
 life fully while we can --- something all generations need reminding
 about now more than ever!
 
-*By Anton [The AI Whisperer] Vice*
+*By Anton Vice*

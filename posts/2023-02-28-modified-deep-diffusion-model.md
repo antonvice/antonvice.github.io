@@ -56,4 +56,4 @@ performance on other domains. The DDP model is a powerful generative
 model that has the potential to revolutionize the field of deep
 learning.
 
-*By Anton [The AI Whisperer] Vice*
+*By Anton Vice*

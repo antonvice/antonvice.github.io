@@ -117,4 +117,4 @@ def calculate_semantic_similarity(ground_truth, transcription):
 Use torch for lightning-fast transcriptions and let's wait for
 ctranslate2 to implement mps backend or wait for that whisper.mojo
 
-*By Anton [The AI Whisperer] Vice*
+*By Anton Vice*

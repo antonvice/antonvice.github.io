@@ -504,4 +504,4 @@ single answer!
 By following these tips, you should be ready for anything when it comes
 time for your Python coding interview! Good luck!
 
-*By Anton [The AI Whisperer] Vice*
+*By Anton Vice*

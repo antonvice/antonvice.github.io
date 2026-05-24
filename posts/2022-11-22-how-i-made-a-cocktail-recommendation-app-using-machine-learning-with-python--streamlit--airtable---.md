@@ -567,4 +567,4 @@ Then, to bake the app with streamlit:
 
 ![](https://cdn-images-1.medium.com/max/800/1*SGulER82m2_2hKWwFad52w.png)
 
-*By Anton [The AI Whisperer] Vice*
+*By Anton Vice*

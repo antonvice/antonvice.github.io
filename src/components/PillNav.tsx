@@ -13,7 +13,7 @@ export type PillNavItem = {
 
 /**
  * PillNavProps interface
- * Props for the PillNav component with cyberpunk theming
+ * Props for the PillNav component
  */
 export interface PillNavProps {
   items: PillNavItem[];
@@ -31,7 +31,7 @@ export interface PillNavProps {
 
 /**
  * PillNav Component
- * A cyberpunk-themed pill navigation with smooth GSAP animations
+ * A pill navigation with smooth GSAP animations
  * Adapted from ReactBits PillNav component
  */
 const PillNav: React.FC<PillNavProps> = ({
@@ -40,9 +40,8 @@ const PillNav: React.FC<PillNavProps> = ({
   currentPath,
   className = '',
   ease = 'power3.easeOut',
-  // Cyberpunk color scheme
   baseColor = '#0f1216', // Dark background
-  pillColor = '#2be4ea', // Neon cyan
+  pillColor = '#2be4ea', // Accent cyan
   hoveredPillTextColor = '#0f1216', // Dark text on hover
   pillTextColor,
   onMobileMenuClick,
@@ -302,7 +301,7 @@ const PillNav: React.FC<PillNavProps> = ({
               const target = e.target as HTMLImageElement;
               target.style.display = 'none';
               const fallback = document.createElement('span');
-              fallback.className = 'text-2xl font-bold font-cyberpunk';
+              fallback.className = 'text-2xl font-bold';
               fallback.style.color = 'var(--hover-text)';
               fallback.textContent = 'AV';
               target.parentElement?.appendChild(fallback);

@@ -136,4 +136,4 @@ can check out these **references**:
 
 ## Thank you for reading!
 
-*By Anton [The AI Whisperer] Vice*
+*By Anton Vice*

@@ -97,4 +97,4 @@ wait? Dive into the future of interviewing today with the Interview
 Copilot --- your local, free gateway to mastering interviews with the
 power of AI.
 
-*By Anton [The AI Whisperer] Vice*
+*By Anton Vice*

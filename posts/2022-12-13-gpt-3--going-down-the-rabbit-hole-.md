@@ -328,4 +328,4 @@ creating an ultimate supercomputer to destroy the intelligence as we
 know it, or will it become a useful tool to eradicate all the suffering
 in the world.. We can only hope and wait..
 
-*By Anton [The AI Whisperer] Vice*
+*By Anton Vice*

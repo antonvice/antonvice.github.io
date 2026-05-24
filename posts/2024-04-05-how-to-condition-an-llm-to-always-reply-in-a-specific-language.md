@@ -159,4 +159,4 @@ Don\'t forget to hit that like button, subscribe, and ring the bell so
 you don\'t miss any of my magical coding adventures. See you in the next
 video! Bye! 👋🎉
 
-*By Anton [The AI Whisperer] Vice*
+*By Anton Vice*

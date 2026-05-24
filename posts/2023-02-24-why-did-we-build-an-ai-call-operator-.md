@@ -62,4 +62,4 @@ customers alike. So, say goodbye to human interaction and embrace the
 future of robotic customer service. Because nothing says "we value your
 business" like a pre-recorded message.
 
-*By Anton [The AI Whisperer] Vice*
+*By Anton Vice*

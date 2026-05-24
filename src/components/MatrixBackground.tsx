@@ -18,7 +18,7 @@ const MatrixBackground = () => {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Matrix characters - our cyberpunk colors
+    // Ambient characters with the site's accent colors
     const matrix = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()';
     const matrixArray = matrix.split('');
     

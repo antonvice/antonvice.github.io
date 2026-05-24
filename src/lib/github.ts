@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { z } from 'zod';
+import axios from "axios";
+import { z } from "zod";
 
 // GitHub repository schema
 const GitHubRepoSchema = z.object({
@@ -25,114 +25,159 @@ export type GitHubRepo = z.infer<typeof GitHubRepoSchema>;
  * Get programming language color
  */
 export function getLanguageColor(language: string | null): string {
-  if (!language) return '#6b7280';
+  if (!language) return "#6b7280";
 
   const colors: Record<string, string> = {
-    JavaScript: '#f1e05a',
-    TypeScript: '#2b7489',
-    Python: '#3572A5',
-    Java: '#b07219',
-    'C++': '#f34b7d',
-    C: '#555555',
-    'C#': '#178600',
-    Go: '#00ADD8',
-    Rust: '#dea584',
-    Swift: '#ffac45',
-    Kotlin: '#F18E33',
-    Ruby: '#701516',
-    PHP: '#4F5D95',
-    HTML: '#e34c26',
-    CSS: '#563d7c',
-    SCSS: '#c6538c',
-    Vue: '#4FC08D',
-    Shell: '#89e051',
-    Dockerfile: '#384d54',
-    Makefile: '#427819',
-    'Jupyter Notebook': '#DA5B0B',
-    Markdown: '#083fa1',
-    YAML: '#cb171e',
-    JSON: '#292929',
-    XML: '#0060ac',
-    SQL: '#e38c00',
-    GraphQL: '#e10098',
-    R: '#198CE7',
-    MATLAB: '#e16737',
-    Scala: '#c22d40',
-    Perl: '#0298c3',
-    Lua: '#000080',
-    Dart: '#00B4AB',
-    Elixir: '#6e4a7e',
-    Clojure: '#db5855',
-    Haskell: '#5e5086',
-    'Objective-C': '#438eff',
-    Assembly: '#6E4C13',
-    WebAssembly: '#04133b',
-    Solidity: '#AA6746',
-    'Vim script': '#199f4b',
-    TeX: '#3D6117',
-    Processing: '#0096D8',
-    Arduino: '#bd79d1',
-    Fortran: '#4d41b1',
-    COBOL: '#0D597F',
-    Pascal: '#E3F171',
-    Groovy: '#e69f56',
-    Erlang: '#B83998',
-    Zig: '#ec915c',
-    Julia: '#a270ba',
-    Nim: '#ffc200',
-    Crystal: '#000100',
-    OCaml: '#3be133',
-    'F#': '#b845fc',
-    ReScript: '#e6484f',
-    Reason: '#ff5847',
-    Elm: '#60B5CC',
-    PureScript: '#1D222D',
-    CoffeeScript: '#244776',
-    Svelte: '#ff3e00',
-    Astro: '#ff5a03',
-    TSX: '#2b7489',
-    JSX: '#f1e05a',
-    MDX: '#fcb32c'
+    JavaScript: "#f1e05a",
+    TypeScript: "#2b7489",
+    Python: "#3572A5",
+    Java: "#b07219",
+    "C++": "#f34b7d",
+    C: "#555555",
+    "C#": "#178600",
+    Go: "#00ADD8",
+    Rust: "#dea584",
+    Swift: "#ffac45",
+    Kotlin: "#F18E33",
+    Ruby: "#701516",
+    PHP: "#4F5D95",
+    HTML: "#e34c26",
+    CSS: "#563d7c",
+    SCSS: "#c6538c",
+    Vue: "#4FC08D",
+    Shell: "#89e051",
+    Dockerfile: "#384d54",
+    Makefile: "#427819",
+    "Jupyter Notebook": "#DA5B0B",
+    Markdown: "#083fa1",
+    YAML: "#cb171e",
+    JSON: "#292929",
+    XML: "#0060ac",
+    SQL: "#e38c00",
+    GraphQL: "#e10098",
+    R: "#198CE7",
+    MATLAB: "#e16737",
+    Scala: "#c22d40",
+    Perl: "#0298c3",
+    Lua: "#000080",
+    Dart: "#00B4AB",
+    Elixir: "#6e4a7e",
+    Clojure: "#db5855",
+    Haskell: "#5e5086",
+    "Objective-C": "#438eff",
+    Assembly: "#6E4C13",
+    WebAssembly: "#04133b",
+    Solidity: "#AA6746",
+    "Vim script": "#199f4b",
+    TeX: "#3D6117",
+    Processing: "#0096D8",
+    Arduino: "#bd79d1",
+    Fortran: "#4d41b1",
+    COBOL: "#0D597F",
+    Pascal: "#E3F171",
+    Groovy: "#e69f56",
+    Erlang: "#B83998",
+    Zig: "#ec915c",
+    Julia: "#a270ba",
+    Nim: "#ffc200",
+    Crystal: "#000100",
+    OCaml: "#3be133",
+    "F#": "#b845fc",
+    ReScript: "#e6484f",
+    Reason: "#ff5847",
+    Elm: "#60B5CC",
+    PureScript: "#1D222D",
+    CoffeeScript: "#244776",
+    Svelte: "#ff3e00",
+    Astro: "#ff5a03",
+    TSX: "#2b7489",
+    JSX: "#f1e05a",
+    MDX: "#fcb32c",
   };
 
-  return colors[language] || '#6b7280';
+  return colors[language] || "#6b7280";
 }
 
-const GITHUB_USERNAME = 'antonvice';
-const GH_TOKEN = import.meta.env.GH_TOKEN;
+const GITHUB_USERNAME = "antonvice";
+const GH_TOKEN = import.meta.env.GH_TOKEN?.trim();
 
-/**
- * Fetch all public repositories for a user with pagination
- */
-export async function getAllRepos(username: string = GITHUB_USERNAME): Promise<GitHubRepo[]> {
+function logGitHubError(context: string, error: unknown) {
+  if (axios.isAxiosError(error)) {
+    const status = error.response?.status;
+    const message = error.response?.data?.message || error.message;
+    console.warn(`${context}: ${status ? `${status} ` : ""}${message}`);
+    return;
+  }
+
+  console.warn(`${context}:`, error instanceof Error ? error.message : error);
+}
+
+async function fetchPublicRepos(
+  username: string,
+  token?: string,
+): Promise<GitHubRepo[]> {
   const allRepos: GitHubRepo[] = [];
   let page = 1;
   const perPage = 100;
 
-  try {
-    while (true) {
-      const response = await axios.get(`https://api.github.com/users/${username}/repos`, {
+  while (true) {
+    const response = await axios.get(
+      `https://api.github.com/users/${username}/repos`,
+      {
         params: {
           per_page: perPage,
           page: page,
-          sort: 'updated',
-          direction: 'desc'
+          sort: "updated",
+          direction: "desc",
         },
-        headers: GH_TOKEN ? {
-          Authorization: `token ${GH_TOKEN}`
-        } : {}
-      });
+        headers: token
+          ? {
+              Authorization: `token ${token}`,
+            }
+          : {},
+      },
+    );
 
-      if (response.data.length === 0) break;
+    if (response.data.length === 0) break;
 
-      allRepos.push(...response.data);
-      if (response.data.length < perPage) break;
-      page++;
+    allRepos.push(...response.data);
+    if (response.data.length < perPage) break;
+    page++;
+  }
+
+  return allRepos;
+}
+
+/**
+ * Fetch all public repositories for a user with pagination
+ */
+export async function getAllRepos(
+  username: string = GITHUB_USERNAME,
+): Promise<GitHubRepo[]> {
+  try {
+    return await fetchPublicRepos(username, GH_TOKEN);
+  } catch (error) {
+    if (
+      GH_TOKEN &&
+      axios.isAxiosError(error) &&
+      error.response?.status === 401
+    ) {
+      logGitHubError(
+        "GitHub token rejected, retrying public repo fetch without auth",
+        error,
+      );
+      try {
+        return await fetchPublicRepos(username);
+      } catch (fallbackError) {
+        logGitHubError(
+          "Error fetching GitHub repos without auth",
+          fallbackError,
+        );
+        return [];
+      }
     }
 
-    return allRepos;
-  } catch (error) {
-    console.error('Error fetching GitHub repos:', error);
+    logGitHubError("Error fetching GitHub repos", error);
     return [];
   }
 }
@@ -140,11 +185,13 @@ export async function getAllRepos(username: string = GITHUB_USERNAME): Promise<G
 /**
  * Get pinned repositories using GraphQL API
  */
-export async function getPinnedRepos(username: string = GITHUB_USERNAME): Promise<GitHubRepo[]> {
+export async function getPinnedRepos(
+  username: string = GITHUB_USERNAME,
+): Promise<GitHubRepo[]> {
   if (!GH_TOKEN) {
     // Fallback to top repositories if no token
     const repos = await getAllRepos(username);
-    return repos.filter(r => !r.fork).slice(0, 6);
+    return repos.filter((r) => !r.fork).slice(0, 6);
   }
 
   const query = `
@@ -181,9 +228,10 @@ export async function getPinnedRepos(username: string = GITHUB_USERNAME): Promis
   `;
 
   try {
-    const response = await axios.post('https://api.github.com/graphql',
+    const response = await axios.post(
+      "https://api.github.com/graphql",
       { query, variables: { username } },
-      { headers: { Authorization: `Bearer ${GH_TOKEN}` } }
+      { headers: { Authorization: `Bearer ${GH_TOKEN}` } },
     );
 
     const nodes = response.data?.data?.user?.pinnedItems?.nodes || [];
@@ -192,11 +240,12 @@ export async function getPinnedRepos(username: string = GITHUB_USERNAME): Promis
       language: node.language?.name || null,
       topics: node.topics?.nodes?.map((t: any) => t.topic.name) || [],
       fork: false,
-      private: false
+      private: false,
     }));
   } catch (error) {
-    console.error('Error fetching pinned repos:', error);
-    return [];
+    logGitHubError("Error fetching pinned repos", error);
+    const repos = await getAllRepos(username);
+    return repos.filter((r) => !r.fork).slice(0, 6);
   }
 }
 /**
@@ -215,18 +264,23 @@ export const githubService = {
     const pinned = await getPinnedRepos();
 
     // Featured are pinned or high star count
-    const featured = all.filter(repo =>
-      pinned.some(p => p.id === repo.id) || repo.stargazers_count >= 5
-    ).sort((a, b) => b.stargazers_count - a.stargazers_count);
+    const featured = all
+      .filter(
+        (repo) =>
+          pinned.some((p) => p.id === repo.id) || repo.stargazers_count >= 5,
+      )
+      .sort((a, b) => b.stargazers_count - a.stargazers_count);
 
     // Others are the rest
-    const others = all.filter(repo => !featured.some(f => f.id === repo.id));
+    const others = all.filter(
+      (repo) => !featured.some((f) => f.id === repo.id),
+    );
 
     return {
       pinned,
       featured,
       others,
-      all
+      all,
     };
   },
 
@@ -238,7 +292,7 @@ export const githubService = {
       id: repo.id,
       name: repo.name,
       title: repo.name, // Keep for backward compatibility
-      description: repo.description || 'No description provided.',
+      description: repo.description || "No description provided.",
       tags: repo.language ? [repo.language] : [],
       language: repo.language,
       stargazers_count: repo.stargazers_count,
@@ -250,7 +304,7 @@ export const githubService = {
       github: repo.html_url, // Keep for backward compatibility
       updatedAt: repo.updated_at,
       isFork: repo.fork,
-      topics: repo.topics
+      topics: repo.topics,
     };
-  }
+  },
 };

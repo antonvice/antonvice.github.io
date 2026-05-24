@@ -64,4 +64,4 @@ those who still see drugs as a tool for creativity and self-expression.
 In a way, this dichotomy sums up Asia's long and complicated
 relationship with drugs.
 
-*By Anton [The AI Whisperer] Vice*
+*By Anton Vice*

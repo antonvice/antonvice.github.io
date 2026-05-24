@@ -107,4 +107,4 @@ By making psychotherapy more accessible and affordable, GPT-3 can help
 to address the growing need for mental health care and support people in
 their mental health journeys.
 
-*By Anton [The AI Whisperer] Vice*
+*By Anton Vice*

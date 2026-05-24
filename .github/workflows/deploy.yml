@@ -33,21 +33,17 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v2
-        with:
-          version: latest
+          cache: npm
 
       - name: Install dependencies
-        run: pnpm install
+        run: npm ci
 
       - name: Build
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           rm -rf dist
-          pnpm build
+          npm run build
           touch dist/.nojekyll
 
       - name: Upload pages artifact

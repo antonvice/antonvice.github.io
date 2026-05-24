@@ -76,4 +76,4 @@ extra flair added onto already existing campaigns ---
 
 ## I'm here ready to take you where no man has gone before! If you are looking for someone who can bring new life into your next set of marketing initiatives then [please don't hesitate to reach out](http://t.me/@nucradkillsrats) --- It would be my pleasure to make something amazing happen!
 
-*By Anton [The AI Whisperer] Vice*
+*By Anton Vice*

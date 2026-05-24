@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import DecryptedText from './DecryptedText';
-import '../styles/lanyard-card.css';
+import React, { useEffect, useRef } from "react";
+import "../styles/lanyard-card.css";
 
 interface LanyardCardProps {
   name: string;
@@ -16,215 +15,371 @@ interface LanyardCardProps {
   }>;
 }
 
-/**
- * LanyardCard Component
- * 
- * A cyberpunk-themed animated ID card that swings like a lanyard.
- * Features physics-based animations and glitch effects.
- */
+type Point = {
+  x: number;
+  y: number;
+  oldX: number;
+  oldY: number;
+};
+
+const BADGES = ["AI", "Robotics", "Writing"];
+
 const LanyardCard: React.FC<LanyardCardProps> = ({
   name,
   title,
   subtitle,
   xlabUrl,
   description = [],
-  avatar,
-  socials = []
+  socials = [],
 }) => {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [rotation, setRotation] = useState({ x: 0, y: 0 });
-  const [isHovered, setIsHovered] = useState(false);
-  const animationFrameRef = useRef<number | null>(null);
-  
+  const containerRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const badgeRef = useRef<HTMLDivElement>(null);
+  const pointerRef = useRef({ x: 0, y: 0, active: false });
+
   useEffect(() => {
-    if (!cardRef.current) return;
-    
-    let time = 0;
-    const animate = () => {
-      if (!isHovered) {
-        time += 0.01;
-        // Natural swaying motion
-        const swayX = Math.sin(time) * 2;
-        const swayY = Math.cos(time * 0.8) * 1;
-        setRotation({ x: swayY, y: swayX });
-      }
-      animationFrameRef.current = requestAnimationFrame(animate);
+    let cancelled = false;
+    let cleanup: () => void = () => {};
+
+    const initLanyard = async () => {
+      const [
+        { WebGLRenderer },
+        { Scene },
+        { OrthographicCamera },
+        { LineBasicMaterial },
+        { MeshBasicMaterial },
+        { BufferGeometry },
+        { BufferAttribute },
+        { Line },
+        { Mesh },
+        { RingGeometry },
+      ] = await Promise.all([
+        import("three/src/renderers/WebGLRenderer.js"),
+        import("three/src/scenes/Scene.js"),
+        import("three/src/cameras/OrthographicCamera.js"),
+        import("three/src/materials/LineBasicMaterial.js"),
+        import("three/src/materials/MeshBasicMaterial.js"),
+        import("three/src/core/BufferGeometry.js"),
+        import("three/src/core/BufferAttribute.js"),
+        import("three/src/objects/Line.js"),
+        import("three/src/objects/Mesh.js"),
+        import("three/src/geometries/RingGeometry.js"),
+      ]);
+      if (cancelled) return;
+
+      const container = containerRef.current;
+      const canvas = canvasRef.current;
+      const badge = badgeRef.current;
+      if (!container || !canvas || !badge) return;
+
+      const reducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+      const renderer = new WebGLRenderer({
+        canvas,
+        alpha: true,
+        antialias: true,
+      });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+      const scene = new Scene();
+      const camera = new OrthographicCamera(0, 1, 1, 0, -10, 10);
+      camera.position.z = 5;
+
+      const strapMaterial = new LineBasicMaterial({
+        color: 0x83d7df,
+        transparent: true,
+        opacity: 0.62,
+      });
+      const ghostMaterial = new LineBasicMaterial({
+        color: 0xf0c96a,
+        transparent: true,
+        opacity: 0.2,
+      });
+      const ringMaterial = new MeshBasicMaterial({
+        color: 0x83d7df,
+        transparent: true,
+        opacity: 0.7,
+      });
+
+      const strapGeometry = new BufferGeometry();
+      const ghostGeometry = new BufferGeometry();
+      const strap = new Line(strapGeometry, strapMaterial);
+      const ghostStrap = new Line(ghostGeometry, ghostMaterial);
+      const anchorRing = new Mesh(new RingGeometry(9, 13, 36), ringMaterial);
+      const clip = new Mesh(new RingGeometry(8, 12, 36), ringMaterial);
+      scene.add(ghostStrap, strap, anchorRing, clip);
+
+      let width = 1;
+      let height = 1;
+      let anchorX = 0;
+      let attachY = 168;
+      let segmentLength = 22;
+      let points: Point[] = [];
+      let frameId = 0;
+      let lastTime = performance.now();
+
+      const createPoints = () => {
+        anchorX = width / 2;
+        attachY = Math.min(178, Math.max(150, height * 0.27));
+        segmentLength = attachY / 8;
+        points = Array.from({ length: 9 }, (_, index) => {
+          const y = 18 + index * segmentLength;
+          return { x: anchorX, y, oldX: anchorX, oldY: y };
+        });
+      };
+
+      const resize = () => {
+        const rect = container.getBoundingClientRect();
+        width = Math.max(320, rect.width);
+        height = Math.max(560, rect.height);
+
+        renderer.setSize(width, height, false);
+        camera.left = 0;
+        camera.right = width;
+        camera.top = 0;
+        camera.bottom = height;
+        camera.updateProjectionMatrix();
+        createPoints();
+      };
+
+      const satisfyConstraints = () => {
+        points[0].x = anchorX;
+        points[0].y = 18;
+
+        for (let iteration = 0; iteration < 7; iteration += 1) {
+          points[0].x = anchorX;
+          points[0].y = 18;
+
+          for (let index = 0; index < points.length - 1; index += 1) {
+            const current = points[index];
+            const next = points[index + 1];
+            const dx = next.x - current.x;
+            const dy = next.y - current.y;
+            const distance = Math.hypot(dx, dy) || 1;
+            const difference = (distance - segmentLength) / distance;
+            const offsetX = dx * difference * 0.5;
+            const offsetY = dy * difference * 0.5;
+
+            if (index !== 0) {
+              current.x += offsetX;
+              current.y += offsetY;
+            }
+
+            next.x -= offsetX;
+            next.y -= offsetY;
+          }
+        }
+      };
+
+      const updateGeometry = () => {
+        const strapPositions = new Float32Array(points.length * 3);
+        const ghostPositions = new Float32Array(points.length * 3);
+
+        points.forEach((point, index) => {
+          strapPositions[index * 3] = point.x;
+          strapPositions[index * 3 + 1] = point.y;
+          strapPositions[index * 3 + 2] = 0;
+
+          ghostPositions[index * 3] = point.x - 12;
+          ghostPositions[index * 3 + 1] = point.y + 3;
+          ghostPositions[index * 3 + 2] = 0;
+        });
+
+        strapGeometry.setAttribute(
+          "position",
+          new BufferAttribute(strapPositions, 3),
+        );
+        ghostGeometry.setAttribute(
+          "position",
+          new BufferAttribute(ghostPositions, 3),
+        );
+
+        const last = points[points.length - 1];
+        anchorRing.position.set(anchorX, 18, 0);
+        clip.position.set(last.x, last.y + 8, 0);
+      };
+
+      const animate = (now: number) => {
+        const delta = Math.min((now - lastTime) / 16.67, 2);
+        lastTime = now;
+        const time = now * 0.001;
+        const pointer = pointerRef.current;
+
+        anchorX = width / 2 + Math.sin(time * 0.75) * (reducedMotion ? 2 : 9);
+
+        points.forEach((point, index) => {
+          if (index === 0) return;
+
+          const velocityX = (point.x - point.oldX) * 0.965;
+          const velocityY = (point.y - point.oldY) * 0.965;
+          point.oldX = point.x;
+          point.oldY = point.y;
+
+          const wind = Math.sin(time * 1.2 + index * 0.45) * 0.035;
+          point.x += velocityX + wind * delta;
+          point.y += velocityY + 0.24 * delta;
+
+          if (pointer.active && index > points.length - 4) {
+            point.x += (pointer.x - point.x) * 0.0025 * delta;
+          }
+        });
+
+        satisfyConstraints();
+        updateGeometry();
+
+        const last = points[points.length - 1];
+        const previous = points[points.length - 2];
+        const angle = Math.atan2(last.x - previous.x, last.y - previous.y);
+        const swayX = last.x - width / 2;
+        const swayY = last.y - attachY;
+        const tilt = reducedMotion ? 0 : Math.max(-8, Math.min(8, angle * 18));
+
+        badge.style.transform = `translate3d(${swayX}px, ${swayY}px, 0) rotateZ(${angle * 0.58}rad) rotateX(${tilt * 0.15}deg)`;
+        renderer.render(scene, camera);
+        frameId = requestAnimationFrame(animate);
+      };
+
+      resize();
+      window.addEventListener("resize", resize);
+      frameId = requestAnimationFrame(animate);
+
+      cleanup = () => {
+        cancelAnimationFrame(frameId);
+        window.removeEventListener("resize", resize);
+        strapGeometry.dispose();
+        ghostGeometry.dispose();
+        strapMaterial.dispose();
+        ghostMaterial.dispose();
+        ringMaterial.dispose();
+        renderer.dispose();
+      };
     };
-    
-    animate();
-    
+
+    initLanyard();
+
     return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
+      cancelled = true;
+      cleanup();
     };
-  }, [isHovered]);
-  
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
-    
-    const rect = cardRef.current.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    
-    const angleX = ((e.clientY - centerY) / rect.height) * 20;
-    const angleY = ((e.clientX - centerX) / rect.width) * -20;
-    
-    setRotation({ x: angleX, y: angleY });
+  }, []);
+
+  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    const rect = containerRef.current?.getBoundingClientRect();
+    if (!rect) return;
+
+    pointerRef.current = {
+      x: event.clientX - rect.left,
+      y: event.clientY - rect.top,
+      active: true,
+    };
   };
-  
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-    setRotation({ x: 0, y: 0 });
+
+  const clearPointer = () => {
+    pointerRef.current.active = false;
   };
 
   return (
-    <div className="relative w-full h-[600px] flex items-center justify-center perspective-[1000px]">
-      {/* Lanyard String */}
-      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[2px] h-[150px] bg-gradient-to-b from-transparent via-accent-cyan/50 to-accent-cyan z-10">
-        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full bg-accent-cyan shadow-[0_0_20px_rgba(46,228,234,0.8)]" />
-      </div>
-      
-      {/* Card Container */}
+    <div
+      ref={containerRef}
+      className="lanyard-stage relative w-full h-[620px] flex items-start justify-center"
+      onPointerMove={handlePointerMove}
+      onPointerLeave={clearPointer}
+    >
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 z-0 h-full w-full pointer-events-none"
+        aria-hidden="true"
+      />
+
       <div
-        ref={cardRef}
-        className="relative mt-32 transform-style-preserve-3d"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        style={{
-          transform: `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`,
-          transformStyle: 'preserve-3d',
-          transition: isHovered ? 'none' : 'transform 0.3s ease-out'
-        }}
+        ref={badgeRef}
+        className="lanyard-badge relative z-10 mt-[168px] w-[min(380px,92vw)] origin-top transform-gpu"
       >
-        {/* Card */}
-        <div className="relative w-full max-w-[380px] h-[540px] bg-white/5 backdrop-blur-xl rounded-2xl shadow-2xl border border-accent-cyan/20 overflow-hidden mx-auto">
-          {/* Holographic Effect */}
-          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-accent-cyan/5 to-transparent animate-pulse" />
-          
-          {/* Circuit Pattern Background */}
-          <div className="absolute inset-0 opacity-10">
-            <svg className="w-full h-full">
-              <pattern id="circuit" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
-                <path d="M10 10h80v80h-80z" stroke="#2be4ea" strokeWidth="0.5" fill="none" />
-                <circle cx="10" cy="10" r="2" fill="#2be4ea" />
-                <circle cx="90" cy="10" r="2" fill="#2be4ea" />
-                <circle cx="10" cy="90" r="2" fill="#2be4ea" />
-                <circle cx="90" cy="90" r="2" fill="#2be4ea" />
-              </pattern>
-              <rect width="100%" height="100%" fill="url(#circuit)" />
-            </svg>
-          </div>
-          
-          {/* Header Bar */}
-          <div className="relative bg-gradient-to-r from-accent-cyan via-accent-yellow to-accent-coral h-2" />
-          
-          {/* Content */}
-          <div className="relative z-10 p-4 flex flex-col h-full justify-between">
-            {/* ID Badge Header */}
-            <div className="text-center mb-3">
-              <div className="text-xs text-accent-cyan tracking-[0.3em] uppercase mb-2 font-mono">
-                Security Clearance
+        <div className="relative h-[480px] overflow-hidden rounded-lg border border-accent-cyan/20 bg-[rgba(17,24,32,0.86)] shadow-2xl backdrop-blur-xl">
+          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-accent-cyan/70 via-accent-yellow/70 to-accent-coral/70" />
+          <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.08),transparent_28%,rgba(43,228,234,0.05)_72%,transparent)]" />
+
+          <div className="relative z-10 flex h-full flex-col justify-between p-5">
+            <div>
+              <div className="mb-4 flex items-center justify-between gap-3">
+                <span className="rounded border border-accent-cyan/25 bg-accent-cyan/10 px-2 py-1 text-[11px] font-semibold uppercase text-accent-cyan">
+                  Builder Badge
+                </span>
+                <span className="text-[11px] text-gray-400">Austin, TX</span>
               </div>
-            </div>
-            
-            {/* QR Code Avatar */}
-            <div className="flex justify-center mb-3">
-              <div className="relative">
-                <div className="w-24 h-24 bg-gradient-to-br from-accent-cyan/70 to-accent-coral/70 p-[2px] rounded-lg">
-                  <div className="w-full h-full bg-white flex items-center justify-center rounded-lg p-2">
-                    <img 
-                      src="/qr.png" 
-                      alt="QR Code" 
-                      className="w-full h-full object-contain"
-                    />
+
+              <div className="mb-5 flex justify-center">
+                <div className="rounded-lg border border-white/20 bg-white p-2 shadow-lg">
+                  <img
+                    src="/qr.png"
+                    alt="QR code"
+                    className="h-24 w-24 object-contain"
+                  />
+                </div>
+              </div>
+
+              <div className="text-center">
+                <h3 className="mb-1 text-2xl font-bold leading-tight text-white">
+                  {name}
+                </h3>
+                <div className="text-base font-semibold text-accent-yellow">
+                  {title}
+                </div>
+                {subtitle && (
+                  <div className="mt-1 text-xs leading-tight text-gray-400">
+                    {xlabUrl ? (
+                      <a
+                        href={xlabUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-accent-cyan transition-colors"
+                        onClick={(event) => event.stopPropagation()}
+                      >
+                        {subtitle}
+                      </a>
+                    ) : (
+                      subtitle
+                    )}
                   </div>
-                </div>
-                {/* Scanning Animation */}
-                <div className="absolute inset-0 rounded-lg">
-                  <div className="absolute inset-0 rounded-lg border-2 border-accent-cyan animate-pulse opacity-50" />
-                  <div className="absolute w-full h-0.5 bg-gradient-to-r from-transparent via-accent-cyan to-transparent top-0 animate-scan" />
-                </div>
+                )}
               </div>
-            </div>
-            
-            {/* Name */}
-            <div className="text-center mb-3">
-              <h3 className="text-lg font-bold text-white mb-1 leading-tight">
-                <DecryptedText 
-                  text={name}
-                  speed={40}
-                  maxIterations={15}
-                  animateOn="view"
-                  className="text-white"
-                  encryptedClassName="text-accent-cyan"
-                />
-              </h3>
-              <div className="text-accent-yellow font-rajdhani text-sm leading-tight">
-                {title}
+
+              <div className="mt-4 flex flex-wrap justify-center gap-2">
+                {BADGES.map((badge) => (
+                  <span
+                    key={badge}
+                    className="rounded border border-accent-cyan/20 bg-accent-cyan/10 px-2 py-1 text-xs text-accent-cyan"
+                  >
+                    {badge}
+                  </span>
+                ))}
               </div>
-              {subtitle && (
-                <div className="text-gray-400 text-[11px] mt-0.5 leading-tight">
-                  {xlabUrl ? (
-                    <a 
-                      href={xlabUrl} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="hover:text-accent-cyan transition-colors"
-                      onClick={(e) => e.stopPropagation()}
+
+              {description.length > 0 && (
+                <div className="mx-auto mt-5 max-w-[280px] space-y-1 text-center">
+                  {description.map((text) => (
+                    <p
+                      key={text}
+                      className="text-sm leading-snug text-gray-300"
                     >
-                      {subtitle}
-                    </a>
-                  ) : (
-                    subtitle
-                  )}
+                      {text}
+                    </p>
+                  ))}
                 </div>
               )}
             </div>
-            
-            {/* Barcode */}
-            <div className="flex justify-center mb-2">
-              <svg width="150" height="18" className="opacity-60">
-                {/* Using fixed pattern instead of random for SSR compatibility */}
-                {[
-                  3,1,3,1,3,1,1,3,3,1,3,3,1,1,3,1,3,1,1,
-                  3,1,1,3,1,3,1,3,1,3,1,1,3,1,3,1,1,3,3,1
-                ].map((width, i) => (
-                  <rect
-                    key={i}
-                    x={i * 4}
-                    y="0"
-                    width={width}
-                    height="22"
-                    fill="#2be4ea"
-                  />
-                ))}
-              </svg>
-            </div>
-            
-            {/* Description */}
-            {description.length > 0 && (
-              <div className="space-y-1 mb-2 mt-1 max-h-[60px] overflow-hidden">
-                {description.map((text, index) => (
-                  <p key={index} className="text-[10px] text-gray-300 leading-snug text-center break-words" style={{ display: '-webkit-box', WebkitBoxOrient: 'vertical', WebkitLineClamp: 1, overflow: 'hidden' }}>
-                    {text}
-                  </p>
-                ))}
-              </div>
-            )}
-            
-            {/* Social Links */}
+
             {socials.length > 0 && (
-<div className="flex justify-center gap-4 mt-2 pt-2 relative z-50">
-                {socials.map((social, index) => (
+              <div className="relative z-50 mt-5 flex justify-center gap-3">
+                {socials.map((social) => (
                   <a
-                    key={index}
+                    key={social.label}
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-10 h-10 rounded-full bg-gray-800 border border-accent-cyan/30 flex items-center justify-center text-accent-cyan hover:bg-accent-cyan hover:text-dark transition-all duration-300 hover:scale-110 relative z-50 cursor-pointer social-link"
-                    onClick={(e) => e.stopPropagation()}
+                    className="social-link flex h-10 w-10 items-center justify-center rounded border border-accent-cyan/25 bg-gray-900/80 text-accent-cyan transition-all duration-300 hover:border-accent-yellow hover:text-accent-yellow"
+                    onClick={(event) => event.stopPropagation()}
                     aria-label={social.label}
                   >
                     <span dangerouslySetInnerHTML={{ __html: social.icon }} />
@@ -232,30 +387,8 @@ const LanyardCard: React.FC<LanyardCardProps> = ({
                 ))}
               </div>
             )}
-            
-            {/* QR Code Corner */}
-            <div className="absolute bottom-4 right-4 w-12 h-12 opacity-30">
-              <svg viewBox="0 0 100 100" className="w-full h-full">
-                <rect x="0" y="0" width="30" height="30" fill="#2be4ea" />
-                <rect x="35" y="0" width="30" height="30" fill="#2be4ea" />
-                <rect x="70" y="0" width="30" height="30" fill="#2be4ea" />
-                <rect x="0" y="35" width="30" height="30" fill="#2be4ea" />
-                <rect x="70" y="35" width="30" height="30" fill="#2be4ea" />
-                <rect x="0" y="70" width="30" height="30" fill="#2be4ea" />
-                <rect x="35" y="70" width="30" height="30" fill="#2be4ea" />
-                <rect x="70" y="70" width="30" height="30" fill="#2be4ea" />
-              </svg>
-            </div>
           </div>
         </div>
-        
-        {/* Card Shadow */}
-        <div 
-          className="absolute inset-0 bg-black/50 blur-xl transform translate-y-8 -z-10 rounded-2xl"
-          style={{
-            transform: `translateZ(-50px) translateY(20px)`
-          }}
-        />
       </div>
     </div>
   );

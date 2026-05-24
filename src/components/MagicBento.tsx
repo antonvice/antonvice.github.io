@@ -902,7 +902,7 @@ const MagicBento: React.FC<MagicBentoProps> = ({
 
       <div className="bento-section w-full">
         {title && (
-          <h2 className="text-2xl md:text-3xl font-bold text-accent-yellow mb-6 font-cyberpunk text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-accent-yellow mb-6 text-center">
             {title}
           </h2>
         )}

@@ -151,4 +151,4 @@ recognition systems. With further research and development, we can
 expect speech recognition systems to become even more powerful and
 ubiquitous in the years to come.
 
-*By Anton [The AI Whisperer] Vice*
+*By Anton Vice*

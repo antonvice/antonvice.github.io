@@ -57,4 +57,4 @@ Overall, implementing the game of life in Python using PyQt5 was a fun
 and challenging experience. The resulting game is simple, yet engaging,
 and serves
 
-*By Anton [The AI Whisperer] Vice*
+*By Anton Vice*

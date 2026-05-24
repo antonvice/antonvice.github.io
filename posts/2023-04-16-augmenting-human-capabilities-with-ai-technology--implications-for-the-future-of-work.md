@@ -739,4 +739,4 @@ members of society.
     2023, from
     [https://www.forbes.com/sites/forbestechcouncil/2021/05/12/four-ways-artificial-intelligence-is-enhancing-physical-safety-in-the-workplace/?sh=58cf](https://www.forbes.com/sites/forbestechcouncil/2021/05/12/four-ways-artificial-intelligence-is-enhancing-physical-safety-in-the-workplace/?sh=58cf26266087)]
 
-*By Anton [The AI Whisperer] Vice*
+*By Anton Vice*

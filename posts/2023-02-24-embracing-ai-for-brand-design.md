@@ -81,4 +81,4 @@ want to take your brand to the next level, it's time to embrace the
 power of AI. Don't be left behind in the race, be a leader and
 revolutionize your brand with AI.
 
-*By Anton [The AI Whisperer] Vice*
+*By Anton Vice*

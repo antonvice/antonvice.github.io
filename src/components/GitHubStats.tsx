@@ -147,7 +147,7 @@ const GitHubStats: React.FC = () => {
         {statItems.map((item) => (
           <GlassCard key={item.label} className="text-center hover:scale-105 transition-all duration-300" padding="large">
             <div className="text-3xl mb-2">{item.icon}</div>
-            <div className={`text-3xl font-bold mb-2 font-cyberpunk ${item.color}`}>
+            <div className={`text-3xl font-bold mb-2 ${item.color}`}>
               {item.value.toLocaleString()}
             </div>
             <div className="text-sm text-gray-400">{item.label}</div>
@@ -157,7 +157,7 @@ const GitHubStats: React.FC = () => {
       
       {/* Language Distribution */}
       <GlassCard className="p-8">
-        <h3 className="text-2xl font-bold text-electric-blue mb-6 font-cyberpunk">
+        <h3 className="text-2xl font-bold text-electric-blue mb-6">
           Language Distribution
         </h3>
         
