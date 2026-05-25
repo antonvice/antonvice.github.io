@@ -15,8 +15,8 @@
 }
 
 .social-link:focus-visible {
-  outline: 2px solid #2be4ea;
-  outline-offset: 2px;
+  outline: 3px solid var(--neo-pink, #ff5fa2);
+  outline-offset: 3px;
 }
 
 .social-link:active {

@@ -40,14 +40,14 @@ const PillNav: React.FC<PillNavProps> = ({
   currentPath,
   className = '',
   ease = 'power3.easeOut',
-  baseColor = '#0f1216', // Dark background
-  pillColor = '#2be4ea', // Accent cyan
-  hoveredPillTextColor = '#0f1216', // Dark text on hover
+  baseColor = '#fffdf1',
+  pillColor = '#7bdff2',
+  hoveredPillTextColor = '#26171f',
   pillTextColor,
   onMobileMenuClick,
   initialLoadAnimation = false // Disabled by default
 }) => {
-  const resolvedPillTextColor = pillTextColor ?? '#0f1216';
+  const resolvedPillTextColor = pillTextColor ?? '#26171f';
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const circleRefs = useRef<Array<HTMLSpanElement | null>>([]);
   const tlRefs = useRef<Array<gsap.core.Timeline | null>>([]);
@@ -258,10 +258,10 @@ const PillNav: React.FC<PillNavProps> = ({
     ['--pill-bg']: pillColor,
     ['--hover-text']: hoveredPillTextColor,
     ['--pill-text']: resolvedPillTextColor,
-    ['--nav-h']: '56px', // Increased from 48px
-    ['--logo-size']: '48px', // Increased from 40px
-    ['--pill-pad-x']: '24px', // Increased from 20px
-    ['--pill-gap']: '6px' // Increased from 4px
+    ['--nav-h']: '56px',
+    ['--logo-size']: '48px',
+    ['--pill-pad-x']: '24px',
+    ['--pill-gap']: '6px'
   } as React.CSSProperties;
 
   return (
@@ -277,13 +277,13 @@ const PillNav: React.FC<PillNavProps> = ({
           ref={el => { logoRef.current = el as HTMLDivElement; }}
           onMouseEnter={handleLogoEnter}
           onMouseLeave={handleLogoLeave}
-          className="rounded-full inline-flex items-center justify-center overflow-hidden cursor-pointer glass-effect transition-all duration-300"
+          className="rounded-lg inline-flex items-center justify-center overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-x-1 hover:-translate-y-1"
           style={{
             width: 'var(--nav-h)',
             height: 'var(--nav-h)',
-            background: 'rgba(17, 18, 22, 0.75)',
-            border: '1px solid rgba(46, 228, 234, 0.3)',
-            boxShadow: '0 0 20px rgba(46, 228, 234, 0.5)',
+            background: 'var(--neo-yellow)',
+            border: '3px solid var(--neo-ink)',
+            boxShadow: 'var(--neo-shadow-sm)',
             textDecoration: 'none',
             padding: '2px'
           }}
@@ -292,9 +292,9 @@ const PillNav: React.FC<PillNavProps> = ({
           <img 
             src="/navbarlogo.jpg"
             alt="AV Logo"
-            className="w-full h-full object-cover rounded-full transition-all duration-300"
+            className="w-full h-full object-cover rounded-md transition-all duration-300"
             style={{
-              filter: 'brightness(1.1) contrast(1.1) saturate(1.2)',
+              filter: 'contrast(1.08) saturate(1.12)',
             }}
             onError={(e) => {
               // Fallback to text if image fails to load
@@ -312,12 +312,12 @@ const PillNav: React.FC<PillNavProps> = ({
         {/* Desktop Navigation */}
         <div
           ref={navItemsRef}
-          className="relative items-center rounded-full hidden md:flex glass-effect"
+          className="relative items-center rounded-lg hidden md:flex"
           style={{
             height: 'var(--nav-h)',
-            background: 'rgba(17, 18, 22, 0.75)',
-            backdropFilter: 'blur(12px)',
-            border: '1px solid rgba(255, 255, 255, 0.06)'
+            background: 'var(--neo-surface)',
+            border: '3px solid var(--neo-ink)',
+            boxShadow: 'var(--neo-shadow-sm)'
           }}
         >
           <ul
@@ -331,10 +331,10 @@ const PillNav: React.FC<PillNavProps> = ({
 
               const pillStyle: React.CSSProperties = {
                 background: isActive ? 'var(--pill-bg)' : 'transparent',
-                color: isActive ? 'var(--hover-text)' : '#f4908b',
+                color: 'var(--hover-text)',
                 paddingLeft: 'var(--pill-pad-x)',
                 paddingRight: 'var(--pill-pad-x)',
-                border: isActive ? 'none' : '1px solid transparent',
+                border: isActive ? '2px solid var(--neo-ink)' : '2px solid transparent',
                 transition: 'all 0.3s ease'
               };
 
@@ -343,9 +343,9 @@ const PillNav: React.FC<PillNavProps> = ({
                   <span
                     className="hover-circle absolute left-1/2 bottom-0 rounded-full z-[1] block pointer-events-none"
                     style={{
-                      background: 'var(--pill-bg)',
+                      background: 'var(--neo-pink)',
                       willChange: 'transform',
-                      boxShadow: '0 0 30px rgba(46, 228, 234, 0.7)'
+                      boxShadow: '0 0 0 2px var(--neo-ink)'
                     }}
                     aria-hidden="true"
                     ref={el => {
@@ -363,7 +363,7 @@ const PillNav: React.FC<PillNavProps> = ({
                       className="pill-label-hover absolute left-0 top-0 z-[3] inline-block font-rajdhani font-semibold"
                       style={{
                         color: 'var(--hover-text)',
-                        textShadow: '0 0 10px rgba(46, 228, 234, 0.8)',
+                        textShadow: '2px 2px 0 rgba(255, 230, 109, 0.55)',
                         willChange: 'transform, opacity'
                       }}
                       aria-hidden="true"
@@ -373,10 +373,11 @@ const PillNav: React.FC<PillNavProps> = ({
                   </span>
                   {isActive && (
                     <span
-                      className="absolute left-1/2 -bottom-[8px] -translate-x-1/2 w-2 h-2 rounded-full z-[4]"
+                      className="absolute left-1/2 -bottom-[8px] -translate-x-1/2 w-3 h-3 z-[4]"
                       style={{ 
-                        background: '#fed33f',
-                        boxShadow: '0 0 10px rgba(254, 211, 63, 0.8)'
+                        background: 'var(--neo-yellow)',
+                        border: '2px solid var(--neo-ink)',
+                        boxShadow: '2px 2px 0 var(--neo-ink)'
                       }}
                       aria-hidden="true"
                     />
@@ -385,7 +386,7 @@ const PillNav: React.FC<PillNavProps> = ({
               );
 
               const basePillClasses =
-                'relative overflow-hidden inline-flex items-center justify-center h-full no-underline rounded-full box-border text-[16px] leading-[0] uppercase tracking-[0.5px] whitespace-nowrap cursor-pointer px-0 hover:border-accent-cyan/30';
+                'relative overflow-hidden inline-flex items-center justify-center h-full no-underline rounded-md box-border text-[16px] leading-[0] uppercase tracking-normal whitespace-nowrap cursor-pointer px-0 hover:border-dark';
 
               return (
                 <li key={item.href} role="none" className="flex h-full">
@@ -415,21 +416,22 @@ const PillNav: React.FC<PillNavProps> = ({
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-12 h-12 rounded-full glass-effect flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-accent-cyan/50"
+                className="w-12 h-12 rounded-lg flex items-center justify-center transition-all duration-300 hover:-translate-x-1 hover:-translate-y-1"
                 style={{
-                  background: 'rgba(17, 18, 22, 0.75)',
-                  border: '1px solid rgba(46, 228, 234, 0.2)',
-                  color: '#f4908b',
+                  background: 'var(--neo-surface)',
+                  border: '3px solid var(--neo-ink)',
+                  boxShadow: 'var(--neo-shadow-sm)',
+                  color: 'var(--neo-ink)',
                   padding: '10px'
                 }}
                 aria-label={link.ariaLabel || link.label}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(46, 228, 234, 0.5)';
-                  e.currentTarget.style.color = '#2be4ea';
+                  e.currentTarget.style.background = 'var(--neo-pink)';
+                  e.currentTarget.style.color = 'var(--neo-ink)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(46, 228, 234, 0.2)';
-                  e.currentTarget.style.color = '#f4908b';
+                  e.currentTarget.style.background = 'var(--neo-surface)';
+                  e.currentTarget.style.color = 'var(--neo-ink)';
                 }}
               >
                 <span dangerouslySetInnerHTML={{ __html: link.label }} />
@@ -444,13 +446,13 @@ const PillNav: React.FC<PillNavProps> = ({
           onClick={toggleMobileMenu}
           aria-label="Toggle menu"
           aria-expanded={isMobileMenuOpen}
-          className="md:hidden rounded-full border-0 flex flex-col items-center justify-center gap-1 cursor-pointer p-0 relative glass-effect"
+          className="md:hidden rounded-lg flex flex-col items-center justify-center gap-1 cursor-pointer p-0 relative"
           style={{
             width: 'var(--nav-h)',
             height: 'var(--nav-h)',
-            background: 'rgba(17, 18, 22, 0.75)',
-            backdropFilter: 'blur(12px)',
-            border: '1px solid rgba(255, 255, 255, 0.06)'
+            background: 'var(--neo-surface)',
+            border: '3px solid var(--neo-ink)',
+            boxShadow: 'var(--neo-shadow-sm)'
           }}
         >
           <span
@@ -467,12 +469,12 @@ const PillNav: React.FC<PillNavProps> = ({
       {/* Mobile Menu */}
       <div
         ref={mobileMenuRef}
-        className="md:hidden absolute top-[4rem] left-4 right-4 rounded-[20px] shadow-[0_8px_32px_rgba(0,0,0,0.3)] z-[998] origin-top glass-effect"
+        className="md:hidden absolute top-[4rem] left-4 right-4 rounded-lg z-[998] origin-top"
         style={{
           ...cssVars,
-          background: 'rgba(17, 18, 22, 0.95)',
-          backdropFilter: 'blur(12px)',
-          border: '1px solid rgba(46, 228, 234, 0.2)'
+          background: 'var(--neo-surface)',
+          border: '3px solid var(--neo-ink)',
+          boxShadow: 'var(--neo-shadow)'
         }}
       >
         <ul className="list-none m-0 p-2 flex flex-col gap-1">
@@ -481,16 +483,16 @@ const PillNav: React.FC<PillNavProps> = ({
               (item.href !== '/' && currentPath?.startsWith(item.href));
             
             const defaultStyle: React.CSSProperties = {
-              background: isActive ? 'rgba(46, 228, 234, 0.1)' : 'transparent',
-              color: isActive ? '#2be4ea' : '#f4908b',
-              border: '1px solid transparent'
+              background: isActive ? 'var(--neo-blue)' : 'transparent',
+              color: 'var(--neo-ink)',
+              border: '2px solid transparent'
             };
             
             const hoverIn = (e: React.MouseEvent<HTMLAnchorElement>) => {
               if (!isActive) {
-                e.currentTarget.style.background = 'rgba(46, 228, 234, 0.05)';
-                e.currentTarget.style.borderColor = 'rgba(46, 228, 234, 0.3)';
-                e.currentTarget.style.color = '#2be4ea';
+                e.currentTarget.style.background = 'var(--neo-yellow)';
+                e.currentTarget.style.borderColor = 'var(--neo-ink)';
+                e.currentTarget.style.color = 'var(--neo-ink)';
               }
             };
             
@@ -498,12 +500,12 @@ const PillNav: React.FC<PillNavProps> = ({
               if (!isActive) {
                 e.currentTarget.style.background = 'transparent';
                 e.currentTarget.style.borderColor = 'transparent';
-                e.currentTarget.style.color = '#f4908b';
+                e.currentTarget.style.color = 'var(--neo-ink)';
               }
             };
 
             const linkClasses =
-              'block py-3 px-5 text-[16px] font-rajdhani font-semibold rounded-[50px] transition-all duration-200 uppercase tracking-wider';
+              'block py-3 px-5 text-[16px] font-rajdhani font-semibold rounded-md transition-all duration-200 uppercase tracking-normal';
 
             return (
               <li key={item.href}>
@@ -524,7 +526,7 @@ const PillNav: React.FC<PillNavProps> = ({
         
         {/* Social Links - Mobile */}
         {socialLinks.length > 0 && (
-          <div className="border-t border-accent-cyan/20 mt-2 pt-2">
+          <div className="border-t-2 border-dark mt-2 pt-2">
             <div className="flex justify-center gap-4 px-4 py-2">
               {socialLinks.map((link) => (
                 <a
@@ -532,10 +534,11 @@ const PillNav: React.FC<PillNavProps> = ({
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full flex items-center justify-center text-lg transition-all duration-200"
+                  className="w-10 h-10 rounded-md flex items-center justify-center text-lg transition-all duration-200"
                   style={{
-                    background: 'rgba(46, 228, 234, 0.1)',
-                    color: '#2be4ea'
+                    background: 'var(--neo-blue)',
+                    border: '2px solid var(--neo-ink)',
+                    color: 'var(--neo-ink)'
                   }}
                   aria-label={link.ariaLabel || link.label}
                   onClick={() => setIsMobileMenuOpen(false)}

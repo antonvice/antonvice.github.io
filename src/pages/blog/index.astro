@@ -85,7 +85,7 @@ const getPostBadges = (post: BlogPost): string[] => {
                 <div class="space-y-4">
                   {/* Category & Date */}
                   <div class="flex items-center justify-between text-sm">
-                    <span class="px-2 py-1 bg-accent-coral/20 text-accent-coral border border-accent-coral/30 rounded">
+                    <span class="px-2 py-1 bg-accent-coral text-dark border-2 border-dark rounded-md font-bold shadow-[2px_2px_0_var(--neo-ink)]">
                       {index === 0 ? 'Latest' : 'Featured'}
                     </span>
                     <time class="text-gray-400" datetime={post.date.toISOString()}>
@@ -108,11 +108,11 @@ const getPostBadges = (post: BlogPost): string[] => {
                   {/* Tags */}
                   <div class="flex flex-wrap gap-2">
                     {getPostBadges(post).map((badge) => (
-                      <span class="text-xs px-2 py-1 bg-accent-cyan/10 text-accent-cyan border border-accent-cyan/20 rounded">
+                      <span class="text-xs px-2 py-1 bg-accent-cyan text-dark border-2 border-dark rounded-md font-bold shadow-[2px_2px_0_var(--neo-ink)]">
                         {badge}
                       </span>
                     ))}
-                    <span class="text-xs px-2 py-1 bg-accent-yellow/10 text-accent-yellow border border-accent-yellow/20 rounded">
+                    <span class="text-xs px-2 py-1 bg-accent-yellow text-dark border-2 border-dark rounded-md font-bold shadow-[2px_2px_0_var(--neo-ink)]">
                       {readingMinutes(post)} min
                     </span>
                   </div>
@@ -150,7 +150,7 @@ const getPostBadges = (post: BlogPost): string[] => {
                     <time class="text-gray-400 text-sm whitespace-nowrap" datetime={post.date.toISOString()}>
                       {formatDate(post.date)}
                     </time>
-                    <span class="px-2 py-1 bg-accent-yellow/20 text-accent-yellow border border-accent-yellow/30 rounded text-xs">
+                    <span class="px-2 py-1 bg-accent-yellow text-dark border-2 border-dark rounded-md text-xs font-bold shadow-[2px_2px_0_var(--neo-ink)]">
                       {readingMinutes(post)} min read
                     </span>
                   </div>
@@ -167,7 +167,7 @@ const getPostBadges = (post: BlogPost): string[] => {
                   
                   <div class="flex flex-wrap gap-2">
                     {getPostBadges(post).map((badge) => (
-                      <span class="text-xs px-2 py-1 bg-dark border border-gray-700 text-gray-400 rounded">
+                      <span class="text-xs px-2 py-1 bg-accent-cyan border-2 border-dark text-dark rounded-md font-bold shadow-[2px_2px_0_var(--neo-ink)]">
                         {badge}
                       </span>
                     ))}
@@ -197,7 +197,7 @@ const getPostBadges = (post: BlogPost): string[] => {
         </h2>
         <div class="flex flex-wrap justify-center gap-3">
           {uniqueTags.map((tag) => (
-            <span key={tag} class="px-3 py-2 bg-gradient-to-r from-accent-cyan/10 to-accent-coral/10 border border-accent-cyan/20 text-accent-cyan hover:border-accent-cyan hover:bg-accent-cyan/20 transition-all duration-300 cursor-pointer rounded">
+            <span key={tag} class="px-3 py-2 bg-accent-cyan border-2 border-dark text-dark font-bold shadow-[3px_3px_0_var(--neo-ink)] hover:bg-accent-coral transition-all duration-300 cursor-pointer rounded-md">
               #{tag}
             </span>
           ))}

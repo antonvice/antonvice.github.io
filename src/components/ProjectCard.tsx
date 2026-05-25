@@ -20,14 +20,14 @@ export default function ProjectCard({ repo, className }: ProjectCardProps) {
       {/* Header with title and external links */}
       <div className="flex items-start justify-between mb-4">
         <div className="flex-1 min-w-0">
-          <h3 className="text-xl font-semibold text-accent-cyan neon-glow truncate">
+          <h3 className="text-xl font-bold text-dark truncate">
             <DecryptedText 
               text={repo.name}
               speed={30}
               maxIterations={15}
               animateOn="hover"
-              className="text-accent-cyan"
-              encryptedClassName="text-accent-cyan opacity-70"
+              className="text-dark"
+              encryptedClassName="text-accent-coral opacity-80"
             />
           </h3>
           <p className="text-sm text-gray-400 mt-1">
@@ -39,7 +39,7 @@ export default function ProjectCard({ repo, className }: ProjectCardProps) {
             href={repo.html_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-gray-400 hover:text-accent-cyan transition-colors duration-300 hover:scale-110"
+            className="text-dark hover:text-accent-coral transition-colors duration-300 hover:scale-110"
             title="View on GitHub"
           >
             <Github size={20} />
@@ -49,7 +49,7 @@ export default function ProjectCard({ repo, className }: ProjectCardProps) {
               href={repo.homepage}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-accent-yellow transition-colors duration-300 hover:scale-110"
+              className="text-dark hover:text-accent-coral transition-colors duration-300 hover:scale-110"
               title="Live Demo"
             >
               <ExternalLink size={20} />
@@ -59,7 +59,7 @@ export default function ProjectCard({ repo, className }: ProjectCardProps) {
       </div>
 
       {/* Description */}
-      <div className="text-gray-300 mb-4 text-sm leading-relaxed">
+      <div className="text-dark mb-4 text-sm leading-relaxed">
         <DecryptedText 
           text={repo.shortDescription}
           speed={20}
@@ -67,8 +67,8 @@ export default function ProjectCard({ repo, className }: ProjectCardProps) {
           animateOn="view"
           sequential={true}
           revealDirection="start"
-          className="text-gray-300"
-          encryptedClassName="text-electric-blue opacity-60"
+          className="text-dark"
+          encryptedClassName="text-accent-coral opacity-80"
           characters="01<>{}[]()_+=-*/#@!$%^&"
         />
       </div>
@@ -79,13 +79,13 @@ export default function ProjectCard({ repo, className }: ProjectCardProps) {
           {repo.topics.slice(0, 4).map((topic) => (
             <span
               key={topic}
-              className="px-2 py-1 text-xs bg-accent-coral/20 text-accent-coral border border-accent-coral/30 rounded-md"
+              className="px-2 py-1 text-xs font-bold bg-accent-cyan text-dark border-2 border-dark rounded-md shadow-[2px_2px_0_var(--neo-ink)]"
             >
               #{topic}
             </span>
           ))}
           {repo.topics.length > 4 && (
-            <span className="px-2 py-1 text-xs bg-gray-700 text-gray-300 rounded-md">
+            <span className="px-2 py-1 text-xs font-bold bg-accent-yellow text-dark border-2 border-dark rounded-md shadow-[2px_2px_0_var(--neo-ink)]">
               +{repo.topics.length - 4} more
             </span>
           )}
@@ -93,7 +93,7 @@ export default function ProjectCard({ repo, className }: ProjectCardProps) {
       )}
 
       {/* Footer with language, stars, and forks */}
-      <div className="flex items-center justify-between pt-4 border-t border-white/10">
+      <div className="flex items-center justify-between pt-4 border-t-2 border-dark">
         <div className="flex items-center space-x-4">
           {repo.language && (
             <div className="flex items-center space-x-1">
@@ -101,12 +101,12 @@ export default function ProjectCard({ repo, className }: ProjectCardProps) {
                 className="w-3 h-3 rounded-full"
                 style={{ backgroundColor: repo.languageColor }}
               />
-              <span className="text-sm text-gray-400">{repo.language}</span>
+              <span className="text-sm font-bold text-dark/70">{repo.language}</span>
             </div>
           )}
         </div>
         
-        <div className="flex items-center space-x-4 text-sm text-gray-400">
+        <div className="flex items-center space-x-4 text-sm font-bold text-dark/70">
           {repo.stargazers_count > 0 && (
             <div className="flex items-center space-x-1">
               <Star size={16} />

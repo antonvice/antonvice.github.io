@@ -1,6 +1,5 @@
 ---
 import { ClientRouter } from 'astro:transitions';
-import LetterGlitch from '../components/LetterGlitch';
 import PillNav from '../components/PillNav';
 import '../styles/global.css';
 
@@ -76,9 +75,16 @@ const socialLinks = [
         top: 0;
         left: 0;
         width: 0;
-        height: 3px;
-        background: linear-gradient(90deg, #2be4ea, #fed33f, #e8615a);
-        box-shadow: 0 0 10px rgba(46, 228, 234, 0.25);
+        height: 8px;
+        background:
+          repeating-linear-gradient(
+            45deg,
+            var(--neo-pink) 0 12px,
+            var(--neo-yellow) 12px 24px,
+            var(--neo-blue) 24px 36px
+          );
+        border-right: 3px solid var(--neo-ink);
+        box-shadow: 0 3px 0 var(--neo-ink);
         z-index: 10001; /* Higher than navigation (9999) */
         transition: width 0.1s linear, opacity 0.3s ease;
         opacity: 0;
@@ -109,18 +115,17 @@ const socialLinks = [
       }
     </style>
   </head>
-  <body class="min-h-screen text-gray-100 bg-black antialiased" style="overflow-x: hidden !important; max-width: 100vw !important;">
+  <body class="min-h-screen text-dark antialiased" style="overflow-x: hidden !important; max-width: 100vw !important;">
     <!-- Ambient background layer (z-0) - persisted across page transitions -->
-    <div class="fixed inset-0 z-0 pointer-events-none" id="ambient-background-wrapper" transition:persist>
-      <LetterGlitch
-        client:load
-        glitchSpeed={150}
-        glitchColors={['#5bbac3', '#d7b95e', '#d4766f', '#6aa4c8']}
-        characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-      />
+    <div class="neo-page-backdrop fixed inset-0 z-0 pointer-events-none overflow-hidden" id="ambient-background-wrapper" transition:persist>
+      <div class="neo-pattern-grid"></div>
+      <div class="neo-pattern-stripes"></div>
+      <span class="neo-shape neo-shape--pink"></span>
+      <span class="neo-shape neo-shape--blue"></span>
+      <span class="neo-shape neo-shape--yellow"></span>
     </div>
     
-    <div class="fixed inset-0 pointer-events-none z-10 bg-[linear-gradient(135deg,rgba(43,228,234,0.05),transparent_32%,rgba(254,211,63,0.035)_68%,transparent)]"></div>
+    <div class="fixed inset-0 pointer-events-none z-10 bg-[linear-gradient(180deg,rgba(255,253,241,0.28),transparent_38%,rgba(255,244,191,0.2))]"></div>
     
     <!-- Navigation (z-9999) -->
     <div class="fixed top-4 left-0 right-0 z-[9999]">
@@ -145,7 +150,7 @@ const socialLinks = [
     </div>
     
     <script>
-      // Import and initialize glass effect
+      // Import and initialize card pointer highlights
       import { initGlassEffect } from '../scripts/glass-effect';
       
       // Initialize glass effect on page load and navigation

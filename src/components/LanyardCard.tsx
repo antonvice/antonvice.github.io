@@ -87,19 +87,19 @@ const LanyardCard: React.FC<LanyardCardProps> = ({
       camera.position.z = 5;
 
       const strapMaterial = new LineBasicMaterial({
-        color: 0x83d7df,
+        color: 0x1894c7,
         transparent: true,
-        opacity: 0.62,
+        opacity: 0.82,
       });
       const ghostMaterial = new LineBasicMaterial({
-        color: 0xf0c96a,
+        color: 0xff5fa2,
         transparent: true,
-        opacity: 0.2,
+        opacity: 0.32,
       });
       const ringMaterial = new MeshBasicMaterial({
-        color: 0x83d7df,
+        color: 0x26171f,
         transparent: true,
-        opacity: 0.7,
+        opacity: 0.88,
       });
 
       const strapGeometry = new BufferGeometry();
@@ -296,21 +296,21 @@ const LanyardCard: React.FC<LanyardCardProps> = ({
         ref={badgeRef}
         className="lanyard-badge relative z-10 mt-[168px] w-[min(380px,92vw)] origin-top transform-gpu"
       >
-        <div className="relative h-[480px] overflow-hidden rounded-lg border border-accent-cyan/20 bg-[rgba(17,24,32,0.86)] shadow-2xl backdrop-blur-xl">
-          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-accent-cyan/70 via-accent-yellow/70 to-accent-coral/70" />
-          <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.08),transparent_28%,rgba(43,228,234,0.05)_72%,transparent)]" />
+        <div className="relative h-[480px] overflow-hidden rounded-lg border-[3px] border-dark bg-[var(--neo-surface)] shadow-[10px_10px_0_var(--neo-ink)]">
+          <div className="absolute inset-x-0 top-0 h-2 bg-[linear-gradient(90deg,var(--neo-pink),var(--neo-yellow),var(--neo-blue))]" />
+          <div className="absolute inset-0 bg-[repeating-linear-gradient(135deg,transparent_0_22px,rgba(38,23,31,0.035)_22px_25px,transparent_25px_44px)]" />
 
           <div className="relative z-10 flex h-full flex-col justify-between p-5">
             <div>
               <div className="mb-4 flex items-center justify-between gap-3">
-                <span className="rounded border border-accent-cyan/25 bg-accent-cyan/10 px-2 py-1 text-[11px] font-semibold uppercase text-accent-cyan">
+                <span className="rounded-md border-2 border-dark bg-accent-yellow px-2 py-1 text-[11px] font-bold uppercase text-dark shadow-[3px_3px_0_var(--neo-ink)]">
                   Builder Badge
                 </span>
-                <span className="text-[11px] text-gray-400">Austin, TX</span>
+                <span className="rounded-md border-2 border-dark bg-accent-cyan px-2 py-1 text-[11px] font-bold text-dark shadow-[3px_3px_0_var(--neo-ink)]">Austin, TX</span>
               </div>
 
               <div className="mb-5 flex justify-center">
-                <div className="rounded-lg border border-white/20 bg-white p-2 shadow-lg">
+                <div className="rounded-lg border-[3px] border-dark bg-white p-2 shadow-[6px_6px_0_var(--neo-pink)]">
                   <img
                     src="/qr.png"
                     alt="QR code"
@@ -320,20 +320,20 @@ const LanyardCard: React.FC<LanyardCardProps> = ({
               </div>
 
               <div className="text-center">
-                <h3 className="mb-1 text-2xl font-bold leading-tight text-white">
+                <h3 className="mb-1 text-2xl font-bold leading-tight text-dark">
                   {name}
                 </h3>
-                <div className="text-base font-semibold text-accent-yellow">
+                <div className="text-base font-bold text-accent-coral">
                   {title}
                 </div>
                 {subtitle && (
-                  <div className="mt-1 text-xs leading-tight text-gray-400">
+                  <div className="mt-1 text-xs font-semibold leading-tight text-dark/80">
                     {xlabUrl ? (
                       <a
                         href={xlabUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="hover:text-accent-cyan transition-colors"
+                        className="hover:text-accent-coral transition-colors"
                         onClick={(event) => event.stopPropagation()}
                       >
                         {subtitle}
@@ -349,7 +349,7 @@ const LanyardCard: React.FC<LanyardCardProps> = ({
                 {BADGES.map((badge) => (
                   <span
                     key={badge}
-                    className="rounded border border-accent-cyan/20 bg-accent-cyan/10 px-2 py-1 text-xs text-accent-cyan"
+                    className="rounded-md border-2 border-dark bg-accent-cyan px-2 py-1 text-xs font-bold text-dark shadow-[3px_3px_0_var(--neo-ink)]"
                   >
                     {badge}
                   </span>
@@ -361,7 +361,7 @@ const LanyardCard: React.FC<LanyardCardProps> = ({
                   {description.map((text) => (
                     <p
                       key={text}
-                      className="text-sm leading-snug text-gray-300"
+                      className="text-sm font-medium leading-snug text-dark"
                     >
                       {text}
                     </p>
@@ -378,7 +378,7 @@ const LanyardCard: React.FC<LanyardCardProps> = ({
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="social-link flex h-10 w-10 items-center justify-center rounded border border-accent-cyan/25 bg-gray-900/80 text-accent-cyan transition-all duration-300 hover:border-accent-yellow hover:text-accent-yellow"
+                    className="social-link flex h-10 w-10 items-center justify-center rounded-md border-2 border-dark bg-accent-yellow text-dark shadow-[3px_3px_0_var(--neo-ink)] transition-all duration-300 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:bg-accent-coral"
                     onClick={(event) => event.stopPropagation()}
                     aria-label={social.label}
                   >

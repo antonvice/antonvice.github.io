@@ -1,6 +1,6 @@
 /**
- * Glass effect utility for liquid glass cards
- * Adds mouse tracking for dynamic light refraction effect
+ * Card hover utility
+ * Adds mouse tracking for chunky patterned card highlights
  */
 
 export function initGlassEffect() {
@@ -12,7 +12,7 @@ export function initGlassEffect() {
   cards.forEach(card => {
     const element = card as HTMLElement;
     
-    // Add mouse move handler for glass refraction effect
+    // Add mouse move handler for card highlight positioning
     element.addEventListener('mousemove', (e: MouseEvent) => {
       const rect = element.getBoundingClientRect();
       const x = ((e.clientX - rect.left) / rect.width) * 100;

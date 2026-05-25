@@ -79,14 +79,14 @@ const heroBadges = ["Applied AI", "Robotics", "Open Source", "Writing"];
 
             <div class="flex flex-wrap gap-2">
               {heroBadges.map((badge) => (
-                <span class="px-3 py-1 rounded border border-accent-cyan/20 bg-accent-cyan/10 text-accent-cyan text-sm">
+                <span class="px-3 py-1 rounded-md border-2 border-dark bg-accent-cyan text-dark text-sm font-bold shadow-[3px_3px_0_var(--neo-ink)]">
                   {badge}
                 </span>
               ))}
               {latestPost && (
                 <a
                   href={`/blog/${latestPost.slug}`}
-                  class="max-w-full sm:max-w-[32rem] truncate px-3 py-1 rounded border border-accent-yellow/30 bg-accent-yellow/10 text-accent-yellow text-sm hover:border-accent-yellow transition-colors"
+                  class="max-w-full sm:max-w-[32rem] truncate px-3 py-1 rounded-md border-2 border-dark bg-accent-yellow text-dark text-sm font-bold shadow-[3px_3px_0_var(--neo-ink)] transition-colors hover:bg-accent-coral"
                   title={latestPost.title}
                 >
                   Latest: {latestPost.title}
@@ -268,7 +268,7 @@ const heroBadges = ["Applied AI", "Robotics", "Open Source", "Writing"];
 
       <!-- Compact Skills & Education Bento -->
       <section
-        class="py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-transparent via-electric-blue/5 to-transparent"
+        class="py-12 px-4 sm:px-6 lg:px-8 bg-[linear-gradient(90deg,transparent,rgba(123,223,242,0.2),transparent)]"
       >
         <div class="max-w-6xl mx-auto">
           <div class="grid lg:grid-cols-3 gap-4">

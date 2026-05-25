@@ -310,7 +310,7 @@ export interface MagicBentoProps {
 
 const DEFAULT_PARTICLE_COUNT = 8;
 const DEFAULT_SPOTLIGHT_RADIUS = 300;
-const DEFAULT_GLOW_COLOR = '46, 228, 234'; // Cyan color to match your theme
+const DEFAULT_GLOW_COLOR = '255, 95, 162';
 const MOBILE_BREAKPOINT = 768;
 
 /**
@@ -321,11 +321,12 @@ const createParticleElement = (x: number, y: number, color: string = DEFAULT_GLO
   el.className = 'particle';
   el.style.cssText = `
     position: absolute;
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
+    width: 6px;
+    height: 6px;
+    border-radius: 0;
     background: rgba(${color}, 1);
-    box-shadow: 0 0 6px rgba(${color}, 0.6);
+    border: 1px solid var(--neo-ink, #26171f);
+    box-shadow: 2px 2px 0 var(--neo-ink, #26171f);
     pointer-events: none;
     z-index: 100;
     left: ${x}px;
@@ -640,9 +641,9 @@ const GlobalSpotlight: React.FC<{
         border-radius: 50%;
         pointer-events: none;
         background: radial-gradient(circle,
-          rgba(${glowColor}, 0.15) 0%,
-          rgba(${glowColor}, 0.08) 15%,
-          rgba(${glowColor}, 0.04) 25%,
+          rgba(${glowColor}, 0.18) 0%,
+          rgba(${glowColor}, 0.10) 15%,
+          rgba(${glowColor}, 0.05) 25%,
           rgba(${glowColor}, 0.02) 40%,
           rgba(${glowColor}, 0.01) 65%,
           transparent 70%
@@ -650,7 +651,7 @@ const GlobalSpotlight: React.FC<{
         z-index: 200;
         opacity: 0;
         transform: translate(-50%, -50%);
-        mix-blend-mode: screen;
+        mix-blend-mode: multiply;
       `;
       document.body.appendChild(spotlight);
       spotlightRef.current = spotlight;
@@ -867,7 +868,7 @@ const MagicBento: React.FC<MagicBentoProps> = ({
           }
           
           .bento-card--border-glow:hover {
-            box-shadow: 0 4px 20px rgba(46, 228, 234, 0.2), 0 0 30px rgba(${glowColor}, 0.2);
+            box-shadow: var(--neo-shadow-lg);
           }
           
           .text-clamp-1 {
@@ -938,11 +939,11 @@ const MagicBento: React.FC<MagicBentoProps> = ({
                             boxShadow: `0 0 6px ${project.languageColor || getLanguageColorFallback(project.language)}40`
                           }}
                         />
-                        <span className="text-xs text-gray-400">{project.language}</span>
+                        <span className="text-xs font-bold text-dark/70">{project.language}</span>
                       </>
                     )}
                   </div>
-                  <div className="flex items-center gap-3 text-xs text-gray-400">
+                  <div className="flex items-center gap-3 text-xs font-bold text-dark/70">
                     {project.stargazers_count > 0 && (
                       <span className="flex items-center gap-1">
                         <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
@@ -963,10 +964,10 @@ const MagicBento: React.FC<MagicBentoProps> = ({
                 </div>
                 
                 <div className="flex-grow">
-                  <h3 className={`text-lg font-semibold text-white mb-2 group-hover:text-accent-cyan transition-colors ${textAutoHide ? 'text-clamp-1' : ''}`}>
+                  <h3 className={`text-lg font-bold text-dark mb-2 group-hover:text-accent-coral transition-colors ${textAutoHide ? 'text-clamp-1' : ''}`}>
                     {project.name}
                   </h3>
-                  <p className={`text-sm text-gray-300 mb-3 ${textAutoHide ? 'text-clamp-2' : ''}`}>
+                  <p className={`text-sm text-dark/80 mb-3 ${textAutoHide ? 'text-clamp-2' : ''}`}>
                     {project.description || 'No description available'}
                   </p>
                 </div>
@@ -976,7 +977,7 @@ const MagicBento: React.FC<MagicBentoProps> = ({
                     {project.topics.slice(0, 3).map((topic, idx) => (
                       <span
                         key={idx}
-                        className="px-2 py-1 text-xs rounded-full bg-gray-800 text-gray-400"
+                        className="px-2 py-1 text-xs font-bold rounded-md border-2 border-dark bg-accent-yellow text-dark shadow-[2px_2px_0_var(--neo-ink)]"
                       >
                         {topic}
                       </span>

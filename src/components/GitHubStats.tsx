@@ -118,7 +118,7 @@ const GitHubStats: React.FC = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="animate-pulse text-accent-cyan">Loading GitHub stats...</div>
+        <div className="animate-pulse rounded-lg border-[3px] border-dark bg-accent-yellow px-4 py-2 font-bold text-dark shadow-[4px_4px_0_var(--neo-ink)]">Loading GitHub stats...</div>
       </div>
     );
   }
@@ -135,7 +135,7 @@ const GitHubStats: React.FC = () => {
     { label: 'Repositories', value: stats.public_repos, icon: '📦', color: 'text-accent-cyan' },
     { label: 'Total Stars', value: stats.total_stars, icon: '⭐', color: 'text-accent-yellow' },
     { label: 'Total Forks', value: stats.total_forks, icon: '🍴', color: 'text-electric-blue' },
-    { label: 'Followers', value: stats.followers, icon: '👥', color: 'text-neon-pink' },
+    { label: 'Followers', value: stats.followers, icon: '👥', color: 'text-accent-coral' },
     { label: 'Following', value: stats.following, icon: '🔗', color: 'text-accent-coral' },
     { label: 'Gists', value: stats.public_gists, icon: '📝', color: 'text-green-400' },
   ];
@@ -145,7 +145,7 @@ const GitHubStats: React.FC = () => {
       {/* Stats Grid */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-12">
         {statItems.map((item) => (
-          <GlassCard key={item.label} className="text-center hover:scale-105 transition-all duration-300" padding="large">
+          <GlassCard key={item.label} className="text-center transition-all duration-300" padding="large">
             <div className="text-3xl mb-2">{item.icon}</div>
             <div className={`text-3xl font-bold mb-2 ${item.color}`}>
               {item.value.toLocaleString()}
@@ -165,16 +165,16 @@ const GitHubStats: React.FC = () => {
           {stats.mostUsedLanguages.map((lang) => (
             <div key={lang.name} className="relative">
               <div className="flex justify-between mb-2">
-                <span className="text-gray-300 font-semibold">{lang.name}</span>
-                <span className="text-gray-400">{lang.percentage}%</span>
+                <span className="text-dark font-bold">{lang.name}</span>
+                <span className="text-dark/70 font-bold">{lang.percentage}%</span>
               </div>
-              <div className="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
+              <div className="w-full bg-white rounded-md h-4 overflow-hidden border-2 border-dark">
                 <div
-                  className="h-full rounded-full transition-all duration-500 ease-out"
+                  className="h-full rounded-none transition-all duration-500 ease-out"
                   style={{
                     width: `${lang.percentage}%`,
                     backgroundColor: lang.color,
-                    boxShadow: `0 0 10px ${lang.color}40`
+                    boxShadow: `4px 0 0 var(--neo-ink)`
                   }}
                 />
               </div>

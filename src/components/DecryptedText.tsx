@@ -4,7 +4,7 @@ import type { MotionProps } from 'framer-motion';
 
 /**
  * DecryptedText Component Props
- * Hacker-style decryption effect that cycles through random characters
+ * Text reveal effect that cycles through random characters
  */
 interface DecryptedTextProps extends Omit<MotionProps, 'children'> {
   text: string;
@@ -24,7 +24,6 @@ interface DecryptedTextProps extends Omit<MotionProps, 'children'> {
  * DecryptedText Component
  * 
  * Creates a text reveal animation that resolves random characters into readable text.
- * Perfect for project titles and descriptions in a tech portfolio.
  * 
  * @component
  * @example
@@ -214,8 +213,8 @@ export default function DecryptedText({
               key={index} 
               className={isRevealedOrDone ? className : encryptedClassName}
               style={!isRevealedOrDone ? { 
-                color: '#2be4ea', 
-                textShadow: '0 0 8px rgba(46, 228, 234, 0.6)' 
+                color: 'var(--neo-pink)',
+                textShadow: '2px 2px 0 rgba(38, 23, 31, 0.16)'
               } : {}}
             >
               {char}

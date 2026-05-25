@@ -29,7 +29,7 @@ const formattedAll = all.map(repo => githubService.formatRepository(repo));
               revealDirection="center"
               className="text-electric-blue"
               encryptedClassName="text-electric-blue opacity-80"
-              characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>[]{}()"
+              characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+-*/"
               client:load
             />
           </h1>
@@ -94,7 +94,7 @@ const formattedAll = all.map(repo => githubService.formatRepository(repo));
     </section>
 
     <!-- GitHub Statistics Section -->
-    <section id="github-stats" class="py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-transparent via-accent-coral/5 to-transparent">
+    <section id="github-stats" class="py-12 px-4 sm:px-6 lg:px-8 bg-[linear-gradient(180deg,transparent,rgba(255,95,162,0.12),transparent)]">
       <div class="max-w-6xl mx-auto">
         <h2 class="text-3xl md:text-4xl font-bold text-center text-neon-blue neon-glow mb-8">
           GitHub Statistics
@@ -116,7 +116,7 @@ const formattedAll = all.map(repo => githubService.formatRepository(repo));
             revealDirection="start"
             className="text-accent-cyan"
             encryptedClassName="text-accent-cyan opacity-70"
-            characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#@$%&"
+            characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+-*/"
             client:load
           />
         </h2>
@@ -133,7 +133,7 @@ const formattedAll = all.map(repo => githubService.formatRepository(repo));
             clickEffect={true}
             spotlightRadius={350}
             particleCount={10}
-            glowColor="46, 228, 234"
+            glowColor="255, 95, 162"
             client:load
           />
         )}

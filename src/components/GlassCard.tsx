@@ -41,11 +41,21 @@ const GlassCard: React.FC<GlassCardProps> = ({
       )}
       onClick={onClick}
     >
-      {/* Holographic Reflection (static, mouse move handled via CSS variables and script) */}
-      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-accent-cyan/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+      <div
+        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+        style={{
+          background:
+            'repeating-linear-gradient(135deg, transparent 0 18px, rgba(255, 95, 162, 0.1) 18px 22px, transparent 22px 42px)'
+        }}
+      />
 
-      {/* Decorative top bar */}
-      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-accent-cyan/40 via-accent-yellow/40 to-accent-coral/40 opacity-50" />
+      <div
+        className="absolute top-0 left-0 right-0 h-[7px]"
+        style={{
+          background:
+            'linear-gradient(90deg, var(--neo-pink), var(--neo-yellow), var(--neo-blue))'
+        }}
+      />
 
       {/* Content */}
       <div className="relative z-10">

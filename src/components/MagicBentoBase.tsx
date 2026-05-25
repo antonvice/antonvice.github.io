@@ -14,7 +14,7 @@ interface MagicBentoBaseProps {
  * MagicBentoBase
  * 
  * A standardized wrapper for bento-grid cards.
- * Now acts as a thin wrapper around the premium GlassCard component
+ * Now acts as a thin wrapper around the shared card component
  * to ensure visual consistency across the entire application.
  */
 const MagicBentoBase: React.FC<MagicBentoBaseProps> = ({ 

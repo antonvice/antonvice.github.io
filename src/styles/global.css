@@ -1,36 +1,63 @@
 @import "tailwindcss";
 
 @theme {
-  --color-dark: #0a0c10;
-  --color-neon-blue: #2be4ea;
-  --color-electric-blue: #0099ff;
-  --color-accent-cyan: #2be4ea;
-  --color-accent-yellow: #fed33f;
-  --color-accent-coral: #e8615a;
+  --color-dark: #26171f;
+  --color-neon-blue: #4cc9f0;
+  --color-electric-blue: #7bdff2;
+  --color-accent-cyan: #57c7eb;
+  --color-accent-yellow: #ffe66d;
+  --color-accent-coral: #ff5fa2;
 
   --font-rajdhani: "Rajdhani", sans-serif;
   --font-inter: "Inter", sans-serif;
 
-  --color-glass-bg: rgba(10, 12, 16, 0.1);
-  --color-glass-border: rgba(43, 228, 234, 0.1);
-  --color-glass-border-hover: rgba(43, 228, 234, 0.4);
-  --color-glass-reflection: rgba(255, 255, 255, 0.03);
+  --color-glass-bg: #fffdf1;
+  --color-glass-border: #26171f;
+  --color-glass-border-hover: #26171f;
+  --color-glass-reflection: rgba(255, 95, 162, 0.14);
 }
 
 @layer base {
   :root {
+    --neo-bg: #fff4bf;
+    --neo-bg-soft: #fff9dd;
+    --neo-surface: #fffdf1;
+    --neo-ink: #26171f;
+    --neo-pink: #ff5fa2;
+    --neo-yellow: #ffe66d;
+    --neo-blue: #7bdff2;
+    --neo-blue-strong: #1894c7;
+    --neo-green: #8ee6a8;
+    --neo-shadow: 8px 8px 0 var(--neo-ink);
+    --neo-shadow-lg: 14px 14px 0 var(--neo-ink);
+    --neo-shadow-sm: 4px 4px 0 var(--neo-ink);
+    --neo-border: 3px solid var(--neo-ink);
     --glass-reflection-opacity: 0;
     --glass-reflection-x: 50%;
     --glass-reflection-y: 50%;
   }
 
+  html {
+    background: var(--neo-bg);
+    scroll-behavior: smooth;
+  }
+
   body {
-    background-color: #0f1216;
-    color: #f3f4f6;
+    background:
+      linear-gradient(90deg, rgba(38, 23, 31, 0.07) 1px, transparent 1px) 0 0 / 32px 32px,
+      linear-gradient(rgba(38, 23, 31, 0.07) 1px, transparent 1px) 0 0 / 32px 32px,
+      radial-gradient(circle at 12px 12px, rgba(255, 95, 162, 0.22) 2px, transparent 2px) 0 0 / 48px 48px,
+      var(--neo-bg);
+    color: var(--neo-ink);
     font-family: "Inter", sans-serif;
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+  }
+
+  body::selection {
+    background: var(--neo-pink);
+    color: var(--neo-ink);
   }
 
   h1,
@@ -39,74 +66,226 @@
   h4,
   h5,
   h6 {
+    color: var(--neo-ink);
     font-family: "Rajdhani", sans-serif;
     letter-spacing: 0;
+    text-wrap: balance;
+  }
+
+  p,
+  li,
+  time,
+  cite,
+  blockquote,
+  span,
+  div {
+    letter-spacing: 0;
+  }
+
+  .text-white,
+  .text-gray-100,
+  .text-gray-200,
+  .text-gray-300 {
+    color: var(--neo-ink) !important;
+  }
+
+  .text-gray-400,
+  .text-gray-500 {
+    color: color-mix(in srgb, var(--neo-ink) 72%, white) !important;
+  }
+
+  .text-accent-cyan,
+  .text-electric-blue,
+  .text-neon-blue,
+  .text-nav-link {
+    color: var(--neo-blue-strong) !important;
+  }
+
+  .text-accent-yellow {
+    color: #8f6900 !important;
+  }
+
+  .text-accent-coral,
+  .text-neon-magenta {
+    color: #c32972 !important;
   }
 }
 
 @layer components {
-  /* Premium Glass Card Utility */
+  .neo-page-backdrop {
+    background:
+      linear-gradient(120deg, transparent 0 58%, rgba(123, 223, 242, 0.38) 58% 66%, transparent 66%),
+      linear-gradient(-12deg, transparent 0 46%, rgba(255, 95, 162, 0.2) 46% 52%, transparent 52%),
+      var(--neo-bg);
+  }
+
+  .neo-pattern-grid {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, rgba(38, 23, 31, 0.08) 1px, transparent 1px) 0 0 / 36px 36px,
+      linear-gradient(rgba(38, 23, 31, 0.08) 1px, transparent 1px) 0 0 / 36px 36px;
+  }
+
+  .neo-pattern-stripes {
+    position: absolute;
+    inset: -20% -10%;
+    background: repeating-linear-gradient(
+      -8deg,
+      transparent 0 58px,
+      rgba(255, 230, 109, 0.46) 58px 72px,
+      transparent 72px 118px
+    );
+    transform: rotate(-2deg);
+  }
+
+  .neo-shape {
+    position: absolute;
+    display: block;
+    border: var(--neo-border);
+    box-shadow: var(--neo-shadow);
+    opacity: 0.82;
+  }
+
+  .neo-shape--pink {
+    width: clamp(7rem, 15vw, 14rem);
+    height: clamp(4rem, 9vw, 8rem);
+    top: 13%;
+    left: 5%;
+    background: var(--neo-pink);
+    transform: rotate(-9deg);
+  }
+
+  .neo-shape--blue {
+    width: clamp(8rem, 18vw, 18rem);
+    height: clamp(3.5rem, 8vw, 7rem);
+    right: 6%;
+    top: 28%;
+    background: var(--neo-blue);
+    transform: rotate(8deg);
+  }
+
+  .neo-shape--yellow {
+    width: clamp(5rem, 10vw, 10rem);
+    height: clamp(5rem, 10vw, 10rem);
+    right: 16%;
+    bottom: 13%;
+    background: var(--neo-yellow);
+    transform: rotate(14deg);
+  }
+
   .card-glass {
-    @apply relative overflow-hidden backdrop-blur-xl rounded-lg transition-all duration-500 border;
-    background: var(--color-glass-bg);
-    border-color: var(--color-glass-border);
-    box-shadow:
-      0 4px 24px -1px rgba(0, 0, 0, 0.2),
-      inset 0 0 20px rgba(255, 255, 255, 0.02);
+    @apply relative overflow-hidden transition-all duration-300 border;
+    background:
+      radial-gradient(circle at var(--mouse-x, 18%) var(--mouse-y, 16%), rgba(255, 95, 162, 0.13), transparent 34%),
+      linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(255, 249, 221, 0.98));
+    border: var(--neo-border);
+    border-radius: 8px;
+    box-shadow: var(--neo-shadow);
+    color: var(--neo-ink);
+    transform: translate3d(0, 0, 0) rotate(var(--neo-tilt, 0deg));
   }
 
   .card-glass:hover {
-    @apply -translate-y-0.5;
-    border-color: var(--color-glass-border-hover);
-    box-shadow:
-      0 12px 40px -4px rgba(0, 0, 0, 0.3),
-      0 0 20px -2px rgba(43, 228, 234, 0.05);
+    border-color: var(--neo-ink);
+    box-shadow: var(--neo-shadow-lg);
+    transform: translate3d(-5px, -5px, 0) rotate(var(--neo-tilt-hover, -0.4deg));
   }
 
-  /* Glass Card Variants */
+  .card-glass:active {
+    box-shadow: var(--neo-shadow-sm);
+    transform: translate3d(3px, 3px, 0);
+  }
+
   .card-glass--feature {
-    border-left: 3px solid var(--color-accent-cyan);
+    background:
+      linear-gradient(135deg, rgba(123, 223, 242, 0.8), rgba(255, 253, 241, 0.96) 58%);
+    border-left: 10px solid var(--neo-blue);
   }
 
   .card-glass--special {
-    border-left: 3px solid var(--color-accent-yellow);
-    background: linear-gradient(
-      135deg,
-      rgba(254, 211, 63, 0.05),
-      rgba(17, 18, 22, 0.4)
-    );
+    background:
+      linear-gradient(135deg, rgba(255, 230, 109, 0.9), rgba(255, 253, 241, 0.96) 62%);
+    border-left: 10px solid var(--neo-pink);
   }
 
-  /* Special effect for active/feature cards */
   .feature .card-glass {
-    border-color: rgba(43, 228, 234, 0.22);
-    box-shadow: 0 8px 32px rgba(43, 228, 234, 0.04);
+    border-color: var(--neo-ink);
+    box-shadow: var(--neo-shadow);
   }
 
-  /* Soft Glow Utilities */
-  .neon-glow {
-    text-shadow: 0 0 6px color-mix(in srgb, currentColor 45%, transparent);
+  .neon-glow,
+  .neon-blue-glow,
+  .electric-blue-glow {
+    text-shadow: 3px 3px 0 rgba(38, 23, 31, 0.16);
   }
 
   .neon-border {
-    box-shadow: 0 0 12px rgba(43, 228, 234, 0.16);
+    box-shadow: var(--neo-shadow-sm);
+  }
+
+  .nav-link {
+    @apply relative py-1 transition-all duration-300;
+    color: var(--neo-ink);
+  }
+
+  .nav-link::after {
+    content: "";
+    @apply absolute bottom-0 left-0 w-0 transition-all duration-300;
+    height: 3px;
+    background: var(--neo-pink);
+  }
+
+  .nav-link:hover::after {
+    @apply w-full;
+  }
+
+  .nav-active {
+    color: var(--neo-blue-strong);
+  }
+
+  .nav-active::after {
+    @apply w-full;
+  }
+
+  :is(a, button)[class*="border-accent"],
+  :is(a, button)[class*="border-nav"] {
+    border: var(--neo-border) !important;
+    border-radius: 8px !important;
+    box-shadow: var(--neo-shadow-sm);
+    color: var(--neo-ink) !important;
+    font-weight: 800;
+  }
+
+  :is(a, button)[class*="border-accent"]:hover,
+  :is(a, button)[class*="border-nav"]:hover {
+    background: var(--neo-yellow) !important;
+    box-shadow: var(--neo-shadow);
+    color: var(--neo-ink) !important;
+    transform: translate(-3px, -3px);
+  }
+
+  :is(a, button)[class*="border-accent"]:active,
+  :is(a, button)[class*="border-nav"]:active {
+    box-shadow: 2px 2px 0 var(--neo-ink);
+    transform: translate(2px, 2px);
   }
 }
 
-/* Mouse-tracking refraction effect via CSS variables */
 .card-glass::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(
-    600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(255, 255, 255, 0.06),
-    rgba(255, 255, 255, 0.035),
-    transparent 40%
-  );
+  background:
+    repeating-linear-gradient(
+      135deg,
+      transparent 0 18px,
+      rgba(38, 23, 31, 0.035) 18px 21px,
+      transparent 21px 38px
+    );
   z-index: 1;
   opacity: 0;
-  transition: opacity 0.5s ease;
+  transition: opacity 0.3s ease;
   pointer-events: none;
 }
 
@@ -114,56 +293,115 @@
   opacity: 1;
 }
 
-/* Navigation Utilities */
-.nav-link {
-  @apply text-gray-400 hover:text-accent-cyan transition-all duration-300 relative py-1;
-}
-
-.nav-link::after {
+.card-glass::after {
   content: "";
-  @apply absolute bottom-0 left-0 w-0 h-[1px] bg-accent-cyan transition-all duration-300;
-}
-
-.nav-link:hover::after {
-  @apply w-full;
-}
-
-.nav-active {
-  @apply text-accent-cyan;
-}
-
-.nav-active::after {
-  @apply w-full;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.38);
+  z-index: 1;
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 14px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-dark;
+  background: var(--neo-bg-soft);
+  border-left: 2px solid var(--neo-ink);
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #1f2937;
-  border-radius: 9999px;
-  border: 2px solid #0f1216;
+  background: var(--neo-pink);
+  border: 2px solid var(--neo-ink);
+  border-radius: 0;
 }
 
 /* Animation Utilities */
 @keyframes float {
   0%,
   100% {
-    transform: translateY(0);
+    transform: translateY(0) rotate(-1deg);
   }
   50% {
-    transform: translateY(-10px);
+    transform: translateY(-10px) rotate(1deg);
+  }
+}
+
+@keyframes neo-scroll-pop {
+  from {
+    opacity: 0;
+    transform: translateY(28px) rotate(-0.8deg) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
+}
+
+@keyframes neo-card-ink {
+  from {
+    opacity: 0;
+    filter: saturate(0.7) contrast(0.92);
+  }
+  to {
+    opacity: 1;
+    filter: saturate(1) contrast(1);
   }
 }
 
 .animate-float {
   animation: float 5s ease-in-out infinite;
+}
+
+@supports (animation-timeline: view()) {
+  main > section,
+  main article {
+    animation: neo-scroll-pop both;
+    animation-timeline: view();
+    animation-range: entry 8% cover 32%;
+  }
+
+  .card-glass {
+    animation: neo-card-ink both;
+    animation-timeline: view();
+    animation-range: entry 6% cover 24%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .neo-shape {
+    opacity: 0.48;
+    box-shadow: 5px 5px 0 var(--neo-ink);
+  }
+
+  .neo-shape--pink {
+    left: -12%;
+    top: 12%;
+  }
+
+  .neo-shape--blue {
+    right: -24%;
+    top: 25%;
+  }
+
+  .neo-shape--yellow {
+    right: -16%;
+    bottom: 9%;
+  }
 }
 
 /* Bento Grid Specifics */
@@ -180,11 +418,10 @@
   }
 }
 
-/* Spotlight effect for the whole grid */
 .global-spotlight {
   background: radial-gradient(
     circle at var(--mouse-x) var(--mouse-y),
-    rgba(43, 228, 234, 0.08) 0%,
-    transparent 80%
+    rgba(255, 95, 162, 0.14) 0%,
+    transparent 72%
   );
 }

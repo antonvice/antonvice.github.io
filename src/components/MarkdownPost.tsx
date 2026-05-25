@@ -10,7 +10,7 @@ interface MarkdownPostProps {
 
 export default function MarkdownPost({ post }: MarkdownPostProps) {
   return (
-    <div className="prose prose-lg prose-invert max-w-none">
+    <div className="prose prose-lg max-w-none">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeHighlight]}
@@ -21,7 +21,7 @@ export default function MarkdownPost({ post }: MarkdownPostProps) {
             </h1>
           ),
           h2: ({ children }) => (
-            <h2 className="text-3xl font-bold text-accent-yellow mb-4 mt-8 font-rajdhani" style={{ textShadow: '0 0 8px rgba(254,211,63,0.5)' }}>
+            <h2 className="text-3xl font-bold text-accent-coral mb-4 mt-8 font-rajdhani" style={{ textShadow: '3px 3px 0 rgba(255,230,109,0.65)' }}>
               {children}
             </h2>
           ),
@@ -31,7 +31,7 @@ export default function MarkdownPost({ post }: MarkdownPostProps) {
             </h3>
           ),
           p: ({ children }) => (
-            <p className="text-gray-300 leading-relaxed mb-6 text-lg">
+            <p className="text-dark leading-relaxed mb-6 text-lg">
               {children}
             </p>
           ),
@@ -59,7 +59,7 @@ export default function MarkdownPost({ post }: MarkdownPostProps) {
             const isInline = !className;
             if (isInline) {
               return (
-                <code className="bg-accent-cyan/10 text-nav-link px-2 py-1 rounded text-sm font-mono">
+                <code className="bg-accent-yellow border-2 border-dark text-dark px-2 py-1 rounded-md text-sm font-mono shadow-[2px_2px_0_var(--neo-ink)]">
                   {children}
                 </code>
               );
@@ -76,22 +76,22 @@ export default function MarkdownPost({ post }: MarkdownPostProps) {
             </pre>
           ),
           blockquote: ({ children }) => (
-            <blockquote className="border-l-4 border-accent-yellow pl-6 ml-0 my-6 italic text-accent-yellow bg-accent-yellow/5 py-4">
+            <blockquote className="border-l-[8px] border-dark pl-6 ml-0 my-6 italic text-dark bg-accent-yellow py-4 shadow-[6px_6px_0_var(--neo-ink)]">
               {children}
             </blockquote>
           ),
           ul: ({ children }) => (
-            <ul className="list-disc list-inside mb-6 space-y-2 text-gray-300">
+            <ul className="list-disc list-inside mb-6 space-y-2 text-dark">
               {children}
             </ul>
           ),
           ol: ({ children }) => (
-            <ol className="list-decimal list-inside mb-6 space-y-2 text-gray-300">
+            <ol className="list-decimal list-inside mb-6 space-y-2 text-dark">
               {children}
             </ol>
           ),
           li: ({ children }) => (
-            <li className="text-gray-300 leading-relaxed">
+            <li className="text-dark leading-relaxed">
               {children}
             </li>
           ),
@@ -99,11 +99,11 @@ export default function MarkdownPost({ post }: MarkdownPostProps) {
             <img 
               src={src} 
               alt={alt} 
-              className="w-full rounded-lg shadow-lg my-8 border border-card-border"
+              className="w-full rounded-lg shadow-[8px_8px_0_var(--neo-ink)] my-8 border-[3px] border-dark"
             />
           ),
           hr: () => (
-            <hr className="border-t border-accent-cyan/30 my-12" />
+            <hr className="border-t-[3px] border-dark my-12" />
           ),
         }}
       >
