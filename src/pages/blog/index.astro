@@ -68,6 +68,35 @@ const getPostBadges = (post: BlogPost): string[] => {
             <div class="text-gray-400 text-sm">Min Latest</div>
           </GlassCard>
         </div>
+
+        <!-- Topic Filters -->
+        <div class="mt-12 max-w-5xl mx-auto">
+          <div class="card-glass p-5 md:p-6">
+            <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+              <div class="text-left">
+                <h2 class="text-2xl md:text-3xl font-bold text-accent-coral">
+                  Topics
+                </h2>
+                <p class="text-sm font-semibold text-dark/70">
+                  Quick scan by theme
+                </p>
+              </div>
+              <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+                {uniqueTags.map((tag, index) => (
+                  <a
+                    href="#latest-posts"
+                    class:list={[
+                      "px-3 py-2 border-2 border-dark text-dark font-bold shadow-[3px_3px_0_var(--neo-ink)] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[5px_5px_0_var(--neo-ink)] transition-all duration-200 rounded-md text-center",
+                      index % 3 === 0 ? "bg-accent-cyan" : index % 3 === 1 ? "bg-accent-yellow" : "bg-accent-coral"
+                    ]}
+                  >
+                    #{tag}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -135,7 +164,7 @@ const getPostBadges = (post: BlogPost): string[] => {
     )}
 
     <!-- All Posts -->
-    <section class="py-20 px-4 sm:px-6 lg:px-8">
+    <section id="latest-posts" class="py-20 px-4 sm:px-6 lg:px-8">
       <div class="max-w-7xl mx-auto">
         <h2 class="text-3xl md:text-4xl font-bold text-accent-coral neon-glow mb-12 text-center">
           Latest Posts
@@ -189,20 +218,5 @@ const getPostBadges = (post: BlogPost): string[] => {
       </div>
     </section>
 
-    <!-- Tags Cloud -->
-    <section class="py-20 px-4 sm:px-6 lg:px-8">
-      <div class="max-w-4xl mx-auto text-center">
-        <h2 class="text-3xl font-bold text-neon-blue neon-blue-glow mb-8">
-          Topics
-        </h2>
-        <div class="flex flex-wrap justify-center gap-3">
-          {uniqueTags.map((tag) => (
-            <span key={tag} class="px-3 py-2 bg-accent-cyan border-2 border-dark text-dark font-bold shadow-[3px_3px_0_var(--neo-ink)] hover:bg-accent-coral transition-all duration-300 cursor-pointer rounded-md">
-              #{tag}
-            </span>
-          ))}
-        </div>
-      </div>
-    </section>
   </main>
 </MainLayout>

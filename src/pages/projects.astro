@@ -10,6 +10,40 @@ import { githubService } from '../lib/github';
 // Fetch all repositories sorted and categorized at build time
 const { pinned, featured, others, all } = await githubService.getAllRepositoriesSorted();
 const formattedAll = all.map(repo => githubService.formatRepository(repo));
+
+const techStackGroups = [
+  {
+    label: 'AI / ML',
+    accent: 'bg-accent-coral',
+    items: [
+      { name: 'Python', color: '#3776ab' },
+      { name: 'PyTorch', color: '#ee4c2c' },
+      { name: 'TensorFlow', color: '#ff6f00' },
+      { name: 'Jupyter', color: '#da5b0b' },
+    ],
+  },
+  {
+    label: 'App Layer',
+    accent: 'bg-accent-cyan',
+    items: [
+      { name: 'TypeScript', color: '#3178c6' },
+      { name: 'React', color: '#61dafb' },
+      { name: 'Node.js', color: '#339933' },
+      { name: 'FastAPI', color: '#009688' },
+    ],
+  },
+  {
+    label: 'Infra / Data',
+    accent: 'bg-accent-yellow',
+    items: [
+      { name: 'AWS', color: '#ff9900' },
+      { name: 'Docker', color: '#2496ed' },
+      { name: 'Kubernetes', color: '#326ce5' },
+      { name: 'PostgreSQL', color: '#336791' },
+      { name: 'Redis', color: '#dc382d' },
+    ],
+  },
+];
 ---
 
 <MainLayout title="Projects - Anton Vice">
@@ -60,33 +94,28 @@ const formattedAll = all.map(repo => githubService.formatRepository(repo));
           </div>
         </div>
         
-        <!-- Tech Stack (moved to top) -->
-        <div class="mt-8">
-          <h3 class="text-xl font-bold text-neon-blue mb-4 text-center">Tech Stack</h3>
-          <div class="flex flex-wrap justify-center gap-3">
-            {[
-              { name: 'Python', color: '#3776ab' },
-              { name: 'TypeScript', color: '#3178c6' },
-              { name: 'React', color: '#61dafb' },
-              { name: 'PyTorch', color: '#ee4c2c' },
-              { name: 'TensorFlow', color: '#ff6f00' },
-              { name: 'FastAPI', color: '#009688' },
-              { name: 'Docker', color: '#2496ed' },
-              { name: 'AWS', color: '#ff9900' },
-              { name: 'Node.js', color: '#339933' },
-              { name: 'PostgreSQL', color: '#336791' },
-              { name: 'Redis', color: '#dc382d' },
-              { name: 'Kubernetes', color: '#326ce5' },
-            ].map((tech) => (
-              <GlassCard 
-                className="inline-flex items-center gap-2 px-4 py-2 hover:scale-105 transition-all duration-300 hover:border-electric-blue/30"
-              >
-                <div 
-                  class="w-3 h-3 rounded-full"
-                  style={`background-color: ${tech.color}`}
-                ></div>
-                <span class="text-sm text-gray-300">{tech.name}</span>
-              </GlassCard>
+        <!-- Tech Stack -->
+        <div class="mt-10">
+          <h3 class="text-2xl font-bold text-neon-blue mb-5 text-center">Tech Stack</h3>
+          <div class="grid gap-5 md:grid-cols-3">
+            {techStackGroups.map((group) => (
+              <div class="card-glass p-5">
+                <div class="mb-4 flex items-center gap-3">
+                  <span class:list={["h-5 w-5 border-2 border-dark shadow-[3px_3px_0_var(--neo-ink)]", group.accent]}></span>
+                  <h4 class="text-lg font-bold text-dark">{group.label}</h4>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                  {group.items.map((tech) => (
+                    <div class="flex items-center gap-2 rounded-md border-2 border-dark bg-[var(--neo-surface)] px-3 py-2 shadow-[3px_3px_0_var(--neo-ink)]">
+                      <div 
+                        class="h-3 w-3 flex-shrink-0 rounded-full border border-dark"
+                        style={`background-color: ${tech.color}`}
+                      ></div>
+                      <span class="text-sm font-bold text-dark">{tech.name}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         </div>

@@ -332,22 +332,18 @@
 
 @keyframes neo-scroll-pop {
   from {
-    opacity: 0;
     transform: translateY(28px) rotate(-0.8deg) scale(0.98);
   }
   to {
-    opacity: 1;
     transform: translateY(0) rotate(0deg) scale(1);
   }
 }
 
 @keyframes neo-card-ink {
   from {
-    opacity: 0;
     filter: saturate(0.7) contrast(0.92);
   }
   to {
-    opacity: 1;
     filter: saturate(1) contrast(1);
   }
 }
