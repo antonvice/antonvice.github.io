@@ -1,0 +1,137 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import DecryptedText from '../components/DecryptedText';
+import { researchProjects } from '../data/portfolio';
+
+const themes = [...new Set(researchProjects.map((project) => project.theme))];
+const statusCounts = researchProjects.reduce<Record<string, number>>((acc, project) => {
+  acc[project.status] = (acc[project.status] ?? 0) + 1;
+  return acc;
+}, {});
+---
+
+<MainLayout
+  title="Research - Anton Vice"
+  description="Research notes and experiment summaries from Anton Vice's robotics, AI, RAG, model-implementation, and simulation projects."
+>
+  <main id="main-content" class="pt-20">
+    <section class="px-4 py-12 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-7xl">
+        <div class="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
+          <div class="min-w-0">
+            <div class="mb-5 inline-flex rotate-[1deg] items-center border-[3px] border-dark bg-[var(--neo-pink)] px-4 py-2 font-rajdhani text-sm font-black uppercase shadow-[5px_5px_0_var(--neo-ink)]">
+              Experiments, prototypes, notes
+            </div>
+            <h1 class="max-w-4xl text-4xl font-black leading-[0.95] text-electric-blue electric-blue-glow sm:text-6xl lg:text-7xl">
+              <DecryptedText
+                text="RESEARCH"
+                speed={40}
+                maxIterations={18}
+                animateOn="view"
+                sequential={true}
+                revealDirection="center"
+                className="text-electric-blue"
+                encryptedClassName="text-electric-blue opacity-80"
+                characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+-*/"
+                client:load
+              />
+            </h1>
+            <p class="mt-6 max-w-3xl text-lg font-semibold leading-relaxed text-dark sm:text-xl">
+              Research-shaped work from repo evidence: latent world models, active inference,
+              robotics evaluation, local speech systems, model internals, simulation, and provenance.
+            </p>
+          </div>
+
+          <div class="card-glass card-glass--feature min-w-0 p-5">
+            <h2 class="mb-4 text-2xl font-black">Research Map</h2>
+            <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {Object.entries(statusCounts).map(([status, count]) => (
+                <div class="min-w-0 border-[3px] border-dark bg-[var(--neo-surface)] p-4 shadow-[4px_4px_0_var(--neo-ink)]">
+                  <div class="text-3xl font-black text-accent-coral">{count}</div>
+                  <div class="mt-1 break-words font-rajdhani text-sm font-black uppercase text-dark">{status}</div>
+                </div>
+              ))}
+            </div>
+            <div class="mt-5 flex w-full max-w-full flex-wrap gap-2 sm:w-auto">
+              <a class="border-[3px] border-dark bg-[var(--neo-surface)] px-4 py-2 font-rajdhani font-black uppercase text-dark shadow-[4px_4px_0_var(--neo-ink)]" href="/portfolio">Portfolio</a>
+              <a class="border-[3px] border-dark bg-[var(--neo-blue)] px-4 py-2 font-rajdhani font-black uppercase text-dark shadow-[4px_4px_0_var(--neo-ink)]" href="/research">Research</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="px-4 py-8 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-7xl">
+        <h2 class="mb-5 text-3xl font-black text-accent-cyan md:text-4xl">Themes</h2>
+        <div class="flex flex-wrap gap-3">
+          {themes.map((theme, index) => (
+            <a
+              href={`#${theme.toLowerCase().replaceAll(' ', '-').replaceAll('/', '').replaceAll('&', 'and')}`}
+              class:list={[
+                'border-[3px] border-dark px-4 py-2 font-rajdhani font-black uppercase text-dark shadow-[4px_4px_0_var(--neo-ink)] transition-transform duration-200 hover:-translate-x-1 hover:-translate-y-1',
+                index % 3 === 0 ? 'bg-[var(--neo-yellow)]' : index % 3 === 1 ? 'bg-[var(--neo-blue)]' : 'bg-[var(--neo-pink)]',
+              ]}
+            >
+              {theme}
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="px-4 py-12 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-7xl">
+        <div class="space-y-8">
+          {researchProjects.map((project, index) => {
+            const id = project.theme.toLowerCase().replaceAll(' ', '-').replaceAll('/', '').replaceAll('&', 'and');
+
+            return (
+              <article
+                id={id}
+                class:list={[
+                  'card-glass scroll-mt-28 p-5 md:p-7',
+                  index % 4 === 0 ? 'card-glass--special' : index % 4 === 1 ? 'card-glass--feature' : '',
+                ]}
+              >
+                <div class="grid gap-6 lg:grid-cols-[0.8fr_1.2fr]">
+                  <header>
+                    <div class="mb-4 flex flex-wrap gap-2">
+                      <span class="border-2 border-dark bg-[var(--neo-pink)] px-3 py-1 text-xs font-black uppercase text-dark shadow-[3px_3px_0_var(--neo-ink)]">{project.status}</span>
+                      <span class="border-2 border-dark bg-[var(--neo-yellow)] px-3 py-1 text-xs font-black uppercase text-dark shadow-[3px_3px_0_var(--neo-ink)]">{project.theme}</span>
+                    </div>
+                    <h2 class="text-3xl font-black leading-none md:text-4xl">
+                      <a class="text-dark underline decoration-[var(--neo-blue)] decoration-4 underline-offset-4" href={project.href} target="_blank" rel="noopener noreferrer">
+                        {project.title}
+                      </a>
+                    </h2>
+                    <p class="mt-4 text-sm font-black uppercase text-accent-cyan">{project.stack}</p>
+                  </header>
+
+                  <div class="grid gap-4 md:grid-cols-2">
+                    <section class="border-[3px] border-dark bg-[var(--neo-surface)] p-4 shadow-[4px_4px_0_var(--neo-ink)]">
+                      <h3 class="font-rajdhani text-lg font-black uppercase text-dark">Abstract</h3>
+                      <p class="mt-2 font-semibold leading-relaxed text-dark">{project.abstract}</p>
+                    </section>
+                    <section class="border-[3px] border-dark bg-[var(--neo-blue)] p-4 shadow-[4px_4px_0_var(--neo-ink)]">
+                      <h3 class="font-rajdhani text-lg font-black uppercase text-dark">Hypothesis</h3>
+                      <p class="mt-2 font-semibold leading-relaxed text-dark">{project.hypothesis}</p>
+                    </section>
+                    <section class="border-[3px] border-dark bg-[var(--neo-yellow)] p-4 shadow-[4px_4px_0_var(--neo-ink)]">
+                      <h3 class="font-rajdhani text-lg font-black uppercase text-dark">Tested</h3>
+                      <p class="mt-2 font-semibold leading-relaxed text-dark">{project.tested}</p>
+                    </section>
+                    <section class="border-[3px] border-dark bg-[var(--neo-surface)] p-4 shadow-[4px_4px_0_var(--neo-ink)]">
+                      <h3 class="font-rajdhani text-lg font-black uppercase text-dark">Discovered</h3>
+                      <p class="mt-2 font-semibold leading-relaxed text-dark">{project.discovered}</p>
+                    </section>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  </main>
+</MainLayout>
