@@ -1,417 +1,131 @@
 ---
-import MainLayout from "../layouts/MainLayout.astro";
-import LanyardCard from "../components/LanyardCard";
-import GlassCard from "../components/GlassCard";
-import { getAllPosts } from "../lib/posts";
+import MainLayout from '../layouts/MainLayout.astro';
+import LanyardCard from '../components/LanyardCard';
+import GlassCard from '../components/GlassCard';
+import { getAllPosts, formatDate } from '../lib/posts';
+import { portfolioProjects } from '../data/portfolio';
 
 const posts = getAllPosts();
-const latestPost = posts[0];
-
-// Skill arrays for mapping
-const technicalSkills = [
-  "Data Science & Machine Learning",
-  "Full-Stack Development",
-  "Business Development",
-  "Automated Machine Learning (AutoML)",
-  "AWS Auto Scaling & Cloud Architecture",
-  "Python ML Engineering",
-  "Amazon Athena & Big Data",
+const latestPosts = posts.slice(0, 3);
+const selectedProjects = portfolioProjects.slice(0, 4);
+const interests = [
+  'Local AI that respects the person using it',
+  'Robots that can be tested, not just demoed',
+  'Developer tools I wish already existed',
+  'Writing through the strange parts of technology',
 ];
-
-const focusAreas = [
-  "Human-AI Collaboration",
-  "AI Behavior & Evaluation",
-  "Neural Network Architecture",
-  "Prompt Engineering & RAG",
-  "Model Adaptation",
-  "Retrieval & Tool Use",
-  "AI Ethics & Safety",
-];
-
-const heroBadges = ["Applied AI", "Robotics", "Open Source", "Writing"];
 ---
 
-<MainLayout title="Anton Vice - AI Engineer & CTO">
-  <!-- Hero Section -->
-  <main id="main-content" class="min-h-screen pt-16">
-    <!-- Hero Section with Lanyard -->
-    <section
-      class="min-h-screen flex items-center justify-center relative overflow-hidden py-20"
-    >
-      <!-- Background Effects -->
-      <div class="absolute inset-0">
-      </div>
-      <div class="absolute inset-0">
-        <!-- Grid pattern removed as requested -->
-      </div>
+<MainLayout
+  title="Anton Vice - AI Engineer, Builder, and Writer"
+  description="Anton Vice builds practical AI systems, robotics tools, local software, and essays about what technology does to people."
+>
+  <main id="main-content" class="pt-20">
+    <section class="flex min-h-[calc(100svh-5rem)] items-center px-4 py-16 sm:px-6 lg:px-8">
+      <div class="mx-auto grid w-full max-w-6xl gap-12 lg:grid-cols-[1.12fr_0.88fr] lg:items-center">
+        <div class="min-w-0">
+          <div class="mb-6 inline-flex rotate-[-1deg] border-[3px] border-dark bg-accent-yellow px-4 py-2 font-rajdhani text-sm font-black uppercase shadow-[5px_5px_0_var(--neo-ink)]">
+            Hi, I'm Anton.
+          </div>
+          <h1 class="max-w-4xl text-5xl font-black leading-[0.92] text-electric-blue electric-blue-glow sm:text-7xl lg:text-8xl">
+            I build useful things with AI.
+          </h1>
+          <p class="mt-7 max-w-3xl text-xl font-semibold leading-relaxed text-dark sm:text-2xl">
+            Usually that means local agents, robotics, developer tools, or an experiment that started with “I wonder if this would work.”
+          </p>
+          <p class="mt-4 max-w-2xl text-base font-medium leading-relaxed text-dark/75 sm:text-lg">
+            I’m currently CTO at Grably. I was also part-time CTO at <a class="font-bold underline decoration-[var(--neo-pink)] decoration-2 underline-offset-2" href="https://xlabrobotics.com" target="_blank" rel="noopener noreferrer">XLab Robotics</a> from December 2025 to June 2026. This site is where I keep the work I’m proud of, the ideas I’m still testing, and the essays I wrote when building was not enough.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-4">
+            <a class="neo-button bg-accent-cyan" href="/portfolio">See what I’ve built</a>
+            <a class="neo-button bg-[var(--neo-surface)]" href="/blog">Read my writing</a>
+            <a class="neo-button bg-accent-coral" href="mailto:anton96vice@gmail.com">Say hello</a>
+          </div>
+        </div>
 
-      <!-- Hero Content Container -->
-      <div
-        class="relative z-10 px-4 sm:px-6 lg:px-8 w-full flex justify-center"
-      >
-        <div class="grid lg:grid-cols-2 gap-12 items-center max-w-6xl">
-          <!-- Left Side - Main Content -->
-          <div class="space-y-8">
-            <!-- Main Title -->
+        <div class="flex justify-center lg:justify-end">
+          <LanyardCard
+            name="Anton Vice"
+            title="CTO at Grably"
+            subtitle="AI Engineer | Austin, TX"
+            description={['I like ambitious ideas', 'I like working software more']}
+            socials={[
+              { icon: '@', href: 'mailto:anton96vice@gmail.com', label: 'Email' },
+              { icon: 'GH', href: 'https://github.com/antonvice', label: 'GitHub' },
+              { icon: 'in', href: 'https://www.linkedin.com/in/antonvice', label: 'LinkedIn' },
+            ]}
+            client:load
+          />
+        </div>
+      </div>
+    </section>
+
+    <section class="px-4 py-14 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-6xl">
+        <div class="mb-7 max-w-3xl">
+          <p class="font-rajdhani text-sm font-black uppercase text-accent-coral">What I keep coming back to</p>
+          <h2 class="mt-2 text-3xl font-black sm:text-5xl">The thread through the work</h2>
+          <p class="mt-4 text-lg font-medium leading-relaxed text-dark/75">
+            I care about capable systems, but I care just as much about who stays in control, whether the thing works outside a demo, and whether it is actually pleasant to use.
+          </p>
+        </div>
+        <div class="grid gap-4 sm:grid-cols-2">
+          {interests.map((interest, index) => (
+            <div class:list={['border-[3px] border-dark p-5 shadow-[6px_6px_0_var(--neo-ink)]', index % 3 === 0 ? 'bg-accent-coral' : index % 3 === 1 ? 'bg-accent-yellow' : 'bg-accent-cyan']}>
+              <span class="font-rajdhani text-xl font-black leading-tight text-dark">{interest}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="px-4 py-16 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-6xl">
+        <div class="mb-8 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="font-rajdhani text-sm font-black uppercase text-accent-coral">A few favorites</p>
+            <h2 class="mt-2 text-3xl font-black sm:text-5xl">Things I’ve made</h2>
+          </div>
+          <a class="font-rajdhani text-lg font-black text-dark underline decoration-[var(--neo-pink)] decoration-4 underline-offset-4" href="/portfolio">The full portfolio →</a>
+        </div>
+        <div class="grid gap-6 md:grid-cols-2">
+          {selectedProjects.map((project, index) => (
+            <article class:list={['card-glass p-6', index === 0 ? 'card-glass--feature' : index === 1 ? 'card-glass--special' : '']}>
+              <div class="mb-4 flex flex-wrap gap-2">
+                <span class="border-2 border-dark bg-accent-yellow px-2 py-1 text-xs font-black uppercase text-dark">{project.category}</span>
+                <span class="border-2 border-dark bg-[var(--neo-surface)] px-2 py-1 text-xs font-black text-dark">{project.stack}</span>
+              </div>
+              <h3 class="text-3xl font-black"><a class="text-dark hover:text-accent-coral" href={project.href} target="_blank" rel="noopener noreferrer">{project.title}</a></h3>
+              <p class="mt-4 font-semibold leading-relaxed text-dark">{project.summary}</p>
+              <p class="mt-4 border-l-[6px] border-dark pl-4 font-medium leading-relaxed text-dark/75">{project.impact}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {latestPosts.length > 0 && (
+      <section class="px-4 py-16 sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-6xl">
+          <div class="mb-8 flex flex-wrap items-end justify-between gap-4">
             <div>
-              <h1
-                class="text-4xl sm:text-6xl md:text-8xl font-bold text-accent-cyan mb-4"
-              >
-                <div class="max-w-[600px] w-full mx-auto overflow-hidden">
-                  Anton Vice
-                </div>
-              </h1>
-              <div class="text-2xl md:text-4xl text-accent-yellow mb-6">
-                <div class="carousel-container overflow-hidden h-12">
-                  <div class="carousel-text">
-                    <div class="carousel-item">AI Engineer</div>
-                    <div class="carousel-item">ML Engineer</div>
-                    <div class="carousel-item">CTO @ XLab Robotics</div>
-                  </div>
-                </div>
-              </div>
+              <p class="font-rajdhani text-sm font-black uppercase text-accent-coral">Notes from my head</p>
+              <h2 class="mt-2 text-3xl font-black sm:text-5xl">Lately, I’ve been writing</h2>
             </div>
-
-            <!-- Tagline -->
-            <p class="text-xl md:text-2xl text-gray-300 leading-relaxed">
-              Building practical AI systems, robotics tools, and essays about where this is all going.
-            </p>
-
-            <div class="flex flex-wrap gap-2">
-              {heroBadges.map((badge) => (
-                <span class="px-3 py-1 rounded-md border-2 border-dark bg-accent-cyan text-dark text-sm font-bold shadow-[3px_3px_0_var(--neo-ink)]">
-                  {badge}
-                </span>
-              ))}
-              {latestPost && (
-                <a
-                  href={`/blog/${latestPost.slug}`}
-                  class="max-w-full sm:max-w-[32rem] truncate px-3 py-1 rounded-md border-2 border-dark bg-accent-yellow text-dark text-sm font-bold shadow-[3px_3px_0_var(--neo-ink)] transition-colors hover:bg-accent-coral"
-                  title={latestPost.title}
-                >
-                  Latest: {latestPost.title}
-                </a>
-              )}
-            </div>
-
-            <!-- Quick Info -->
-            <div class="grid grid-cols-2 gap-4">
-              <GlassCard variant="special" padding="normal">
-                <div class="text-2xl font-bold text-accent-yellow mb-1">
-                  10+
-                </div>
-                <div class="text-gray-400 text-sm">Years in AI/ML</div>
+            <a class="font-rajdhani text-lg font-black text-dark underline decoration-[var(--neo-blue)] decoration-4 underline-offset-4" href="/blog">All posts →</a>
+          </div>
+          <div class="grid gap-5 md:grid-cols-3">
+            {latestPosts.map((post, index) => (
+              <GlassCard padding="large" variant={index === 0 ? 'special' : 'default'}>
+                <time class="text-sm font-bold text-dark/60" datetime={post.date.toISOString()}>{formatDate(post.date)}</time>
+                <h3 class="mt-3 text-2xl font-black leading-tight"><a class="text-dark hover:text-accent-coral" href={`/blog/${post.slug}`}>{post.title}</a></h3>
+                <p class="mt-4 text-sm font-medium leading-relaxed text-dark/75">{post.excerpt}</p>
+                <a class="mt-5 inline-block font-rajdhani font-black text-dark underline decoration-[var(--neo-pink)] decoration-2 underline-offset-4" href={`/blog/${post.slug}`}>Read it →</a>
               </GlassCard>
-              <GlassCard variant="default" padding="normal">
-                <div class="text-2xl font-bold text-accent-cyan mb-1">CTO</div>
-                <div class="text-gray-400 text-sm">
-                  @ <a
-                    href="https://xlabrobotics.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="hover:text-accent-cyan transition-colors"
-                    >XLab Robotics</a
-                  >
-                </div>
-              </GlassCard>
-            </div>
-
-            <!-- CTA Buttons -->
-            <div class="flex flex-col sm:flex-row gap-4">
-              <a
-                href="/projects"
-                class="px-8 py-4 bg-transparent border-2 border-accent-cyan text-accent-cyan hover:bg-accent-cyan hover:text-dark transition-all duration-300 hover:shadow-lg hover:shadow-accent-cyan/50 neon-glow text-center"
-              >
-                View Projects
-              </a>
-              <a
-                href="/blog"
-                class="px-8 py-4 bg-transparent border-2 border-accent-yellow text-accent-yellow hover:bg-accent-yellow hover:text-dark transition-all duration-300 hover:shadow-lg hover:shadow-accent-yellow/50 text-center"
-              >
-                Read Blog
-              </a>
-            </div>
-          </div>
-
-          <!-- Right Side - Lanyard Card -->
-          <div class="flex justify-center lg:justify-end">
-            <LanyardCard
-              name="Anton Vice"
-              title="AI Engineer & CTO"
-              subtitle="XLab Robotics | Austin, TX"
-              xlabUrl="https://xlabrobotics.com"
-              description={[
-                "Building practical AI systems",
-                "Robotics, research, and useful weird ideas",
-              ]}
-              socials={[
-                {
-                  icon: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>',
-                  href: "mailto:anton96vice@gmail.com",
-                  label: "Email",
-                },
-                {
-                  icon: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>',
-                  href: "https://x.com/la_haine_d_arte",
-                  label: "Twitter",
-                },
-                {
-                  icon: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>',
-                  href: "https://www.linkedin.com/in/antonvice",
-                  label: "LinkedIn",
-                },
-                {
-                  icon: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>',
-                  href: "https://github.com/antonvice",
-                  label: "GitHub",
-                },
-              ]}
-              client:load
-            />
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Compact Stats Bento Section -->
-    <section class="py-12 px-4 sm:px-6 lg:px-8">
-      <div class="max-w-5xl mx-auto">
-        <h2
-          class="text-3xl font-bold text-center text-accent-yellow neon-glow mb-8"
-        >
-          Impact & Reach
-        </h2>
-
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <GlassCard padding="large" className="text-center" variant="special">
-            <div class="text-4xl font-bold text-accent-yellow mb-1">10+</div>
-            <div class="text-gray-300">Years AI/ML</div>
-          </GlassCard>
-          <GlassCard padding="large" className="text-center">
-            <div class="text-4xl font-bold text-accent-cyan mb-1">50+</div>
-            <div class="text-gray-300">Repositories</div>
-          </GlassCard>
-          <GlassCard padding="large" className="text-center" variant="feature">
-            <div class="text-4xl font-bold text-accent-coral mb-1">CTO</div>
-            <div class="text-gray-300">
-              @ <a
-                href="https://xlabrobotics.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="hover:text-accent-coral transition-colors"
-                >XLab Robotics</a
-              >
-            </div>
-          </GlassCard>
-          <GlassCard padding="large" className="text-center">
-            <div class="text-4xl font-bold text-electric-blue mb-1">{posts.length}</div>
-            <div class="text-gray-300">Published Posts</div>
-          </GlassCard>
-        </div>
-      </div>
-
-      <!-- Compact Experience Bento -->
-      <section class="py-12 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-5xl mx-auto">
-          <h2
-            class="text-3xl font-bold text-center text-accent-yellow neon-glow mb-8"
-          >
-            Professional Journey
-          </h2>
-
-          <div class="grid md:grid-cols-2 gap-4">
-            <GlassCard padding="large" variant="feature">
-              <h3 class="text-xl font-bold text-electric-blue mb-4">
-                Current Role
-              </h3>
-              <h4 class="text-lg font-semibold text-accent-yellow">
-                Chief Technology Officer
-              </h4>
-              <p class="text-accent-coral">
-                <a
-                  href="https://xlabrobotics.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="hover:underline"
-                  >XLab Robotics</a
-                >
-              </p>
-              <p class="text-gray-300 text-sm">
-                2026 - Present - Austin, TX
-              </p>
-            </GlassCard>
-
-            <GlassCard padding="large" variant="feature">
-              <h3 class="text-xl font-bold text-neon-blue mb-4">Recent</h3>
-              <div class="space-y-3">
-                <div>
-                  <p class="text-lg font-semibold text-white">CTO</p>
-                  <p class="text-accent-coral text-sm">
-                    Grably - April 2024 - 2026
-                  </p>
-                </div>
-                <div>
-                  <p class="text-lg font-semibold text-white">AI Engineer</p>
-                  <p class="text-accent-coral text-sm">NBCUniversal · 9 mos</p>
-                </div>
-                <div>
-                  <p class="text-lg font-semibold text-white">
-                    AI Engineer | CTO
-                  </p>
-                  <p class="text-accent-coral text-sm">Namely AI · 8 mos</p>
-                </div>
-              </div>
-            </GlassCard>
+            ))}
           </div>
         </div>
       </section>
-
-      <!-- Compact Skills & Education Bento -->
-      <section
-        class="py-12 px-4 sm:px-6 lg:px-8 bg-[linear-gradient(90deg,transparent,rgba(123,223,242,0.2),transparent)]"
-      >
-        <div class="max-w-6xl mx-auto">
-          <div class="grid lg:grid-cols-3 gap-4">
-            <!-- Skills Card -->
-            <GlassCard padding="large" className="lg:col-span-2">
-              <h3 class="text-2xl font-bold text-accent-yellow mb-6">
-                Core Expertise
-              </h3>
-              <div class="grid md:grid-cols-2 gap-6">
-                <div>
-                  <h4 class="text-lg font-semibold text-accent-cyan mb-3">
-                    Technical
-                  </h4>
-                  <div class="space-y-2">
-                    {
-                      technicalSkills.slice(0, 4).map((skill) => (
-                        <div class="flex items-center">
-                          <div class="w-2 h-2 bg-neon-blue rounded-full mr-3" />
-                          <span class="text-gray-300 text-sm">{skill}</span>
-                        </div>
-                      ))
-                    }
-                  </div>
-                </div>
-                <div>
-                  <h4 class="text-lg font-semibold text-accent-cyan mb-3">
-                    Focus
-                  </h4>
-                  <div class="space-y-2">
-                    {
-                      focusAreas.slice(0, 4).map((area) => (
-                        <div class="flex items-center">
-                          <div class="w-2 h-2 bg-electric-blue rounded-full mr-3" />
-                          <span class="text-gray-300 text-sm">{area}</span>
-                        </div>
-                      ))
-                    }
-                  </div>
-                </div>
-              </div>
-            </GlassCard>
-
-            <!-- Education Card -->
-            <GlassCard padding="large">
-              <h3 class="text-2xl font-bold text-accent-coral mb-4">
-                Education
-              </h3>
-              <div class="space-y-4">
-                <div>
-                  <h4 class="text-lg font-semibold text-white">
-                    BASc Psychology
-                  </h4>
-                  <p class="text-accent-yellow text-sm">FIU · 2015-2019</p>
-                </div>
-                <div>
-                  <h4 class="text-lg font-semibold text-white">
-                    ML Certificate
-                  </h4>
-                  <p class="text-accent-yellow text-sm">Stanford · 2021</p>
-                </div>
-              </div>
-            </GlassCard>
-          </div>
-        </div>
-      </section>
-
-      <!-- Compact Philosophy Section -->
-      <section class="py-12 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-4xl mx-auto">
-          <GlassCard padding="large">
-            <h3
-              class="text-2xl font-bold text-accent-cyan neon-glow mb-4 text-center"
-            >
-              Philosophy
-            </h3>
-            <blockquote class="text-lg italic text-accent-yellow text-center">
-              "Transhumanistic social order is inevitable and necessary for our
-              species' survival."
-            </blockquote>
-            <p class="text-center text-accent-coral font-semibold text-lg mt-4">
-              I am interested in the practical work of making that transition humane.
-            </p>
-          </GlassCard>
-        </div>
-      </section>
-
-      <!-- Quote Section -->
-      <section class="py-12 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-3xl mx-auto text-center">
-          <GlassCard padding="large">
-            <blockquote
-              class="text-2xl text-accent-cyan font-light italic"
-            >
-              "The best tools make people braver, clearer, and harder to fool."
-            </blockquote>
-            <cite class="block mt-3 text-accent-yellow font-semibold"
-              >- Anton Vice</cite
-            >
-            <p class="mt-4 text-gray-300 italic">
-              Build things that earn trust, then keep improving them.
-            </p>
-          </GlassCard>
-        </div>
-      </section>
-    </section>
+    )}
   </main>
-
-  <style>
-    .carousel-container {
-      position: relative;
-    }
-
-    .carousel-text {
-      animation: carousel 6s ease-in-out infinite;
-    }
-
-    .carousel-item {
-      height: 3rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    @keyframes carousel {
-      0%,
-      30% {
-        transform: translateY(0);
-      }
-      33%,
-      63% {
-        transform: translateY(-3rem);
-      }
-      66%,
-      96% {
-        transform: translateY(-6rem);
-      }
-      100% {
-        transform: translateY(0);
-      }
-    }
-
-    h1 {
-      text-wrap: balance;
-    }
-  </style>
 </MainLayout>

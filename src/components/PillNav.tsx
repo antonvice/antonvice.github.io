@@ -80,12 +80,6 @@ const PillNav: React.FC<PillNavProps> = ({
           transformOrigin: `50% ${originY}px`
         });
 
-        const label = pill.querySelector<HTMLElement>('.pill-label');
-        const white = pill.querySelector<HTMLElement>('.pill-label-hover');
-
-        if (label) gsap.set(label, { y: 0 });
-        if (white) gsap.set(white, { y: h + 12, opacity: 0 });
-
         const index = circleRefs.current.indexOf(circle);
         if (index === -1) return;
 
@@ -93,15 +87,6 @@ const PillNav: React.FC<PillNavProps> = ({
         const tl = gsap.timeline({ paused: true });
 
         tl.to(circle, { scale: 1.2, xPercent: -50, duration: 2, ease, overwrite: 'auto' }, 0);
-
-        if (label) {
-          tl.to(label, { y: -(h + 8), duration: 2, ease, overwrite: 'auto' }, 0);
-        }
-
-        if (white) {
-          gsap.set(white, { y: Math.ceil(h + 100), opacity: 0 });
-          tl.to(white, { y: 0, opacity: 1, duration: 2, ease, overwrite: 'auto' }, 0);
-        }
 
         tlRefs.current[index] = tl;
       });
@@ -352,21 +337,9 @@ const PillNav: React.FC<PillNavProps> = ({
                       circleRefs.current[i] = el;
                     }}
                   />
-                  <span className="label-stack relative inline-block leading-[1] z-[2]">
+                  <span className="relative z-[2] inline-block leading-[1]">
                     <span
                       className="pill-label relative z-[2] inline-block leading-[1] font-rajdhani font-semibold"
-                      style={{ willChange: 'transform' }}
-                    >
-                      {item.label}
-                    </span>
-                    <span
-                      className="pill-label-hover absolute left-0 top-0 z-[3] inline-block font-rajdhani font-semibold"
-                      style={{
-                        color: 'var(--hover-text)',
-                        textShadow: '2px 2px 0 rgba(255, 230, 109, 0.55)',
-                        willChange: 'transform, opacity'
-                      }}
-                      aria-hidden="true"
                     >
                       {item.label}
                     </span>

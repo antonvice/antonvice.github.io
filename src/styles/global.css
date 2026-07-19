@@ -112,6 +112,27 @@
 }
 
 @layer components {
+  .neo-button {
+    @apply inline-flex items-center justify-center rounded-md border-[3px] border-dark px-5 py-3 font-rajdhani text-base font-black text-dark shadow-[5px_5px_0_var(--neo-ink)] transition-all duration-200;
+  }
+
+  .neo-button:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 7px 7px 0 var(--neo-ink);
+  }
+
+  .neo-button:active {
+    transform: translate(3px, 3px);
+    box-shadow: 2px 2px 0 var(--neo-ink);
+  }
+
+  [data-topic][aria-pressed="true"] {
+    transform: translate(-3px, -3px);
+    box-shadow: 7px 7px 0 var(--neo-ink);
+    outline: 3px solid var(--neo-ink);
+    outline-offset: 2px;
+  }
+
   .neo-page-backdrop {
     background:
       linear-gradient(120deg, transparent 0 58%, rgba(123, 223, 242, 0.38) 58% 66%, transparent 66%),

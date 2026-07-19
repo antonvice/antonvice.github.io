@@ -8,16 +8,16 @@ export interface Props {
   description?: string;
 }
 
-const { title, description = "Anton Vice - AI Engineer, ML Engineer & CTO" } = Astro.props;
+const { title, description = "Anton Vice builds practical AI systems, robotics tools, local software, and essays about technology and people." } = Astro.props;
 const currentPath = Astro.url.pathname;
 
 // Navigation items for PillNav
 const navItems = [
   { label: 'Home', href: '/' },
-  { label: 'Projects', href: '/projects' },
   { label: 'Portfolio', href: '/portfolio' },
   { label: 'Research', href: '/research' },
-  { label: 'Blog', href: '/blog' }
+  { label: 'Blog', href: '/blog' },
+  { label: 'Projects', href: '/projects' }
 ];
 
 // Social links with SVG icons
@@ -148,6 +148,19 @@ const socialLinks = [
       <!-- Page transition wrapper (z-20) -->
       <div id="page-content" class="page-transition relative z-20 w-full max-w-full overflow-x-hidden">
         <slot />
+        <footer class="px-4 pb-10 pt-16 sm:px-6 lg:px-8">
+          <div class="mx-auto flex max-w-6xl rotate-[-0.35deg] flex-col gap-6 border-[3px] border-dark bg-[var(--neo-surface)] p-6 shadow-[8px_8px_0_var(--neo-ink)] sm:flex-row sm:items-end sm:justify-between">
+            <div class="max-w-2xl">
+              <p class="font-rajdhani text-2xl font-black text-dark">Thanks for spending some time here.</p>
+              <p class="mt-2 font-medium leading-relaxed text-dark/70">If something made you curious, confused, or excited, send me a note. Those are usually the best conversations.</p>
+            </div>
+            <div class="flex flex-wrap gap-3">
+              <a class="neo-button bg-accent-yellow" href="mailto:anton96vice@gmail.com">Email me</a>
+              <a class="neo-button bg-accent-cyan" href="https://github.com/antonvice" target="_blank" rel="noopener noreferrer">GitHub</a>
+            </div>
+          </div>
+          <p class="mx-auto mt-6 max-w-6xl text-center text-sm font-bold text-dark/55">Built by Anton Vice, with strong opinions and too many side projects.</p>
+        </footer>
       </div>
     </div>
     

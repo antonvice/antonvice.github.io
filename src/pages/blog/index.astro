@@ -17,8 +17,6 @@ const featuredPosts = sortedPosts.slice(0, 3);
 
 // Extract unique tags from content (simple approach)
 const uniqueTags = ['AI', 'Machine Learning', 'Deep Learning', 'Python', 'GPT', 'Neural Networks', 'Philosophy', 'Technology'];
-const categories = ['AI & ML', 'Technical', 'Philosophy', 'Programming'];
-
 const readingMinutes = (post: BlogPost) => Math.max(2, Math.ceil(post.content.split(/\s+/).length / 220));
 const getPostBadges = (post: BlogPost): string[] => {
   const text = `${post.title} ${post.excerpt}`.toLowerCase();
@@ -30,6 +28,22 @@ const getPostBadges = (post: BlogPost): string[] => {
   if (/clustering|quantization|kan|dbscan|optics/.test(text)) badges.push('Deep Dive');
 
   return (badges.length ? badges : ['Notes']).slice(0, 3);
+};
+const getPostTopics = (post: BlogPost): string[] => {
+  const text = `${post.title} ${post.excerpt}`.toLowerCase();
+  return uniqueTags.filter((tag) => {
+    const patterns: Record<string, RegExp> = {
+      AI: /\bai\b|llm|gpt|machine learning|neural|transformer/,
+      'Machine Learning': /machine learning|model|clustering|classification|quantization|embedding|kaggle/,
+      'Deep Learning': /deep learning|neural|transformer|gpt|llm|diffusion|kan|embedding/,
+      Python: /python|pytorch|dbscan|optics|kaggle|streamlit/,
+      GPT: /gpt|llm|transformer/,
+      'Neural Networks': /neural|transformer|embedding|diffusion|kan|deep learning/,
+      Philosophy: /philosophy|ethical|future|anthropocentric|human|conscious|society/,
+      Technology: /technology|software|browser|blockchain|robot|ai|computer|programming/,
+    };
+    return patterns[tag]?.test(text) ?? false;
+  });
 };
 ---
 
@@ -44,31 +58,10 @@ const getPostBadges = (post: BlogPost): string[] => {
             Anton's Blog
           </h1>
           <p class="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8">
-            Essays, build notes, and field reports from the places where AI, software,
-            robotics, and ordinary human judgment keep bumping into each other.
+            Things I needed to think through in public: AI, software, robotics, philosophy, and whatever happens when those subjects refuse to stay separate.
           </p>
         </div>
         
-        <!-- Stats -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-          <GlassCard padding="large" className="text-center">
-            <div class="text-3xl font-bold text-neon-blue mb-2">{allPosts.length}</div>
-            <div class="text-gray-400 text-sm">Posts</div>
-          </GlassCard>
-          <GlassCard padding="large" className="text-center">
-            <div class="text-3xl font-bold text-accent-yellow mb-2">{categories.length}</div>
-            <div class="text-gray-400 text-sm">Categories</div>
-          </GlassCard>
-          <GlassCard padding="large" className="text-center">
-            <div class="text-3xl font-bold text-accent-coral mb-2">{uniqueTags.length}</div>
-            <div class="text-gray-400 text-sm">Tags</div>
-          </GlassCard>
-          <GlassCard padding="large" className="text-center">
-            <div class="text-3xl font-bold text-electric-blue mb-2">{sortedPosts[0] ? readingMinutes(sortedPosts[0]) : 0}</div>
-            <div class="text-gray-400 text-sm">Min Latest</div>
-          </GlassCard>
-        </div>
-
         <!-- Topic Filters -->
         <div class="mt-12 max-w-5xl mx-auto">
           <div class="card-glass p-5 md:p-6">
@@ -78,20 +71,22 @@ const getPostBadges = (post: BlogPost): string[] => {
                   Topics
                 </h2>
                 <p class="text-sm font-semibold text-dark/70">
-                  Quick scan by theme
+                  Find your way in
                 </p>
               </div>
-              <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-                {uniqueTags.map((tag, index) => (
-                  <a
-                    href="#latest-posts"
+              <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5" data-topic-filters>
+                {['All', ...uniqueTags].map((tag, index) => (
+                  <button
+                    type="button"
+                    data-topic={tag}
+                    aria-pressed={tag === 'All' ? 'true' : 'false'}
                     class:list={[
                       "px-3 py-2 border-2 border-dark text-dark font-bold shadow-[3px_3px_0_var(--neo-ink)] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[5px_5px_0_var(--neo-ink)] transition-all duration-200 rounded-md text-center",
                       index % 3 === 0 ? "bg-accent-cyan" : index % 3 === 1 ? "bg-accent-yellow" : "bg-accent-coral"
                     ]}
                   >
-                    #{tag}
-                  </a>
+                    {tag === 'All' ? 'Everything' : tag}
+                  </button>
                 ))}
               </div>
             </div>
@@ -105,7 +100,7 @@ const getPostBadges = (post: BlogPost): string[] => {
       <section class="py-20 px-4 sm:px-6 lg:px-8">
         <div class="max-w-7xl mx-auto">
           <h2 class="text-3xl md:text-4xl font-bold text-electric-blue electric-blue-glow mb-12 text-center">
-            Featured Posts
+            A good place to start
           </h2>
           
           <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -152,7 +147,7 @@ const getPostBadges = (post: BlogPost): string[] => {
                       href={`/blog/${post.slug}`}
                       class="inline-flex items-center text-accent-yellow hover:text-accent-cyan transition-colors duration-300"
                     >
-                      Read Essay →
+                      Keep reading →
                     </a>
                   </div>
                 </div>
@@ -167,11 +162,12 @@ const getPostBadges = (post: BlogPost): string[] => {
     <section id="latest-posts" class="py-20 px-4 sm:px-6 lg:px-8">
       <div class="max-w-7xl mx-auto">
         <h2 class="text-3xl md:text-4xl font-bold text-accent-coral neon-glow mb-12 text-center">
-          Latest Posts
+          Everything else
         </h2>
         
         <div class="space-y-8">
           {sortedPosts.map((post) => (
+            <div data-post-card data-topics={getPostTopics(post).join(',')}>
             <GlassCard padding="large" className="group transition-all duration-300">
               <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div class="flex-1 min-w-0">
@@ -208,15 +204,40 @@ const getPostBadges = (post: BlogPost): string[] => {
                     href={`/blog/${post.slug}`}
                     class="inline-flex items-center px-4 py-2 border border-accent-cyan text-accent-cyan hover:bg-accent-cyan hover:text-dark transition-all duration-300"
                   >
-                    Read More →
+                    Read it →
                   </a>
                 </div>
               </div>
             </GlassCard>
+            </div>
           ))}
         </div>
       </div>
     </section>
 
   </main>
+
+  <script>
+    const initTopicFilters = () => {
+      const filters = document.querySelector('[data-topic-filters]');
+      if (!(filters instanceof HTMLElement) || filters.dataset.ready === 'true') return;
+      filters.dataset.ready = 'true';
+
+      filters.addEventListener('click', (event) => {
+        const button = (event.target as HTMLElement).closest<HTMLButtonElement>('[data-topic]');
+        if (!button) return;
+        const topic = button.dataset.topic;
+
+        filters.querySelectorAll('[data-topic]').forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
+        document.querySelectorAll<HTMLElement>('[data-post-card]').forEach((card) => {
+          const topics = card.dataset.topics?.split(',') ?? [];
+          card.hidden = topic !== 'All' && !topics.includes(topic ?? '');
+        });
+        document.querySelector('#latest-posts')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    };
+
+    document.addEventListener('DOMContentLoaded', initTopicFilters);
+    document.addEventListener('astro:page-load', initTopicFilters);
+  </script>
 </MainLayout>

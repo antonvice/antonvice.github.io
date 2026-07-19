@@ -382,7 +382,7 @@ const LanyardCard: React.FC<LanyardCardProps> = ({
                     onClick={(event) => event.stopPropagation()}
                     aria-label={social.label}
                   >
-                    <span dangerouslySetInnerHTML={{ __html: social.icon }} />
+                    <span className="text-xs font-black" dangerouslySetInnerHTML={{ __html: social.icon }} />
                   </a>
                 ))}
               </div>
