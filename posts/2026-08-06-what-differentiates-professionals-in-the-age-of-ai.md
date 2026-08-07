@@ -36,6 +36,8 @@ I have never been so horrified when I saw the response from Dima:
 >
 > "Why are there are internal prices in the table, why are the names leaking internal information, why the hell there are columns that make no use for the customer, like dude wtf is wrong with you, are you drunk"
 
+That situation with xlsx happened about a year ago, and since then I have been working on improving my workflow and started reading, analyzing, and exercising my brain with competitions, leetcode, kaggle (without ai), and fun pet projects to keep my reasoning sharp and ready for any challenges to come.
+
 **That was the moment when I realized: an ai coding agent is but a tool, and if you use a tool like a toy, you will not get any job done**
 
 That was a wake up moment that led me to:
