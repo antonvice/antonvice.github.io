@@ -1,5 +1,13 @@
 import React, { useEffect, useRef } from "react";
+import { Github, Linkedin, Mail, Send } from "lucide-react";
 import "../styles/lanyard-card.css";
+
+const SOCIAL_ICONS = {
+  github: Github,
+  linkedin: Linkedin,
+  mail: Mail,
+  telegram: Send,
+} as const;
 
 interface LanyardCardProps {
   name: string;
@@ -9,7 +17,7 @@ interface LanyardCardProps {
   description?: string[];
   avatar?: string;
   socials?: Array<{
-    icon: string;
+    icon: keyof typeof SOCIAL_ICONS;
     href: string;
     label: string;
   }>;
@@ -310,13 +318,20 @@ const LanyardCard: React.FC<LanyardCardProps> = ({
               </div>
 
               <div className="mb-5 flex justify-center">
-                <div className="rounded-lg border-[3px] border-dark bg-white p-2 shadow-[6px_6px_0_var(--neo-pink)]">
+                <a
+                  href="https://t.me/nucradkillsrats"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Open Anton Vice on Telegram"
+                  className="rounded-lg border-[3px] border-dark bg-white p-2 shadow-[6px_6px_0_var(--neo-pink)] transition-transform hover:-translate-y-0.5"
+                  onClick={(event) => event.stopPropagation()}
+                >
                   <img
                     src="/qr.png"
-                    alt="QR code"
+                    alt="QR code for Anton Vice on Telegram"
                     className="h-24 w-24 object-contain"
                   />
-                </div>
+                </a>
               </div>
 
               <div className="text-center">
@@ -372,19 +387,22 @@ const LanyardCard: React.FC<LanyardCardProps> = ({
 
             {socials.length > 0 && (
               <div className="relative z-50 mt-5 flex justify-center gap-3">
-                {socials.map((social) => (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="social-link flex h-10 w-10 items-center justify-center rounded-md border-2 border-dark bg-accent-yellow text-dark shadow-[3px_3px_0_var(--neo-ink)] transition-all duration-300 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:bg-accent-coral"
-                    onClick={(event) => event.stopPropagation()}
-                    aria-label={social.label}
-                  >
-                    <span className="text-xs font-black" dangerouslySetInnerHTML={{ __html: social.icon }} />
-                  </a>
-                ))}
+                {socials.map((social) => {
+                  const Icon = SOCIAL_ICONS[social.icon];
+                  return (
+                    <a
+                      key={social.label}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="social-link flex h-10 w-10 items-center justify-center rounded-md border-2 border-dark bg-accent-yellow text-dark shadow-[3px_3px_0_var(--neo-ink)] transition-all duration-300 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:bg-accent-coral"
+                      onClick={(event) => event.stopPropagation()}
+                      aria-label={social.label}
+                    >
+                      <Icon aria-hidden="true" size={19} strokeWidth={2.6} />
+                    </a>
+                  );
+                })}
               </div>
             )}
           </div>

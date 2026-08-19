@@ -40,9 +40,9 @@ function cleanPostContent(content: string): string {
   return content
     .replace(/^# .*\n?/, "")
     .replace(/^\*.*\*$/gm, "") // Remove italic lines like *Published on...*
-    .replace(/^section-divider$/gm, "")
-    .replace(/^-+$/gm, "")
-    .replace(/^\| section-content$/gm, "")
+    .replace(/^\s*section-divider\s*$/gm, "")
+    .replace(/^\s*-{3,}\s*$/gm, "")
+    .replace(/^\s*\|?\s*section-content\s*$/gm, "")
     .replace(/\n\s*\n/g, "\n\n")
     .trim();
 }

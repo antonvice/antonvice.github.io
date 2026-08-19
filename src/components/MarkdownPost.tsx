@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
@@ -8,37 +8,85 @@ interface MarkdownPostProps {
   post: BlogPost;
 }
 
+function InteractiveLab({ src, title }: { src: string; title: string }) {
+  const frameRef = useRef<HTMLIFrameElement>(null);
+
+  useEffect(() => {
+    const frame = frameRef.current;
+    if (!frame) return;
+
+    const resize = () => {
+      const height = frame.contentDocument?.documentElement.scrollHeight;
+      if (height) frame.style.height = `${height}px`;
+    };
+
+    frame.addEventListener('load', resize);
+    window.addEventListener('resize', resize);
+    resize();
+    return () => {
+      frame.removeEventListener('load', resize);
+      window.removeEventListener('resize', resize);
+    };
+  }, []);
+
+  return (
+    <figure className="my-8 overflow-hidden rounded-lg border-[3px] border-dark bg-dark shadow-[6px_6px_0_var(--neo-ink)] sm:my-10 sm:shadow-[8px_8px_0_var(--neo-ink)]">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b-[3px] border-dark bg-accent-cyan px-3 py-2 text-sm font-black text-dark sm:px-4">
+        <span>{title}</span>
+        <a href={src} target="_blank" rel="noopener noreferrer" className="text-dark underline decoration-2 underline-offset-2">
+          Open full screen
+        </a>
+      </div>
+      <iframe
+        ref={frameRef}
+        src={src}
+        title={title}
+        loading="lazy"
+        className="block h-[720px] min-h-[34rem] w-full border-0 bg-dark"
+      />
+    </figure>
+  );
+}
+
 export default function MarkdownPost({ post }: MarkdownPostProps) {
   return (
-    <div className="prose prose-lg max-w-none">
+    <div className="prose max-w-none text-[1.0625rem] sm:text-lg">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeHighlight]}
         components={{
           h1: ({ children }) => (
-            <h1 className="text-4xl md:text-5xl font-bold text-accent-cyan neon-glow mb-6 leading-tight font-rajdhani">
+            <h1 className="mb-5 font-rajdhani text-3xl font-black leading-tight text-accent-cyan neon-glow sm:mb-6 sm:text-4xl md:text-5xl">
               {children}
             </h1>
           ),
           h2: ({ children }) => (
-            <h2 className="text-3xl font-bold text-accent-coral mb-4 mt-8 font-rajdhani" style={{ textShadow: '3px 3px 0 rgba(255,230,109,0.65)' }}>
+            <h2 className="mb-3 mt-9 font-rajdhani text-[1.75rem] font-black leading-[1.08] text-accent-coral sm:mb-4 sm:mt-10 sm:text-3xl" style={{ textShadow: '3px 3px 0 rgba(255,230,109,0.65)' }}>
               {children}
             </h2>
           ),
           h3: ({ children }) => (
-            <h3 className="text-2xl font-semibold text-nav-link mb-3 mt-6 font-rajdhani">
+            <h3 className="mb-3 mt-7 font-rajdhani text-2xl font-bold leading-tight text-nav-link">
               {children}
             </h3>
           ),
-          p: ({ children }) => (
-            <p className="text-dark leading-relaxed mb-6 text-lg">
-              {children}
-            </p>
-          ),
+          p: ({ children, node }) => {
+            const containsLab = node?.children.some(
+              (child) => child.type === 'element'
+                && child.tagName === 'img'
+                && String(child.properties?.src || '').endsWith('.html')
+            );
+
+            return containsLab ? children : (
+              <p className="mb-5 text-[1.0625rem] leading-[1.75] text-dark sm:mb-6 sm:text-lg">
+                {children}
+              </p>
+            );
+          },
           a: ({ href, children }) => (
             <a 
               href={href} 
-              className="text-nav-link hover:text-accent-yellow transition-colors duration-300 underline hover:no-underline"
+              className="break-words text-nav-link underline decoration-2 underline-offset-2 transition-colors duration-300 hover:text-accent-coral"
               target={href?.startsWith('http') ? '_blank' : undefined}
               rel={href?.startsWith('http') ? 'noopener noreferrer' : undefined}
             >
@@ -59,7 +107,7 @@ export default function MarkdownPost({ post }: MarkdownPostProps) {
             const isInline = !className;
             if (isInline) {
               return (
-                <code className="bg-accent-yellow border-2 border-dark text-dark px-2 py-1 rounded-md text-sm font-mono shadow-[2px_2px_0_var(--neo-ink)]">
+                <code className="break-words rounded-md border-2 border-dark bg-accent-yellow px-1.5 py-0.5 font-mono text-[0.82em] text-dark shadow-[2px_2px_0_var(--neo-ink)] sm:px-2 sm:py-1">
                   {children}
                 </code>
               );
@@ -71,36 +119,55 @@ export default function MarkdownPost({ post }: MarkdownPostProps) {
             );
           },
           pre: ({ children }) => (
-            <pre className="card-glass p-6 my-6 overflow-x-hidden border border-glass-border-color rounded-lg" style={{ wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>
+            <pre className="my-6 max-w-full overflow-x-auto whitespace-pre-wrap break-words rounded-lg border-[3px] border-dark bg-dark p-4 text-sm leading-relaxed text-[var(--neo-bg-soft)] shadow-[5px_5px_0_var(--neo-pink)] sm:p-6">
               {children}
             </pre>
           ),
           blockquote: ({ children }) => (
-            <blockquote className="border-l-[8px] border-dark pl-6 ml-0 my-6 italic text-dark bg-accent-yellow py-4 shadow-[6px_6px_0_var(--neo-ink)]">
+            <blockquote className="my-7 ml-0 border-l-[6px] border-dark bg-accent-yellow px-4 py-4 italic text-dark shadow-[4px_4px_0_var(--neo-ink)] sm:border-l-[8px] sm:px-6 sm:shadow-[6px_6px_0_var(--neo-ink)]">
               {children}
             </blockquote>
           ),
           ul: ({ children }) => (
-            <ul className="list-disc list-inside mb-6 space-y-2 text-dark">
+            <ul className="mb-6 list-outside list-disc space-y-2 pl-5 text-dark sm:pl-6">
               {children}
             </ul>
           ),
           ol: ({ children }) => (
-            <ol className="list-decimal list-inside mb-6 space-y-2 text-dark">
+            <ol className="mb-6 list-outside list-decimal space-y-2 pl-5 text-dark sm:pl-6">
               {children}
             </ol>
           ),
           li: ({ children }) => (
-            <li className="text-dark leading-relaxed">
+            <li className="pl-1 leading-[1.7] text-dark">
               {children}
             </li>
           ),
-          img: ({ src, alt }) => (
-            <img 
-              src={src} 
-              alt={alt} 
-              className="w-full rounded-lg shadow-[8px_8px_0_var(--neo-ink)] my-8 border-[3px] border-dark"
+          img: ({ src, alt }) => src?.endsWith('.html') ? (
+            <InteractiveLab src={src} title={alt || 'Interactive lab'} />
+          ) : (
+            <img
+              src={src}
+              alt={alt}
+              className="my-7 h-auto w-full rounded-lg border-[3px] border-dark shadow-[5px_5px_0_var(--neo-ink)] sm:my-8 sm:shadow-[8px_8px_0_var(--neo-ink)]"
             />
+          ),
+          table: ({ children }) => (
+            <div className="my-7 max-w-full overflow-x-auto rounded-md border-[3px] border-dark shadow-[4px_4px_0_var(--neo-ink)]">
+              <table className="w-full min-w-[36rem] border-collapse bg-[var(--neo-surface)] text-left text-sm">
+                {children}
+              </table>
+            </div>
+          ),
+          th: ({ children }) => (
+            <th className="border-b-[3px] border-r-2 border-dark bg-accent-yellow px-3 py-2 font-black text-dark last:border-r-0">
+              {children}
+            </th>
+          ),
+          td: ({ children }) => (
+            <td className="border-b-2 border-r-2 border-dark px-3 py-2 align-top text-dark last:border-r-0">
+              {children}
+            </td>
           ),
           hr: () => (
             <hr className="border-t-[3px] border-dark my-12" />

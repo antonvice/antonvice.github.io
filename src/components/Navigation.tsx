@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Menu, X, Github, Linkedin, Twitter } from 'lucide-react';
+import { Menu, X, Github, Linkedin, Send, Twitter } from 'lucide-react';
 import { cn } from '../lib/utils';
 
 interface NavigationProps {
@@ -16,6 +16,7 @@ const socialLinks = [
   { name: 'GitHub', href: 'https://github.com/antonvice', icon: Github },
   { name: 'LinkedIn', href: 'https://linkedin.com/in/antonvice', icon: Linkedin },
   { name: 'Twitter', href: 'https://x.com/la_haine_d_arte', icon: Twitter },
+  { name: 'Telegram', href: 'https://t.me/nucradkillsrats', icon: Send },
 ];
 
 export default function Navigation({ currentPath = '/' }: NavigationProps) {

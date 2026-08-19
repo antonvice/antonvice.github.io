@@ -36,54 +36,50 @@ const relatedPosts = allPosts
   description={post.description || post.excerpt || `${post.title} - A blog post by Anton Vice`}
 >
   
-  <main id="main-content" class="pt-16">
+  <main id="main-content" class="pt-20">
     <!-- Article Header -->
-    <article class="py-12 px-4 sm:px-6 lg:px-8">
+    <article class="px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <!-- Back Button -->
-        <div class="mb-6">
+        <div class="mb-5 sm:mb-6">
           <a 
             href="/blog"
-            class="inline-flex items-center rounded-md border-[3px] border-dark bg-[var(--neo-surface)] px-5 py-3 text-dark font-bold shadow-[5px_5px_0_var(--neo-ink)] transition-all duration-200 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:bg-accent-yellow hover:text-dark hover:shadow-[7px_7px_0_var(--neo-ink)]"
+            class="inline-flex items-center rounded-md border-[3px] border-dark bg-[var(--neo-surface)] px-4 py-2.5 text-sm font-bold text-dark shadow-[4px_4px_0_var(--neo-ink)] transition-all duration-200 hover:bg-accent-yellow hover:text-dark sm:px-5 sm:py-3 sm:text-base sm:shadow-[5px_5px_0_var(--neo-ink)] sm:hover:-translate-x-0.5 sm:hover:-translate-y-0.5 sm:hover:shadow-[7px_7px_0_var(--neo-ink)]"
           >
             ← Back to Blog
           </a>
         </div>
         
         <!-- Meta Information -->
-        <div class="mb-8">
-          <div class="flex flex-wrap items-center gap-4 mb-6">
-            <time class="text-accent-cyan font-semibold" datetime={post.date.toISOString()}>
+        <div class="mb-7 sm:mb-8">
+          <div class="mb-5 flex flex-wrap items-center gap-3 sm:mb-6 sm:gap-4">
+            <time class="text-sm font-bold text-accent-cyan sm:text-base" datetime={post.date.toISOString()}>
               {formatDate(post.date)}
             </time>
-            <span class="px-3 py-1 bg-accent-coral text-dark border-2 border-dark rounded-md font-bold shadow-[3px_3px_0_var(--neo-ink)]">
+            <span class="rounded-md border-2 border-dark bg-accent-coral px-3 py-1 text-sm font-bold text-dark shadow-[3px_3px_0_var(--neo-ink)] sm:text-base">
               AI & Tech
             </span>
           </div>
           
           <!-- Title -->
-          <h1 class="text-4xl md:text-6xl font-bold text-accent-cyan neon-glow mb-6 leading-tight font-rajdhani">
+          <h1 class="mb-6 font-rajdhani text-[2rem] font-black leading-[1.04] text-accent-cyan neon-glow sm:text-4xl md:text-6xl md:leading-tight">
             {post.title}
           </h1>
-          
-          <p class="text-xl text-gray-300 leading-relaxed mb-8">
-            {post.excerpt}
-          </p>
-          
+
           <div class="flex flex-wrap gap-2">
-            <span class="px-3 py-1 bg-accent-cyan text-dark border-2 border-dark rounded-md font-bold shadow-[3px_3px_0_var(--neo-ink)]">
+            <span class="rounded-md border-2 border-dark bg-accent-cyan px-3 py-1 text-sm font-bold text-dark shadow-[3px_3px_0_var(--neo-ink)] sm:text-base">
               #AI
             </span>
-            <span class="px-3 py-1 bg-accent-yellow text-dark border-2 border-dark rounded-md font-bold shadow-[3px_3px_0_var(--neo-ink)]">
+            <span class="rounded-md border-2 border-dark bg-accent-yellow px-3 py-1 text-sm font-bold text-dark shadow-[3px_3px_0_var(--neo-ink)] sm:text-base">
               #Tech
             </span>
           </div>
         </div>
         
         <!-- Article Content -->
-        <GlassCard className="p-0">
-          <div class="p-8 md:p-12">
-          <MarkdownPost post={post} client:load />
+        <GlassCard padding="none">
+          <div class="p-5 sm:p-8 md:p-12">
+            <MarkdownPost post={post} client:load />
           </div>
         </GlassCard>
         
@@ -94,7 +90,7 @@ const relatedPosts = allPosts
               <p class="text-gray-400 mb-2">Written by</p>
               <p class="text-accent-yellow font-semibold">Anton Vice</p>
             </div>
-            <div class="flex items-center space-x-4">
+            <div class="flex flex-wrap items-center gap-4">
               <a 
                 href="https://twitter.com/la_haine_d_arte" 
                 target="_blank"
@@ -119,18 +115,18 @@ const relatedPosts = allPosts
 
     <!-- Related Posts -->
     {relatedPosts.length > 0 && (
-      <section class="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-transparent via-accent-coral/5 to-transparent">
+      <section class="px-4 py-12 sm:px-6 sm:py-20 lg:px-8">
         <div class="max-w-6xl mx-auto">
-          <h2 class="text-3xl font-bold text-accent-coral neon-glow mb-12 text-center">
+          <h2 class="mb-7 text-center text-3xl font-bold text-accent-coral neon-glow sm:mb-12">
             Related Posts
           </h2>
           
           <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {relatedPosts.map((relatedPost) => (
-              <article key={relatedPost.slug} class="card-glass p-6 hover:scale-105 transition-all duration-300 hover:border-accent-cyan/30 group">
+              <article key={relatedPost.slug} class="card-glass group p-5 transition-all duration-300 sm:p-6 md:hover:-translate-y-1">
                 <div class="space-y-4">
                   {/* Category & Date */}
-                  <div class="flex items-center justify-between text-sm">
+                  <div class="flex flex-wrap items-center justify-between gap-2 text-sm">
                     <span class="px-2 py-1 bg-accent-yellow text-dark border-2 border-dark rounded-md font-bold shadow-[2px_2px_0_var(--neo-ink)]">
                       AI & Tech
                     </span>
@@ -169,18 +165,18 @@ const relatedPosts = allPosts
     )}
 
     <!-- Navigation -->
-    <section class="py-12 px-4 sm:px-6 lg:px-8">
+    <section class="px-4 py-10 sm:px-6 sm:py-12 lg:px-8">
       <div class="max-w-4xl mx-auto">
         <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <a 
             href="/blog"
-            class="inline-flex items-center rounded-md border-[3px] border-dark bg-[var(--neo-surface)] px-6 py-3 text-dark font-bold shadow-[5px_5px_0_var(--neo-ink)] transition-all duration-200 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:bg-accent-cyan hover:text-dark hover:shadow-[7px_7px_0_var(--neo-ink)]"
+            class="inline-flex w-full items-center justify-center rounded-md border-[3px] border-dark bg-[var(--neo-surface)] px-6 py-3 font-bold text-dark shadow-[5px_5px_0_var(--neo-ink)] transition-all duration-200 hover:bg-accent-cyan hover:text-dark sm:w-auto sm:hover:-translate-x-0.5 sm:hover:-translate-y-0.5 sm:hover:shadow-[7px_7px_0_var(--neo-ink)]"
           >
             ← Back to Blog
           </a>
           <a 
             href="/"
-            class="inline-flex items-center rounded-md border-[3px] border-dark bg-accent-yellow px-6 py-3 text-dark font-bold shadow-[5px_5px_0_var(--neo-ink)] transition-all duration-200 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:bg-accent-coral hover:text-dark hover:shadow-[7px_7px_0_var(--neo-ink)]"
+            class="inline-flex w-full items-center justify-center rounded-md border-[3px] border-dark bg-accent-yellow px-6 py-3 font-bold text-dark shadow-[5px_5px_0_var(--neo-ink)] transition-all duration-200 hover:bg-accent-coral hover:text-dark sm:w-auto sm:hover:-translate-x-0.5 sm:hover:-translate-y-0.5 sm:hover:shadow-[7px_7px_0_var(--neo-ink)]"
           >
             Home
           </a>

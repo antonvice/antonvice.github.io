@@ -35,6 +35,8 @@
     --glass-reflection-opacity: 0;
     --glass-reflection-x: 50%;
     --glass-reflection-y: 50%;
+    --page-gutter-left: 1rem;
+    --page-gutter-right: 1rem;
   }
 
   html {
@@ -52,6 +54,8 @@
     font-family: "Inter", sans-serif;
     margin: 0;
     padding: 0;
+    width: 100%;
+    max-width: 100%;
     overflow-x: hidden;
   }
 
@@ -162,10 +166,25 @@
 
   .neo-shape {
     position: absolute;
-    display: block;
+    display: grid;
+    place-items: center;
     border: var(--neo-border);
     box-shadow: var(--neo-shadow);
     opacity: 0.82;
+  }
+
+  .neo-shape__note {
+    padding: 0.75rem;
+    color: rgba(38, 23, 31, 0.66);
+    font-family: "Rajdhani", sans-serif;
+    font-size: clamp(0.8rem, 1.25vw, 1.25rem);
+    font-style: italic;
+    font-weight: 900;
+    line-height: 1.05;
+    max-width: 92%;
+    text-align: center;
+    text-shadow: 1px 1px 0 rgba(255, 253, 241, 0.42);
+    text-transform: uppercase;
   }
 
   .neo-shape--pink {
@@ -374,7 +393,7 @@
 }
 
 .scroll-reveal {
-  transform: translateY(18px) rotate(-0.35deg) scale(0.99);
+  transform: translateY(18px);
   filter: saturate(0.88) contrast(0.96);
   transition:
     transform 420ms cubic-bezier(0.2, 0.8, 0.2, 1),
@@ -382,7 +401,7 @@
 }
 
 .scroll-reveal.is-visible {
-  transform: translateY(0) rotate(0deg) scale(1);
+  transform: translateY(0);
   filter: saturate(1) contrast(1);
 }
 
@@ -403,19 +422,71 @@
 }
 
 @media (max-width: 640px) {
+  :root {
+    --page-gutter-left: max(1rem, env(safe-area-inset-left, 0px));
+    --page-gutter-right: max(1rem, env(safe-area-inset-right, 0px));
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  body {
+    background:
+      linear-gradient(90deg, rgba(38, 23, 31, 0.055) 1px, transparent 1px) 0 0 / 28px 28px,
+      linear-gradient(rgba(38, 23, 31, 0.055) 1px, transparent 1px) 0 0 / 28px 28px,
+      var(--neo-bg);
+  }
+
+  ::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+
+  #page-content,
   #page-content main {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
     overflow-x: clip;
   }
 
-  #page-content main > section > div {
-    max-width: calc(100vw - 2rem);
+  #page-content main > section,
+  #page-content main > article,
+  #page-content main.mobile-page-gutter,
+  #page-content > footer {
+    box-sizing: border-box;
+    width: 100%;
+    padding-left: var(--page-gutter-left) !important;
+    padding-right: var(--page-gutter-right) !important;
+  }
+
+  #page-content main > section > div,
+  #page-content main > article > div,
+  #page-content > footer > div {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
     min-width: 0;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .site-nav-shell {
+    padding-left: var(--page-gutter-left) !important;
+    padding-right: var(--page-gutter-right) !important;
+  }
+
+  .site-mobile-menu {
+    left: var(--page-gutter-left) !important;
+    right: var(--page-gutter-right) !important;
   }
 
   .card-glass {
     width: 100%;
     min-width: 0;
-    max-width: calc(100vw - 2rem);
+    max-width: 100%;
     box-shadow: 5px 5px 0 var(--neo-ink);
   }
 
@@ -428,13 +499,39 @@
   }
 
   .card-glass:hover {
-    box-shadow: 7px 7px 0 var(--neo-ink);
-    transform: translate3d(-2px, -2px, 0) rotate(var(--neo-tilt-hover, -0.2deg));
+    box-shadow: 5px 5px 0 var(--neo-ink);
+    transform: none;
+  }
+
+  :is(a, button):hover {
+    transform: none !important;
+  }
+
+  .scroll-reveal,
+  .scroll-reveal.is-visible {
+    filter: none;
+    transform: none;
+    transition: none;
+  }
+
+  .animate-float {
+    animation: none;
+  }
+
+  .neo-pattern-stripes {
+    opacity: 0.4;
   }
 
   .neo-shape {
-    opacity: 0.48;
+    opacity: 0.22;
     box-shadow: 5px 5px 0 var(--neo-ink);
+  }
+
+  .neo-shape__note {
+    color: rgba(38, 23, 31, 0.58);
+    font-size: 0.65rem;
+    padding: 0.4rem;
+    text-shadow: none;
   }
 
   .neo-shape--pink {
