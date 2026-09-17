@@ -24,7 +24,7 @@ const getPostBadges = (post: BlogPost): string[] => {
 
   if (/\b(?:rust|python|swift|code|programming|interview|rag)\b/.test(text)) badges.push('Engineering');
   if (/transformer|gpt|llm|\bai\b|machine learning|neural|reasoning|cognitive architecture/.test(text)) badges.push('AI');
-  if (/philosophy|ethic|future|anthropocentric|browser|first principles|model fragmentation/.test(text)) badges.push('Essay');
+  if (/philosophy|ethic|future|anthropocentric|browser|first principles|model fragmentation|inner speech|consciousness|free will|the voice/.test(text)) badges.push('Essay');
   if (/clustering|quantization|kan|dbscan|optics/.test(text)) badges.push('Deep Dive');
 
   return (badges.length ? badges : ['Notes']).slice(0, 3);
