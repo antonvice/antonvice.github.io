@@ -1,14 +1,14 @@
-# Experimenting with a Decision Model as a RAG Chunker (Spoiler: It's Bad)
+# Experimenting with a Decision Model as a RAG Chunker (Spoiler: It's Very Accurate, but Slow, with a Lot of Room to Grow!)
 
 I had what felt like a very clever idea: instead of cutting documents every 256 tokens, or using embedding distance to guess where the topic changes, why not ask a decision model where each thought ends?
 
 Feed it the current chunk and the next sentence. Make it choose **APPEND** or **SPLIT**. Repeat until the document is done.
 
-It sounds smart. It works. It is also, in its current form, a bad chunker.
+It sounds smart. It works. In fact, it is surprisingly accurate. It is also painfully slow, because I used a four-billion-parameter general decision model for a job that should eventually belong to something much smaller and fine-tuned.
 
 ![A small machine inspecting a branching river of language in a psychedelic library.](/images/blog/decision-model-chunking/cover.webp)
 
-> The short version: Imajev-4B matched the good cheap baselines, but did not beat them. It took 31 minutes to chunk a tiny corpus that semantic chunking processed in six seconds.
+> The short version: Imajev-4B retrieved 97.37% of the relevant evidence and matched the good cheap baselines without being fine-tuned for chunking. It also took 31 minutes to process a tiny corpus that semantic chunking handled in six seconds. The mechanism looks promising. The current engine is comically oversized.
 
 ## Why I thought this might work
 
@@ -55,13 +55,13 @@ Every method used the same local [BGE-small retriever](https://huggingface.co/BA
 
 Recall tells us how much of the annotated evidence came back. IoU rewards relevant context and penalizes irrelevant or repeated context. Higher is better.
 
-## The result: bad
+## The result: accurate, but slow
 
 ![All eight strategies compared by top-five IoU and IoU under a shared token cap.](/images/blog/decision-model-chunking/retrieval.png)
 
-Under the shared context budget, Imajev reached **97.37% recall and 7.06% IoU**.
+Under the shared context budget, Imajev reached **97.37% recall and 7.06% IoU**. That recall was the number that made me think there is something here: the decision model almost always kept the relevant evidence retrievable, despite never being trained specifically for this task.
 
-That sounds decent until the cheap methods walk in:
+Then the cheap methods walked in:
 
 | Method | Recall | IoU | Chunking time |
 |---|---:|---:|---:|
@@ -70,7 +70,7 @@ That sounds decent until the cheap methods walk in:
 | Sentence packing | 97.25% | **7.17%** | 0.02 s |
 | Fixed 256 | 98.91% | 6.49% | 0.02 s |
 
-Plain sentence packing had slightly better IoU. Semantic chunking was effectively tied. Both were dramatically faster.
+Plain sentence packing had slightly better IoU. Semantic chunking was effectively tied. Both were dramatically faster. So this is not a benchmark win, but it is a strong zero-shot result from a model doing a job it was never designed around.
 
 At top five chunks, the decision model initially looked much better: **8.58% IoU**, compared with **6.14%** for semantic p95. Then I checked the chunk sizes. Imajev produced 87.5-token chunks on average; semantic p95 produced 180.5-token chunks. Five small chunks and five large chunks are not the same retrieval budget. Once I capped every method by tokens, most of the apparent win disappeared.
 
@@ -88,29 +88,31 @@ This is ingestion time, not query time, so it would not slow every user question
 
 ![Imajev's IoU differences against every baseline, with paired query-bootstrap intervals.](/images/blog/decision-model-chunking/uncertainty.png)
 
-The uncertainty check made the verdict even less exciting. Against semantic p80 and sentence packing, the intervals crossed zero. I cannot honestly claim a real improvement over either one.
+The uncertainty intervals against semantic p80 and sentence packing crossed zero, so I cannot honestly claim a real improvement over either one. What I can claim is that the decision approach stayed competitive while using an unfine-tuned model and a very inefficient inference loop.
 
-The system itself was not broken. It produced **89 lossless chunks**, made reasonable boundary decisions, preserved every source character, passed **15 integrity tests**, and survived an offline replay of all **305 boundaries and 1,792 retrieval records**. It did exactly what I asked. The problem is that what I asked was too expensive for what it returned.
+The system produced **89 lossless chunks**, made reasonable boundary decisions, preserved every source character, passed **15 integrity tests**, and survived an offline replay of all **305 boundaries and 1,792 retrieval records**. It did exactly what I asked. The interesting question is how much of that quality can survive once the model becomes dramatically smaller and faster.
 
-## The useful version of this idea
+## This is where it can get good
 
-I do not think decision-based chunking is dead. I think using a general four-billion-parameter model on every sentence boundary is the wrong implementation.
+The experiment used a general four-billion-parameter decision model with a long instruction on every candidate boundary. It was not fine-tuned on chunking examples, did not reuse the repeated prompt prefix, and was called even when the boundary was obvious. I basically tested the most expensive version first.
 
-A better version would use a **much smaller model trained specifically for APPEND versus SPLIT**. Give it the tail of the current chunk and the next sentence, fine-tune it on real boundary decisions, and make the training set heavy on difficult cases where embedding distance is misleading. A small classifier should be faster, easier to batch, and more consistent than repeatedly asking a general model to reason from a long instruction.
+That is why I see room to grow. A better version would use a **much smaller model trained specifically for APPEND versus SPLIT**. Give it the tail of the current chunk and the next sentence, fine-tune it on real boundary decisions, and make the training set heavy on difficult cases where embedding distance is misleading. A small classifier should be faster, easier to batch, and more consistent than repeatedly asking a general model to reason from a long instruction.
 
 I would also stop calling the model for obvious boundaries. Let fixed rules handle headings and token limits. Let semantic distance handle the easy cases. Call the learned decision model only inside the uncertain middle, where the similarity score cannot confidently say whether the thought continued or changed.
 
-That hybrid approach could keep the part I actually like: a learned boundary decision that sees the relationship between sentences. It would remove the absurd part: waking up a 4B model hundreds of times to compete with sentence packing.
+That hybrid approach could keep the part I actually like: a learned boundary decision that sees the relationship between sentences. It would remove the absurd part: waking up a 4B model hundreds of times to answer a binary question.
 
 To be clear, that is the next hypothesis, not a result from this benchmark. It still needs a labeled dataset, fine-tuning, and the same comparison against cheap baselines.
 
-## What I would use today
+## What I would build next
 
-For this workload, I would use sentence packing or semantic chunking. They are fast, understandable, and scored just as well.
+For production today, I would still use sentence packing or semantic chunking. They are fast, understandable, and scored just as well. But the next experiment is obvious enough that I want to build it.
 
-The experiment was still useful because it killed the lazy version of the idea. The decision model *can* decide where thoughts end. That alone does not make it a good chunker. The result has to be better enough to pay for the thinking, and this one was not.
+I would turn the audited APPEND/SPLIT decisions into training data, add harder human-labeled boundaries, fine-tune a small model, batch the comparisons, and test it under the same token-budget benchmark. The target is not merely to preserve the 97.37% recall. It is to preserve or improve the retrieval quality while shrinking 31 minutes toward seconds.
 
-The benchmark is small: one synthetic chat corpus, one retriever, no human boundary labels, and no answer-generation evaluation. I did not run the other four Chroma corpora or tune the prompt against the final scores. A larger evaluation may move the numbers. It would have to move them quite a lot to erase a 31-minute versus six-second gap.
+The 4B run proved that a model *can* make useful sentence-boundary decisions. It also showed exactly where the waste lives. That is a much better starting point than a vague idea: I now have the labels, failure cases, baselines, graphs, and a number the smaller model has to beat.
+
+The benchmark is small: one synthetic chat corpus, one retriever, no human boundary labels, and no answer-generation evaluation. I did not run the other four Chroma corpora or tune the prompt against the final scores. Also, the 97.37% figure is retrieval recall, not a direct measurement of boundary accuracy. The next model still has plenty to prove. At least now I know what to train it for.
 
 ---
 
