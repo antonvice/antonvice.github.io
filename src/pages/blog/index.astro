@@ -22,8 +22,8 @@ const getPostBadges = (post: BlogPost): string[] => {
   const text = `${post.title} ${post.excerpt}`.toLowerCase();
   const badges = [];
 
-  if (/\b(?:rust|python|swift|code|programming|interview|rag)\b/.test(text)) badges.push('Engineering');
-  if (/transformer|gpt|llm|\bai\b|machine learning|neural|reasoning|cognitive architecture/.test(text)) badges.push('AI');
+  if (/\b(?:rust|python|swift|code|programming|interview|rag|chunking|retrieval)\b/.test(text)) badges.push('Engineering');
+  if (/transformer|gpt|llm|\bai\b|machine learning|neural|reasoning|cognitive architecture|imajev|decision model|\b4b model\b/.test(text)) badges.push('AI');
   if (/philosophy|ethic|future|anthropocentric|browser|first principles|model fragmentation|inner speech|consciousness|free will|the voice/.test(text)) badges.push('Essay');
   if (/clustering|quantization|kan|dbscan|optics/.test(text)) badges.push('Deep Dive');
 
@@ -33,8 +33,8 @@ const getPostTopics = (post: BlogPost): string[] => {
   const text = `${post.title} ${post.excerpt}`.toLowerCase();
   return uniqueTags.filter((tag) => {
     const patterns: Record<string, RegExp> = {
-      AI: /\bai\b|llm|gpt|machine learning|neural|transformer|reasoning|neurosymbolic|model fragmentation/,
-      'Machine Learning': /machine learning|model|clustering|classification|quantization|embedding|kaggle/,
+      AI: /\bai\b|llm|gpt|machine learning|neural|transformer|reasoning|neurosymbolic|model fragmentation|imajev|decision model|\b4b model\b/,
+      'Machine Learning': /machine learning|model|clustering|classification|quantization|embedding|kaggle|chunking|retrieval/,
       'Deep Learning': /deep learning|neural|transformer|gpt|llm|diffusion|kan|embedding/,
       Python: /python|pytorch|dbscan|optics|kaggle|streamlit/,
       GPT: /gpt|llm|transformer/,

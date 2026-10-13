@@ -1,0 +1,1483 @@
+{
+  "scope": "public benchmark adaptation; zero-shot, development evidence; no answer generation",
+  "queries": 56,
+  "methods": {
+    "decision": {
+      "metrics": {
+        "budget1024": {
+          "queries": 56,
+          "recall": 0.9737064353257858,
+          "precision": 0.07118351634118365,
+          "iou": 0.07055496969249883,
+          "unique_iou": 0.07067421972602021,
+          "retrieved_tokens": 932.125,
+          "unique_retrieved_tokens": 930.7678571428571,
+          "full_evidence": 0.9285714285714286,
+          "gold_tokens": 70.23214285714286,
+          "corpora": {
+            "chatlogs": {
+              "recall": 0.9737064353257858,
+              "precision": 0.07118351634118365,
+              "iou": 0.07055496969249883,
+              "unique_iou": 0.07067421972602021,
+              "retrieved_tokens": 932.125,
+              "unique_retrieved_tokens": 930.7678571428571,
+              "full_evidence": 0.9285714285714286,
+              "gold_tokens": 70.23214285714286
+            }
+          }
+        },
+        "k1": {
+          "queries": 56,
+          "recall": 0.720384629139869,
+          "precision": 0.32097117423299476,
+          "iou": 0.30415307328540386,
+          "unique_iou": 0.30415307328540386,
+          "retrieved_tokens": 155.85714285714286,
+          "unique_retrieved_tokens": 155.85714285714286,
+          "full_evidence": 0.6607142857142857,
+          "gold_tokens": 70.23214285714286,
+          "corpora": {
+            "chatlogs": {
+              "recall": 0.720384629139869,
+              "precision": 0.32097117423299476,
+              "iou": 0.30415307328540386,
+              "unique_iou": 0.30415307328540386,
+              "retrieved_tokens": 155.85714285714286,
+              "unique_retrieved_tokens": 155.85714285714286,
+              "full_evidence": 0.6607142857142857,
+              "gold_tokens": 70.23214285714286
+            }
+          }
+        },
+        "k10": {
+          "queries": 56,
+          "recall": 0.9943827025201589,
+          "precision": 0.04735323891417636,
+          "iou": 0.04725916739097509,
+          "unique_iou": 0.04735207719924565,
+          "retrieved_tokens": 1517.625,
+          "unique_retrieved_tokens": 1514.6607142857142,
+          "full_evidence": 0.9464285714285714,
+          "gold_tokens": 70.23214285714286,
+          "corpora": {
+            "chatlogs": {
+              "recall": 0.9943827025201589,
+              "precision": 0.04735323891417636,
+              "iou": 0.04725916739097509,
+              "unique_iou": 0.04735207719924565,
+              "retrieved_tokens": 1517.625,
+              "unique_retrieved_tokens": 1514.6607142857142,
+              "full_evidence": 0.9464285714285714,
+              "gold_tokens": 70.23214285714286
+            }
+          }
+        },
+        "k5": {
+          "queries": 56,
+          "recall": 0.9737064353257858,
+          "precision": 0.08685544041117617,
+          "iou": 0.0857515888322161,
+          "unique_iou": 0.08587478028610127,
+          "retrieved_tokens": 810.5,
+          "unique_retrieved_tokens": 809.4285714285714,
+          "full_evidence": 0.9285714285714286,
+          "gold_tokens": 70.23214285714286,
+          "corpora": {
+            "chatlogs": {
+              "recall": 0.9737064353257858,
+              "precision": 0.08685544041117617,
+              "iou": 0.0857515888322161,
+              "unique_iou": 0.08587478028610127,
+              "retrieved_tokens": 810.5,
+              "unique_retrieved_tokens": 809.4285714285714,
+              "full_evidence": 0.9285714285714286,
+              "gold_tokens": 70.23214285714286
+            }
+          }
+        }
+      },
+      "chunks": 89,
+      "mean_chunk_tokens": 87.47191011235955,
+      "p50_chunk_tokens": 57.0,
+      "p95_chunk_tokens": 248.6,
+      "chunking_s": 1859.2951869142125,
+      "index_s": 3.1795043330057524
+    },
+    "fixed": {
+      "metrics": {
+        "budget1024": {
+          "queries": 56,
+          "recall": 0.989111780034145,
+          "precision": 0.0653716158386284,
+          "iou": 0.06490852445994184,
+          "unique_iou": 0.06490852445994184,
+          "retrieved_tokens": 1016.5357142857143,
+          "unique_retrieved_tokens": 1016.5357142857143,
+          "full_evidence": 0.9642857142857143,
+          "gold_tokens": 70.23214285714286,
+          "corpora": {
+            "chatlogs": {
+              "recall": 0.989111780034145,
+              "precision": 0.0653716158386284,
+              "iou": 0.06490852445994184,
+              "unique_iou": 0.06490852445994184,
+              "retrieved_tokens": 1016.5357142857143,
+              "unique_retrieved_tokens": 1016.5357142857143,
+              "full_evidence": 0.9642857142857143,
+              "gold_tokens": 70.23214285714286
+            }
+          }
+        },
+        "k1": {
+          "queries": 56,
+          "recall": 0.5730771992659748,
+          "precision": 0.14397321428571427,
+          "iou": 0.131649590593001,
+          "unique_iou": 0.131649590593001,
+          "retrieved_tokens": 256.0,
+          "unique_retrieved_tokens": 256.0,
+          "full_evidence": 0.39285714285714285,
+          "gold_tokens": 70.23214285714286,
+          "corpora": {
+            "chatlogs": {
+              "recall": 0.5730771992659748,
+              "precision": 0.14397321428571427,
+              "iou": 0.131649590593001,
+              "unique_iou": 0.131649590593001,
+              "retrieved_tokens": 256.0,
+              "unique_retrieved_tokens": 256.0,
+              "full_evidence": 0.39285714285714285,
+              "gold_tokens": 70.23214285714286
+            }
+          }
+        },
+        "k10": {
+          "queries": 56,
+          "recall": 1.0,
+          "precision": 0.027914392550472445,
+          "iou": 0.027914392550472445,
+          "unique_iou": 0.027914392550472445,
+          "retrieved_tokens": 2518.9464285714284,
+          "unique_retrieved_tokens": 2518.9464285714284,
+          "full_evidence": 1.0,
+          "gold_tokens": 70.23214285714286,
+          "corpora": {
+            "chatlogs": {
+              "recall": 1.0,
+              "precision": 0.027914392550472445,
+              "iou": 0.027914392550472445,
+              "unique_iou": 0.027914392550472445,
+              "retrieved_tokens": 2518.9464285714284,
+              "unique_retrieved_tokens": 2518.9464285714284,
+              "full_evidence": 1.0,
+              "gold_tokens": 70.23214285714286
+            }
+          }
+        },
+        "k5": {
+          "queries": 56,
+          "recall": 0.9993087557603687,
+          "precision": 0.055068290336968126,
+          "iou": 0.055058591971327155,
+          "unique_iou": 0.055058591971327155,
+          "retrieved_tokens": 1272.5357142857142,
+          "unique_retrieved_tokens": 1272.5357142857142,
+          "full_evidence": 0.9821428571428571,
+          "gold_tokens": 70.23214285714286,
+          "corpora": {
+            "chatlogs": {
+              "recall": 0.9993087557603687,
+              "precision": 0.055068290336968126,
+              "iou": 0.055058591971327155,
+              "unique_iou": 0.055058591971327155,
+              "retrieved_tokens": 1272.5357142857142,
+              "unique_retrieved_tokens": 1272.5357142857142,
+              "full_evidence": 0.9821428571428571,
+              "gold_tokens": 70.23214285714286
+            }
+          }
+        }
+      },
+      "chunks": 31,
+      "mean_chunk_tokens": 249.25806451612902,
+      "p50_chunk_tokens": 256.0,
+      "p95_chunk_tokens": 256.0,
+      "chunking_s": 0.017046541965100914,
+      "index_s": 2.052442707994487
+    },
+    "fixed_half": {
+      "metrics": {
+        "budget1024": {
+          "queries": 56,
+          "recall": 0.9930919166570392,
+          "precision": 0.06654459388847334,
+          "iou": 0.06609271751464037,
+          "unique_iou": 0.06609271751464037,
+          "retrieved_tokens": 1021.1071428571429,
+          "unique_retrieved_tokens": 1021.1071428571429,
+          "full_evidence": 0.9464285714285714,
+          "gold_tokens": 70.23214285714286,
+          "corpora": {
+            "chatlogs": {
+              "recall": 0.9930919166570392,
+              "precision": 0.06654459388847334,
+              "iou": 0.06609271751464037,
+              "unique_iou": 0.06609271751464037,
+              "retrieved_tokens": 1021.1071428571429,
+              "unique_retrieved_tokens": 1021.1071428571429,
+              "full_evidence": 0.9464285714285714,
+              "gold_tokens": 70.23214285714286
+            }
+          }
+        },
+        "k1": {
+          "queries": 56,
+          "recall": 0.5888920911505978,
+          "precision": 0.27901785714285715,
+          "iou": 0.24528423792556692,
+          "unique_iou": 0.24528423792556692,
+          "retrieved_tokens": 128.0,
+          "unique_retrieved_tokens": 128.0,
+          "full_evidence": 0.2857142857142857,
+          "gold_tokens": 70.23214285714286,
+          "corpora": {
+            "chatlogs": {
+              "recall": 0.5888920911505978,
+              "precision": 0.27901785714285715,
+              "iou": 0.24528423792556692,
+              "unique_iou": 0.24528423792556692,
+              "retrieved_tokens": 128.0,
+              "unique_retrieved_tokens": 128.0,
+              "full_evidence": 0.2857142857142857,
+              "gold_tokens": 70.23214285714286
+            }
+          }
+        },
+        "k10": {
+          "queries": 56,
+          "recall": 0.9990111367127497,
+          "precision": 0.05486922230579055,
+          "iou": 0.054858881393171764,
+          "unique_iou": 0.054858881393171764,
+          "retrieved_tokens": 1277.107142857143,
+          "unique_retrieved_tokens": 1277.107142857143,
+          "full_evidence": 0.9642857142857143,
+          "gold_tokens": 70.23214285714286,
+          "corpora": {
+            "chatlogs": {
+              "recall": 0.9990111367127497,
+              "precision": 0.05486922230579055,
+              "iou": 0.054858881393171764,
+              "unique_iou": 0.054858881393171764,
+              "retrieved_tokens": 1277.107142857143,
+              "unique_retrieved_tokens": 1277.107142857143,
+              "full_evidence": 0.9642857142857143,
+              "gold_tokens": 70.23214285714286
+            }
+          }
+        },
+        "k5": {
+          "queries": 56,
+          "recall": 0.9227925930093682,
+          "precision": 0.09478396331139792,
+          "iou": 0.09319651175916634,
+          "unique_iou": 0.09319651175916634,
+          "retrieved_tokens": 638.5535714285714,
+          "unique_retrieved_tokens": 638.5535714285714,
+          "full_evidence": 0.75,
+          "gold_tokens": 70.23214285714286,
+          "corpora": {
+            "chatlogs": {
+              "recall": 0.9227925930093682,
+              "precision": 0.09478396331139792,
+              "iou": 0.09319651175916634,
+              "unique_iou": 0.09319651175916634,
+              "retrieved_tokens": 638.5535714285714,
+              "unique_retrieved_tokens": 638.5535714285714,
+              "full_evidence": 0.75,
+              "gold_tokens": 70.23214285714286
+            }
+          }
+        }
+      },
+      "chunks": 61,
+      "mean_chunk_tokens": 126.67213114754098,
+      "p50_chunk_tokens": 128.0,
+      "p95_chunk_tokens": 128.0,
+      "chunking_s": 0.015748166013509035,
+      "index_s": 2.246796124964021
+    },
+    "fixed_overlap": {
+      "metrics": {
+        "budget1024": {
+          "queries": 56,
+          "recall": 0.9856225094123445,
+          "precision": 0.066262480992428,
+          "iou": 0.06582007643180968,
+          "unique_iou": 0.07618455398943838,
+          "retrieved_tokens": 1023.3928571428571,
+          "unique_retrieved_tokens": 885.1071428571429,
+          "full_evidence": 0.9285714285714286,
+          "gold_tokens": 70.23214285714286,
+          "corpora": {
+            "chatlogs": {
+              "recall": 0.9856225094123445,
+              "precision": 0.066262480992428,
+              "iou": 0.06582007643180968,
+              "unique_iou": 0.07618455398943838,
+              "retrieved_tokens": 1023.3928571428571,
+              "unique_retrieved_tokens": 885.1071428571429,
+              "full_evidence": 0.9285714285714286,
+              "gold_tokens": 70.23214285714286
+            }
+          }
+        },
+        "k1": {
+          "queries": 56,
+          "recall": 0.6861382461617144,
+          "precision": 0.16789899553571427,
+          "iou": 0.1610745176639157,
+          "unique_iou": 0.1610745176639157,
+          "retrieved_tokens": 256.0,
+          "unique_retrieved_tokens": 256.0,
+          "full_evidence": 0.48214285714285715,
+          "gold_tokens": 70.23214285714286,
+          "corpora": {
+            "chatlogs": {
+              "recall": 0.6861382461617144,
+              "precision": 0.16789899553571427,
+              "iou": 0.1610745176639157,
+              "unique_iou": 0.1610745176639157,
+              "retrieved_tokens": 256.0,
+              "unique_retrieved_tokens": 256.0,
+              "full_evidence": 0.48214285714285715,
+              "gold_tokens": 70.23214285714286
+            }
+          }
+        },
+        "k10": {
+          "queries": 56,
+          "recall": 1.0,
+          "precision": 0.02747476660370204,
+          "iou": 0.02747476660370204,
+          "unique_iou": 0.03359684560132609,
+          "retrieved_tokens": 2556.0535714285716,
+          "unique_retrieved_tokens": 2095.4821428571427,
+          "full_evidence": 1.0,
+          "gold_tokens": 70.23214285714286,
+          "corpora": {
+            "chatlogs": {
+              "recall": 1.0,
+              "precision": 0.02747476660370204,
+              "iou": 0.02747476660370204,
+              "unique_iou": 0.03359684560132609,
+              "retrieved_tokens": 2556.0535714285716,
+              "unique_retrieved_tokens": 2095.4821428571427,
+              "full_evidence": 1.0,
+              "gold_tokens": 70.23214285714286
+            }
+          }
+        },
+        "k5": {
+          "queries": 56,
+          "recall": 0.9957222443294867,
+          "precision": 0.05368861386226106,
+          "iou": 0.05344883416789795,
+          "unique_iou": 0.06249231180798563,
+          "retrieved_tokens": 1279.392857142857,
+          "unique_retrieved_tokens": 1097.6785714285713,
+          "full_evidence": 0.9821428571428571,
+          "gold_tokens": 70.23214285714286,
+          "corpora": {
+            "chatlogs": {
+              "recall": 0.9957222443294867,
+              "precision": 0.05368861386226106,
+              "iou": 0.05344883416789795,
+              "unique_iou": 0.06249231180798563,
+              "retrieved_tokens": 1279.392857142857,
+              "unique_retrieved_tokens": 1097.6785714285713,
+              "full_evidence": 0.9821428571428571,
+              "gold_tokens": 70.23214285714286
+            }
+          }
+        }
+      },
+      "chunks": 40,
+      "mean_chunk_tokens": 255.575,
+      "p50_chunk_tokens": 256.0,
+      "p95_chunk_tokens": 256.0,
+      "chunking_s": 0.01722037501167506,
+      "index_s": 2.585215957951732
+    },
+    "recursive_overlap": {
+      "metrics": {
+        "budget1024": {
+          "queries": 56,
+          "recall": 0.9912251910503339,
+          "precision": 0.07011636742612214,
+          "iou": 0.0695982299710022,
+          "unique_iou": 0.0791457992107955,
+          "retrieved_tokens": 968.3214285714286,
+          "unique_retrieved_tokens": 854.8392857142857,
+          "full_evidence": 0.9642857142857143,
+          "gold_tokens": 70.23214285714286,
+          "corpora": {
+            "chatlogs": {
+              "recall": 0.9912251910503339,
+              "precision": 0.07011636742612214,
+              "iou": 0.0695982299710022,
+              "unique_iou": 0.0791457992107955,
+              "retrieved_tokens": 968.3214285714286,
+              "unique_retrieved_tokens": 854.8392857142857,
+              "full_evidence": 0.9642857142857143,
+              "gold_tokens": 70.23214285714286
+            }
+          }
+        },
+        "k1": {
+          "queries": 56,
+          "recall": 0.7417199326414311,
+          "precision": 0.2096171791235205,
+          "iou": 0.19869904579500292,
+          "unique_iou": 0.19869904579500292,
+          "retrieved_tokens": 236.55357142857142,
+          "unique_retrieved_tokens": 236.55357142857142,
+          "full_evidence": 0.625,
+          "gold_tokens": 70.23214285714286,
+          "corpora": {
+            "chatlogs": {
+              "recall": 0.7417199326414311,
+              "precision": 0.2096171791235205,
+              "iou": 0.19869904579500292,
+              "unique_iou": 0.19869904579500292,
+              "retrieved_tokens": 236.55357142857142,
+              "unique_retrieved_tokens": 236.55357142857142,
+              "full_evidence": 0.625,
+              "gold_tokens": 70.23214285714286
+            }
+          }
+        },
+        "k10": {
+          "queries": 56,
+          "recall": 1.0,
+          "precision": 0.02952236774423072,
+          "iou": 0.02952236774423072,
+          "unique_iou": 0.034755559603421804,
+          "retrieved_tokens": 2376.3214285714284,
+          "unique_retrieved_tokens": 2022.982142857143,
+          "full_evidence": 1.0,
+          "gold_tokens": 70.23214285714286,
+          "corpora": {
+            "chatlogs": {
+              "recall": 1.0,
+              "precision": 0.02952236774423072,
+              "iou": 0.02952236774423072,
+              "unique_iou": 0.034755559603421804,
+              "retrieved_tokens": 2376.3214285714284,
+              "unique_retrieved_tokens": 2022.982142857143,
+              "full_evidence": 1.0,
+              "gold_tokens": 70.23214285714286
+            }
+          }
+        },
+        "k5": {
+          "queries": 56,
+          "recall": 1.0,
+          "precision": 0.05868847681671563,
+          "iou": 0.05868847681671563,
+          "unique_iou": 0.0677524353179483,
+          "retrieved_tokens": 1196.2142857142858,
+          "unique_retrieved_tokens": 1043.75,
+          "full_evidence": 1.0,
+          "gold_tokens": 70.23214285714286,
+          "corpora": {
+            "chatlogs": {
+              "recall": 1.0,
+              "precision": 0.05868847681671563,
+              "iou": 0.05868847681671563,
+              "unique_iou": 0.0677524353179483,
+              "retrieved_tokens": 1196.2142857142858,
+              "unique_retrieved_tokens": 1043.75,
+              "full_evidence": 1.0,
+              "gold_tokens": 70.23214285714286
+            }
+          }
+        }
+      },
+      "chunks": 45,
+      "mean_chunk_tokens": 212.51111111111112,
+      "p50_chunk_tokens": 242.0,
+      "p95_chunk_tokens": 255.0,
+      "chunking_s": 0.260208124993369,
+      "index_s": 2.837933917006012
+    },
+    "semantic_80": {
+      "metrics": {
+        "budget1024": {
+          "queries": 56,
+          "recall": 0.9663215616820214,
+          "precision": 0.07108701247489811,
+          "iou": 0.07095764804678442,
+          "unique_iou": 0.0711702743845894,
+          "retrieved_tokens": 949.9107142857143,
+          "unique_retrieved_tokens": 947.125,
+          "full_evidence": 0.9285714285714286,
+          "gold_tokens": 70.23214285714286,
+          "corpora": {
+            "chatlogs": {
+              "recall": 0.9663215616820214,
+              "precision": 0.07108701247489811,
+              "iou": 0.07095764804678442,
+              "unique_iou": 0.0711702743845894,
+              "retrieved_tokens": 949.9107142857143,
+              "unique_retrieved_tokens": 947.125,
+              "full_evidence": 0.9285714285714286,
+              "gold_tokens": 70.23214285714286
+            }
+          }
+        },
+        "k1": {
+          "queries": 56,
+          "recall": 0.6562176891421928,
+          "precision": 0.24676858965095555,
+          "iou": 0.22298138481612698,
+          "unique_iou": 0.22298138481612698,
+          "retrieved_tokens": 175.69642857142858,
+          "unique_retrieved_tokens": 175.69642857142858,
+          "full_evidence": 0.5535714285714286,
+          "gold_tokens": 70.23214285714286,
+          "corpora": {
+            "chatlogs": {
+              "recall": 0.6562176891421928,
+              "precision": 0.24676858965095555,
+              "iou": 0.22298138481612698,
+              "unique_iou": 0.22298138481612698,
+              "retrieved_tokens": 175.69642857142858,
+              "unique_retrieved_tokens": 175.69642857142858,
+              "full_evidence": 0.5535714285714286,
+              "gold_tokens": 70.23214285714286
+            }
+          }
+        },
+        "k10": {
+          "queries": 56,
+          "recall": 0.9841787045391642,
+          "precision": 0.04414697810030418,
+          "iou": 0.044051712900054336,
+          "unique_iou": 0.04419944237118888,
+          "retrieved_tokens": 1615.0357142857142,
+          "unique_retrieved_tokens": 1610.0,
+          "full_evidence": 0.9464285714285714,
+          "gold_tokens": 70.23214285714286,
+          "corpora": {
+            "chatlogs": {
+              "recall": 0.9841787045391642,
+              "precision": 0.04414697810030418,
+              "iou": 0.044051712900054336,
+              "unique_iou": 0.04419944237118888,
+              "retrieved_tokens": 1615.0357142857142,
+              "unique_retrieved_tokens": 1610.0,
+              "full_evidence": 0.9464285714285714,
+              "gold_tokens": 70.23214285714286
+            }
+          }
+        },
+        "k5": {
+          "queries": 56,
+          "recall": 0.9539228479716503,
+          "precision": 0.08009880012494011,
+          "iou": 0.07965621834029313,
+          "unique_iou": 0.07986820884756367,
+          "retrieved_tokens": 873.625,
+          "unique_retrieved_tokens": 871.5357142857143,
+          "full_evidence": 0.9107142857142857,
+          "gold_tokens": 70.23214285714286,
+          "corpora": {
+            "chatlogs": {
+              "recall": 0.9539228479716503,
+              "precision": 0.08009880012494011,
+              "iou": 0.07965621834029313,
+              "unique_iou": 0.07986820884756367,
+              "retrieved_tokens": 873.625,
+              "unique_retrieved_tokens": 871.5357142857143,
+              "full_evidence": 0.9107142857142857,
+              "gold_tokens": 70.23214285714286
+            }
+          }
+        }
+      },
+      "chunks": 76,
+      "mean_chunk_tokens": 102.51315789473684,
+      "p50_chunk_tokens": 66.0,
+      "p95_chunk_tokens": 246.25,
+      "chunking_s": 6.005104334035423,
+      "index_s": 2.5680665000109
+    },
+    "semantic_95": {
+      "metrics": {
+        "budget1024": {
+          "queries": 56,
+          "recall": 0.981258604583234,
+          "precision": 0.068508743202273,
+          "iou": 0.06785825619591672,
+          "unique_iou": 0.06801312220238727,
+          "retrieved_tokens": 957.375,
+          "unique_retrieved_tokens": 955.2321428571429,
+          "full_evidence": 0.9464285714285714,
+          "gold_tokens": 70.23214285714286,
+          "corpora": {
+            "chatlogs": {
+              "recall": 0.981258604583234,
+              "precision": 0.068508743202273,
+              "iou": 0.06785825619591672,
+              "unique_iou": 0.06801312220238727,
+              "retrieved_tokens": 957.375,
+              "unique_retrieved_tokens": 955.2321428571429,
+              "full_evidence": 0.9464285714285714,
+              "gold_tokens": 70.23214285714286
+            }
+          }
+        },
+        "k1": {
+          "queries": 56,
+          "recall": 0.7918640804044441,
+          "precision": 0.2415235087879333,
+          "iou": 0.22796939089026788,
+          "unique_iou": 0.22796939089026788,
+          "retrieved_tokens": 229.53571428571428,
+          "unique_retrieved_tokens": 229.53571428571428,
+          "full_evidence": 0.6964285714285714,
+          "gold_tokens": 70.23214285714286,
+          "corpora": {
+            "chatlogs": {
+              "recall": 0.7918640804044441,
+              "precision": 0.2415235087879333,
+              "iou": 0.22796939089026788,
+              "unique_iou": 0.22796939089026788,
+              "retrieved_tokens": 229.53571428571428,
+              "unique_retrieved_tokens": 229.53571428571428,
+              "full_evidence": 0.6964285714285714,
+              "gold_tokens": 70.23214285714286
+            }
+          }
+        },
+        "k10": {
+          "queries": 56,
+          "recall": 0.9966589861751152,
+          "precision": 0.03249864911655392,
+          "iou": 0.032464506404727825,
+          "unique_iou": 0.032569609746590074,
+          "retrieved_tokens": 2183.625,
+          "unique_retrieved_tokens": 2177.3035714285716,
+          "full_evidence": 0.9821428571428571,
+          "gold_tokens": 70.23214285714286,
+          "corpora": {
+            "chatlogs": {
+              "recall": 0.9966589861751152,
+              "precision": 0.03249864911655392,
+              "iou": 0.032464506404727825,
+              "unique_iou": 0.032569609746590074,
+              "retrieved_tokens": 2183.625,
+              "unique_retrieved_tokens": 2177.3035714285716,
+              "full_evidence": 0.9821428571428571,
+              "gold_tokens": 70.23214285714286
+            }
+          }
+        },
+        "k5": {
+          "queries": 56,
+          "recall": 0.9872250239109643,
+          "precision": 0.06158718103981812,
+          "iou": 0.061442561989598084,
+          "unique_iou": 0.06159345608210699,
+          "retrieved_tokens": 1136.625,
+          "unique_retrieved_tokens": 1134.125,
+          "full_evidence": 0.9642857142857143,
+          "gold_tokens": 70.23214285714286,
+          "corpora": {
+            "chatlogs": {
+              "recall": 0.9872250239109643,
+              "precision": 0.06158718103981812,
+              "iou": 0.061442561989598084,
+              "unique_iou": 0.06159345608210699,
+              "retrieved_tokens": 1136.625,
+              "unique_retrieved_tokens": 1134.125,
+              "full_evidence": 0.9642857142857143,
+              "gold_tokens": 70.23214285714286
+            }
+          }
+        }
+      },
+      "chunks": 43,
+      "mean_chunk_tokens": 180.53488372093022,
+      "p50_chunk_tokens": 232.0,
+      "p95_chunk_tokens": 252.9,
+      "chunking_s": 5.309251459024381,
+      "index_s": 1.9776862919679843
+    },
+    "sentence_pack": {
+      "metrics": {
+        "budget1024": {
+          "queries": 56,
+          "recall": 0.9725453837295942,
+          "precision": 0.07175216384772787,
+          "iou": 0.0716752118850892,
+          "unique_iou": 0.07183494086888609,
+          "retrieved_tokens": 952.75,
+          "unique_retrieved_tokens": 950.8035714285714,
+          "full_evidence": 0.9464285714285714,
+          "gold_tokens": 70.23214285714286,
+          "corpora": {
+            "chatlogs": {
+              "recall": 0.9725453837295942,
+              "precision": 0.07175216384772787,
+              "iou": 0.0716752118850892,
+              "unique_iou": 0.07183494086888609,
+              "retrieved_tokens": 952.75,
+              "unique_retrieved_tokens": 950.8035714285714,
+              "full_evidence": 0.9464285714285714,
+              "gold_tokens": 70.23214285714286
+            }
+          }
+        },
+        "k1": {
+          "queries": 56,
+          "recall": 0.7115723387780104,
+          "precision": 0.18859482756615753,
+          "iou": 0.17556395110960474,
+          "unique_iou": 0.17556395110960474,
+          "retrieved_tokens": 240.46428571428572,
+          "unique_retrieved_tokens": 240.46428571428572,
+          "full_evidence": 0.5714285714285714,
+          "gold_tokens": 70.23214285714286,
+          "corpora": {
+            "chatlogs": {
+              "recall": 0.7115723387780104,
+              "precision": 0.18859482756615753,
+              "iou": 0.17556395110960474,
+              "unique_iou": 0.17556395110960474,
+              "retrieved_tokens": 240.46428571428572,
+              "unique_retrieved_tokens": 240.46428571428572,
+              "full_evidence": 0.5714285714285714,
+              "gold_tokens": 70.23214285714286
+            }
+          }
+        },
+        "k10": {
+          "queries": 56,
+          "recall": 1.0,
+          "precision": 0.029448196279047618,
+          "iou": 0.029448196279047618,
+          "unique_iou": 0.029536177151042998,
+          "retrieved_tokens": 2384.2678571428573,
+          "unique_retrieved_tokens": 2377.285714285714,
+          "full_evidence": 1.0,
+          "gold_tokens": 70.23214285714286,
+          "corpora": {
+            "chatlogs": {
+              "recall": 1.0,
+              "precision": 0.029448196279047618,
+              "iou": 0.029448196279047618,
+              "unique_iou": 0.029536177151042998,
+              "retrieved_tokens": 2384.2678571428573,
+              "unique_retrieved_tokens": 2377.285714285714,
+              "full_evidence": 1.0,
+              "gold_tokens": 70.23214285714286
+            }
+          }
+        },
+        "k5": {
+          "queries": 56,
+          "recall": 1.0,
+          "precision": 0.05885480577800633,
+          "iou": 0.05885480577800633,
+          "unique_iou": 0.058984846479945056,
+          "retrieved_tokens": 1196.607142857143,
+          "unique_retrieved_tokens": 1194.0,
+          "full_evidence": 1.0,
+          "gold_tokens": 70.23214285714286,
+          "corpora": {
+            "chatlogs": {
+              "recall": 1.0,
+              "precision": 0.05885480577800633,
+              "iou": 0.05885480577800633,
+              "unique_iou": 0.058984846479945056,
+              "retrieved_tokens": 1196.607142857143,
+              "unique_retrieved_tokens": 1194.0,
+              "full_evidence": 1.0,
+              "gold_tokens": 70.23214285714286
+            }
+          }
+        }
+      },
+      "chunks": 33,
+      "mean_chunk_tokens": 234.96969696969697,
+      "p50_chunk_tokens": 244.0,
+      "p95_chunk_tokens": 253.8,
+      "chunking_s": 0.021688582957722247,
+      "index_s": 1.7334619169705547
+    }
+  },
+  "decision_minus_baseline": {
+    "fixed": {
+      "budget1024": {
+        "recall": {
+          "delta": -0.015405344708359145,
+          "paired_query_bootstrap_ci95": [
+            -0.04673988120841957,
+            0.0037803422204536414
+          ]
+        },
+        "precision": {
+          "delta": 0.005811900502555256,
+          "paired_query_bootstrap_ci95": [
+            0.002337051352529077,
+            0.008916737370095964
+          ]
+        },
+        "iou": {
+          "delta": 0.005646445232556981,
+          "paired_query_bootstrap_ci95": [
+            0.002254548418266062,
+            0.008620834754297054
+          ]
+        }
+      },
+      "k1": {
+        "recall": {
+          "delta": 0.1473074298738941,
+          "paired_query_bootstrap_ci95": [
+            -0.0028939240540736435,
+            0.2996773206840456
+          ]
+        },
+        "precision": {
+          "delta": 0.17699795994728046,
+          "paired_query_bootstrap_ci95": [
+            0.1026325755812917,
+            0.25305850317253814
+          ]
+        },
+        "iou": {
+          "delta": 0.17250348269240284,
+          "paired_query_bootstrap_ci95": [
+            0.09982243860067977,
+            0.24773089672131365
+          ]
+        }
+      },
+      "k10": {
+        "recall": {
+          "delta": -0.005617297479841077,
+          "paired_query_bootstrap_ci95": [
+            -0.015244308479886922,
+            0.0
+          ]
+        },
+        "precision": {
+          "delta": 0.01943884636370391,
+          "paired_query_bootstrap_ci95": [
+            0.014901786963076494,
+            0.024383506333943008
+          ]
+        },
+        "iou": {
+          "delta": 0.019344774840502652,
+          "paired_query_bootstrap_ci95": [
+            0.01487109872759748,
+            0.024197982372183468
+          ]
+        }
+      },
+      "k5": {
+        "recall": {
+          "delta": -0.02560232043458278,
+          "paired_query_bootstrap_ci95": [
+            -0.060919593996837114,
+            0.0
+          ]
+        },
+        "precision": {
+          "delta": 0.03178715007420803,
+          "paired_query_bootstrap_ci95": [
+            0.02451162917461443,
+            0.039962377211634086
+          ]
+        },
+        "iou": {
+          "delta": 0.03069299686088896,
+          "paired_query_bootstrap_ci95": [
+            0.022811141431596307,
+            0.03928820410816012
+          ]
+        }
+      }
+    },
+    "fixed_half": {
+      "budget1024": {
+        "recall": {
+          "delta": -0.019385481331253427,
+          "paired_query_bootstrap_ci95": [
+            -0.050514150188012676,
+            0.00029761904761904857
+          ]
+        },
+        "precision": {
+          "delta": 0.004638922452710316,
+          "paired_query_bootstrap_ci95": [
+            0.0016358482533324456,
+            0.00724050841991568
+          ]
+        },
+        "iou": {
+          "delta": 0.004462252177858464,
+          "paired_query_bootstrap_ci95": [
+            0.0012434554484963176,
+            0.007229711594109226
+          ]
+        }
+      },
+      "k1": {
+        "recall": {
+          "delta": 0.13149253798927105,
+          "paired_query_bootstrap_ci95": [
+            -0.011655336782598377,
+            0.2674392786574113
+          ]
+        },
+        "precision": {
+          "delta": 0.04195331709013762,
+          "paired_query_bootstrap_ci95": [
+            -0.035716239402312895,
+            0.12108163100955599
+          ]
+        },
+        "iou": {
+          "delta": 0.05886883535983689,
+          "paired_query_bootstrap_ci95": [
+            -0.01729577371181296,
+            0.13646897711131642
+          ]
+        }
+      },
+      "k10": {
+        "recall": {
+          "delta": -0.004628434192590692,
+          "paired_query_bootstrap_ci95": [
+            -0.01451532025739414,
+            0.0012864823348694332
+          ]
+        },
+        "precision": {
+          "delta": -0.0075159833916141885,
+          "paired_query_bootstrap_ci95": [
+            -0.009914856419479465,
+            -0.005087181886229632
+          ]
+        },
+        "iou": {
+          "delta": -0.007599714002196671,
+          "paired_query_bootstrap_ci95": [
+            -0.010116298319313547,
+            -0.005159831983990389
+          ]
+        }
+      },
+      "k5": {
+        "recall": {
+          "delta": 0.05091384231641765,
+          "paired_query_bootstrap_ci95": [
+            0.0030233174627387134,
+            0.10982870383293238
+          ]
+        },
+        "precision": {
+          "delta": -0.007928522900221752,
+          "paired_query_bootstrap_ci95": [
+            -0.014927249421616974,
+            -0.001137525279407919
+          ]
+        },
+        "iou": {
+          "delta": -0.007444922926950216,
+          "paired_query_bootstrap_ci95": [
+            -0.01454645118077357,
+            -0.0005651987620099398
+          ]
+        }
+      }
+    },
+    "fixed_overlap": {
+      "budget1024": {
+        "recall": {
+          "delta": -0.011916074086558688,
+          "paired_query_bootstrap_ci95": [
+            -0.04457816875850172,
+            0.014479788825497898
+          ]
+        },
+        "precision": {
+          "delta": 0.004921035348755648,
+          "paired_query_bootstrap_ci95": [
+            0.0010491235215708528,
+            0.008337893647332175
+          ]
+        },
+        "iou": {
+          "delta": 0.004734893260689147,
+          "paired_query_bootstrap_ci95": [
+            0.0005190081011199404,
+            0.008535118203213761
+          ]
+        }
+      },
+      "k1": {
+        "recall": {
+          "delta": 0.03424638297815458,
+          "paired_query_bootstrap_ci95": [
+            -0.10538439374659561,
+            0.1671481687498772
+          ]
+        },
+        "precision": {
+          "delta": 0.15307217869728046,
+          "paired_query_bootstrap_ci95": [
+            0.09370919130542721,
+            0.21451996746543045
+          ]
+        },
+        "iou": {
+          "delta": 0.14307855562148813,
+          "paired_query_bootstrap_ci95": [
+            0.08391760178696883,
+            0.2051298982335674
+          ]
+        }
+      },
+      "k10": {
+        "recall": {
+          "delta": -0.005617297479841077,
+          "paired_query_bootstrap_ci95": [
+            -0.015244308479886922,
+            0.0
+          ]
+        },
+        "precision": {
+          "delta": 0.019878472310474318,
+          "paired_query_bootstrap_ci95": [
+            0.015376695821208927,
+            0.024830851900863846
+          ]
+        },
+        "iou": {
+          "delta": 0.019784400787273056,
+          "paired_query_bootstrap_ci95": [
+            0.015349284452002551,
+            0.024661441776430863
+          ]
+        }
+      },
+      "k5": {
+        "recall": {
+          "delta": -0.022015809003700787,
+          "paired_query_bootstrap_ci95": [
+            -0.05352182399663709,
+            -0.0006738544474393529
+          ]
+        },
+        "precision": {
+          "delta": 0.0331668265489151,
+          "paired_query_bootstrap_ci95": [
+            0.025556764279887543,
+            0.041434417120942826
+          ]
+        },
+        "iou": {
+          "delta": 0.03230275466431816,
+          "paired_query_bootstrap_ci95": [
+            0.02496691031842294,
+            0.040345566031003255
+          ]
+        }
+      }
+    },
+    "recursive_overlap": {
+      "budget1024": {
+        "recall": {
+          "delta": -0.017518755724548002,
+          "paired_query_bootstrap_ci95": [
+            -0.04881317918250877,
+            0.003074886502595266
+          ]
+        },
+        "precision": {
+          "delta": 0.0010671489150615155,
+          "paired_query_bootstrap_ci95": [
+            -0.002125772071502509,
+            0.004057924930695943
+          ]
+        },
+        "iou": {
+          "delta": 0.0009567397214966096,
+          "paired_query_bootstrap_ci95": [
+            -0.0023586482807293322,
+            0.004076134813948376
+          ]
+        }
+      },
+      "k1": {
+        "recall": {
+          "delta": -0.021335303501562153,
+          "paired_query_bootstrap_ci95": [
+            -0.1386032404514844,
+            0.09205486154576153
+          ]
+        },
+        "precision": {
+          "delta": 0.11135399510947429,
+          "paired_query_bootstrap_ci95": [
+            0.05130303935294977,
+            0.17512506586427576
+          ]
+        },
+        "iou": {
+          "delta": 0.10545402749040088,
+          "paired_query_bootstrap_ci95": [
+            0.04538490753215193,
+            0.16790030738936684
+          ]
+        }
+      },
+      "k10": {
+        "recall": {
+          "delta": -0.005617297479841077,
+          "paired_query_bootstrap_ci95": [
+            -0.015244308479886922,
+            0.0
+          ]
+        },
+        "precision": {
+          "delta": 0.017830871169945636,
+          "paired_query_bootstrap_ci95": [
+            0.01358700951664666,
+            0.02258446589559155
+          ]
+        },
+        "iou": {
+          "delta": 0.017736799646744374,
+          "paired_query_bootstrap_ci95": [
+            0.01354837457715329,
+            0.02229071582075901
+          ]
+        }
+      },
+      "k5": {
+        "recall": {
+          "delta": -0.02629356467421412,
+          "paired_query_bootstrap_ci95": [
+            -0.061627396317237966,
+            -0.0006738544474393529
+          ]
+        },
+        "precision": {
+          "delta": 0.02816696359446053,
+          "paired_query_bootstrap_ci95": [
+            0.021213804849434827,
+            0.035990996167908504
+          ]
+        },
+        "iou": {
+          "delta": 0.027063112015500483,
+          "paired_query_bootstrap_ci95": [
+            0.019302015806764213,
+            0.03528030513214175
+          ]
+        }
+      }
+    },
+    "semantic_80": {
+      "budget1024": {
+        "recall": {
+          "delta": 0.007384873643764437,
+          "paired_query_bootstrap_ci95": [
+            -0.04060307468951134,
+            0.06206660177548452
+          ]
+        },
+        "precision": {
+          "delta": 9.650386628553848e-05,
+          "paired_query_bootstrap_ci95": [
+            -0.007792884481494109,
+            0.006906078497750322
+          ]
+        },
+        "iou": {
+          "delta": -0.0004026783542856024,
+          "paired_query_bootstrap_ci95": [
+            -0.009536314833836984,
+            0.006998149114715269
+          ]
+        }
+      },
+      "k1": {
+        "recall": {
+          "delta": 0.06416693999767624,
+          "paired_query_bootstrap_ci95": [
+            -0.07860700345038182,
+            0.20803455176038158
+          ]
+        },
+        "precision": {
+          "delta": 0.07420258458203925,
+          "paired_query_bootstrap_ci95": [
+            -0.00643640025047067,
+            0.15541026667304214
+          ]
+        },
+        "iou": {
+          "delta": 0.08117168846927685,
+          "paired_query_bootstrap_ci95": [
+            0.007665947394407078,
+            0.1573532319718502
+          ]
+        }
+      },
+      "k10": {
+        "recall": {
+          "delta": 0.010203997980994623,
+          "paired_query_bootstrap_ci95": [
+            -0.007578939119452988,
+            0.03150920086805023
+          ]
+        },
+        "precision": {
+          "delta": 0.003206260813872167,
+          "paired_query_bootstrap_ci95": [
+            0.00041449467221725463,
+            0.006126421901290731
+          ]
+        },
+        "iou": {
+          "delta": 0.003207454490920763,
+          "paired_query_bootstrap_ci95": [
+            0.0004136178775191881,
+            0.006058114495866145
+          ]
+        }
+      },
+      "k5": {
+        "recall": {
+          "delta": 0.019783587354135594,
+          "paired_query_bootstrap_ci95": [
+            -0.030901033364759425,
+            0.07376392631577985
+          ]
+        },
+        "precision": {
+          "delta": 0.006756640286236038,
+          "paired_query_bootstrap_ci95": [
+            -0.00244132195228523,
+            0.015312455603337648
+          ]
+        },
+        "iou": {
+          "delta": 0.006095370491922982,
+          "paired_query_bootstrap_ci95": [
+            -0.004801790146429535,
+            0.01568706050801205
+          ]
+        }
+      }
+    },
+    "semantic_95": {
+      "budget1024": {
+        "recall": {
+          "delta": -0.007552169257448167,
+          "paired_query_bootstrap_ci95": [
+            -0.04092591375985809,
+            0.018258327097607212
+          ]
+        },
+        "precision": {
+          "delta": 0.002674773138910646,
+          "paired_query_bootstrap_ci95": [
+            -0.0008823067358080577,
+            0.006005247365699188
+          ]
+        },
+        "iou": {
+          "delta": 0.0026967134965820995,
+          "paired_query_bootstrap_ci95": [
+            -0.000950170921320842,
+            0.006143484852513366
+          ]
+        }
+      },
+      "k1": {
+        "recall": {
+          "delta": -0.07147945126457518,
+          "paired_query_bootstrap_ci95": [
+            -0.1918158155256656,
+            0.048149683979738206
+          ]
+        },
+        "precision": {
+          "delta": 0.07944766544506143,
+          "paired_query_bootstrap_ci95": [
+            0.007927091958887782,
+            0.15200866951609293
+          ]
+        },
+        "iou": {
+          "delta": 0.07618368239513593,
+          "paired_query_bootstrap_ci95": [
+            0.005489974673898503,
+            0.1500962904933115
+          ]
+        }
+      },
+      "k10": {
+        "recall": {
+          "delta": -0.0022762836549562837,
+          "paired_query_bootstrap_ci95": [
+            -0.013045067115626238,
+            0.007734939604379806
+          ]
+        },
+        "precision": {
+          "delta": 0.014854589797622433,
+          "paired_query_bootstrap_ci95": [
+            0.011056128257019399,
+            0.019305009747332073
+          ]
+        },
+        "iou": {
+          "delta": 0.014794660986247269,
+          "paired_query_bootstrap_ci95": [
+            0.011059859073747388,
+            0.019088279922813593
+          ]
+        }
+      },
+      "k5": {
+        "recall": {
+          "delta": -0.013518588585178385,
+          "paired_query_bootstrap_ci95": [
+            -0.051239547330341154,
+            0.020861229458307977
+          ]
+        },
+        "precision": {
+          "delta": 0.02526825937135804,
+          "paired_query_bootstrap_ci95": [
+            0.018321223132865164,
+            0.03319555975410799
+          ]
+        },
+        "iou": {
+          "delta": 0.024309026842618025,
+          "paired_query_bootstrap_ci95": [
+            0.016773799287661956,
+            0.032511438183129515
+          ]
+        }
+      }
+    },
+    "sentence_pack": {
+      "budget1024": {
+        "recall": {
+          "delta": 0.001161051596191624,
+          "paired_query_bootstrap_ci95": [
+            -0.02523849665947599,
+            0.027884001883746873
+          ]
+        },
+        "precision": {
+          "delta": -0.0005686475065442123,
+          "paired_query_bootstrap_ci95": [
+            -0.008149466877007443,
+            0.004255421084053286
+          ]
+        },
+        "iou": {
+          "delta": -0.0011202421925903775,
+          "paired_query_bootstrap_ci95": [
+            -0.009912443826564728,
+            0.004301211439144037
+          ]
+        }
+      },
+      "k1": {
+        "recall": {
+          "delta": 0.008812290361858502,
+          "paired_query_bootstrap_ci95": [
+            -0.11485563342599114,
+            0.12830325510844698
+          ]
+        },
+        "precision": {
+          "delta": 0.13237634666683723,
+          "paired_query_bootstrap_ci95": [
+            0.06792065215049023,
+            0.1986474341037348
+          ]
+        },
+        "iou": {
+          "delta": 0.12858912217579907,
+          "paired_query_bootstrap_ci95": [
+            0.06550801809454249,
+            0.1927607444484696
+          ]
+        }
+      },
+      "k10": {
+        "recall": {
+          "delta": -0.005617297479841077,
+          "paired_query_bootstrap_ci95": [
+            -0.015244308479886922,
+            0.0
+          ]
+        },
+        "precision": {
+          "delta": 0.017905042635128737,
+          "paired_query_bootstrap_ci95": [
+            0.013663426186225612,
+            0.022510136720343396
+          ]
+        },
+        "iou": {
+          "delta": 0.01781097111192748,
+          "paired_query_bootstrap_ci95": [
+            0.013647153797683324,
+            0.022336916740261475
+          ]
+        }
+      },
+      "k5": {
+        "recall": {
+          "delta": -0.02629356467421412,
+          "paired_query_bootstrap_ci95": [
+            -0.061627396317237966,
+            -0.0006738544474393529
+          ]
+        },
+        "precision": {
+          "delta": 0.028000634633169822,
+          "paired_query_bootstrap_ci95": [
+            0.021146707397479696,
+            0.035843342131470925
+          ]
+        },
+        "iou": {
+          "delta": 0.026896783054209783,
+          "paired_query_bootstrap_ci95": [
+            0.019134488606962007,
+            0.03493938579698939
+          ]
+        }
+      }
+    }
+  },
+  "ci_scope": "Query resampling within each corpus; diagnostic only, not independent-document significance."
+}
