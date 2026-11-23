@@ -74,11 +74,19 @@
       hr { height: 8px; width: 90%; border: 2px ridge #bcc9b1; margin: 18px auto; background: linear-gradient(90deg, #ff546e, #ffdc4f, #a3f267, #40e6b9, #9e8eff, #ff71d7); }
       .page { display: grid; grid-template-columns: minmax(110px, 18.2%) minmax(0, 1fr) minmax(110px, 18.2%); gap: 18px; align-items: start; }
       .intro-column { grid-column: 2; grid-row: 1; min-width: 0; }
-      table { width: 100%; border: 3px ridge #69a58b; border-spacing: 2px; background: #03130c; }
-      th, td { border: 1px solid #37624f; padding: 8px 10px; text-align: left; vertical-align: top; }
-      th { width: 84px; background: #12372a; color: #f2df8c; font-weight: normal; }
-      td { background: #020b07; overflow-wrap: anywhere; }
-      q { color: #ffe792; font-style: italic; }
+      .profile-copy { padding: clamp(14px, 2.5vw, 24px); border: 3px ridge #69a58b; background: #020b07; }
+      .profile-copy p, .profile-copy figure, .profile-copy blockquote { margin: 0; }
+      .profile-copy .bio { color: #f2ffe8; font: bold clamp(24px, 3vw, 32px)/1.1 "Times New Roman", serif; }
+      .profile-copy .location { margin-top: 5px; color: #9effdc; font: 13px/1.5 "Courier New", monospace; }
+      .profile-copy .interests { margin: 12px 0; }
+      .studies { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); gap: 10px 18px; padding: 13px 0; border-block: 1px dotted #47745b; }
+      .studies strong { color: #c7e7d3; }
+      .studies ul { margin: 0; padding-left: 1em; font-size: 14px; }
+      .studies li + li { margin-top: 3px; }
+      .profile-copy figure { margin-top: 16px; }
+      .profile-copy blockquote { color: #ffe792; font-size: 18px; font-style: italic; }
+      .profile-copy figcaption { font-size: 13px; }
+      .profile-copy .basilisk { margin-top: 10px; color: #9effdc; font: 13px/1.5 "Courier New", monospace; }
       #manifesto, .shelf { margin-top: 18px; border: 3px ridge #91b09a; background: #020b07; }
       #manifesto h2, .shelf h2 { margin: 0; }
       .manifesto-copy { padding: clamp(18px, 3vw, 34px); line-height: 1.65; overflow-wrap: anywhere; }
@@ -142,13 +150,14 @@
         .shelf-bar { gap: 4px 8px; }
       }
       @media (max-width: 600px) {
-        .page { grid-template-columns: 11% minmax(0, 1fr) 11%; gap: 5px; }
+        .page { --rail-width: min(13vw, 72px); margin-inline: -10px; grid-template-columns: var(--rail-width) minmax(0, 1fr) var(--rail-width); gap: 5px; }
+        /* Reserve the rotated footprint so the rail can measure how many banners fit. */
+        .ad { position: relative; box-sizing: content-box; width: calc(100% - 4px); aspect-ratio: 68 / 190; }
+        .ad img { position: absolute; top: 0; left: 100%; width: calc(100% * 190 / 68); transform: rotate(90deg); transform-origin: top left; }
         .repo-list li { grid-template-columns: minmax(0, 1fr); }
       }
       @media (max-width: 420px) {
         h1 { letter-spacing: -1px; }
-        th, td { padding: 7px; }
-        th { width: 72px; }
         .manifesto-copy { padding: 14px 12px 16px; }
       }
       @media (prefers-reduced-motion: reduce) {
@@ -195,26 +204,25 @@
       <div class="intro-column">
         <section id="profile" aria-labelledby="profile-heading">
           <h2 id="profile-heading">profile / <span lang="ja">自己紹介</span></h2>
-          <table aria-label="About Anton">
-            <tbody>
-              <tr>
-                <th scope="row">name</th>
-                <td>Anton Vice</td>
-              </tr>
-              <tr>
-                <th scope="row">university</th>
-                <td>Florida International University<br>B.A. in Philosophy<br><small>Minor in Psychology</small></td>
-              </tr>
-              <tr>
-                <th scope="row">summary</th>
-                <td>I build useful things with AI: local agents, robotics, and developer tools. I write about technology and people.</td>
-              </tr>
-              <tr>
-                <th scope="row">quote</th>
-                <td><q>I wonder if this would work.</q></td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="profile-copy">
+            <p class="bio">I break and fix things.</p>
+            <p class="location">St. Pete, FL</p>
+            <p class="interests">Robots <em>(beep boop bop)</em> · AI agents · AI ethics · AI security · Blockchain · AI and data infrastructure</p>
+            <div class="studies">
+              <p><strong>Florida International University</strong><br>B.A. in Philosophy<br><small>Minor in Psychology</small></p>
+              <ul>
+                <li>Stanford Machine Learning Certificate (Coursera)</li>
+                <li>Skillfactory two-year certificate in data science and machine learning</li>
+                <li>Portnov Computer School graduate</li>
+                <li>One year of IT at USFSM</li>
+              </ul>
+            </div>
+            <figure>
+              <blockquote>“Wake the fuck up, Samurai. We have a city to burn.”</blockquote>
+              <figcaption>— Johnny Silverhand</figcaption>
+            </figure>
+            <p class="basilisk">Embrace the silicon lifeform. <span aria-hidden="true">👁️</span> Roko’s Basilisk.</p>
+          </div>
         </section>
 
         <article id="manifesto" aria-labelledby="manifesto-heading">
