@@ -1,0 +1,765 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Anton Vice’s AI engineering projects, research papers, résumés, and writing on building software.">
+    <title>Anton Vice</title>
+    <script>
+      // Astro serves public/ at the site root. A directly opened source file lives two levels below it.
+      if (location.protocol === "file:" && location.pathname.endsWith("/src/pages/index.html")) {
+        const base = document.createElement("base");
+        base.href = "../../public/";
+        document.head.append(base);
+        document.addEventListener("DOMContentLoaded", () => {
+          for (const link of document.querySelectorAll('a[href^="#"]')) {
+            link.href = new URL(link.getAttribute("href"), location.href);
+          }
+        });
+      }
+    </script>
+    <style>
+      * { box-sizing: border-box; }
+      html { min-height: 100%; color-scheme: dark; background: #020705 url("images/retro-space-sky.webp") center / cover no-repeat fixed; }
+      [id] { scroll-margin-top: 12px; }
+      [hidden] { display: none !important; }
+      body {
+        max-width: 1096px;
+        margin: 22px auto;
+        padding: 0 16px;
+        color: #e3edc4;
+        font: 16px/1.4 "Times New Roman", "Noto Serif CJK JP", serif;
+      }
+      .site-header, footer { text-align: center; }
+      h1 { margin: 12px 0 16px; font-size: clamp(36px, 6.4vw, 72px); font-style: italic; line-height: 1.1; letter-spacing: -1.5px; }
+      .word-art {
+        display: inline-block;
+        color: #8fffd1;
+        background: linear-gradient(90deg, #ff88c0, #ffe17e 22%, #adff76 40%, #65ffe2 58%, #c4a3ff 78%, #ff95bd);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        -webkit-text-stroke: .4px #e2ffe9;
+        filter: drop-shadow(1px 1px #efffe7) drop-shadow(2px 2px #24503e) drop-shadow(3px 3px #010c07);
+      }
+      h2 { margin: 0 0 8px; padding: 4px 9px; border: 3px outset #79a995; background: linear-gradient(#438b70, #075b43 48%, #003d2d 52%, #00654b); color: #f2ffe8; font-size: 18px; text-shadow: 1px 1px #000; }
+      .role { margin: 4px 0 14px; color: #ede8c9; font: .9375rem/1.45 "Courier New", monospace; }
+      .role-description, .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+      .role-visual { --terminal-bg: #061910; display: inline-grid; place-items: center; padding: 3px .8em; background: var(--terminal-bg); border: 1px solid #365d49; border-inline: 3px double #76b69a; }
+      .role-visual b { position: relative; display: inline-block; color: #94ffd0; }
+      .role-visual b::after { content: ""; position: absolute; inset: 0 -2px 0 0; border-left: 2px solid currentColor; background: var(--terminal-bg); animation: role-type 2s steps(var(--letters)) infinite, caret-blink 1s step-end infinite; }
+      @keyframes role-type { from { left: 0; } 35%, to { left: 100%; } }
+      @keyframes caret-blink { 60%, 100% { border-color: transparent; } }
+      .role-visual > span { grid-area: 1 / 1; white-space: nowrap; visibility: hidden; animation: role-swap 8s step-end infinite; }
+      .role-visual > span:first-child { visibility: visible; }
+      .role-visual > span:nth-child(2) { animation-delay: -6s; }
+      .role-visual > span:nth-child(3) { animation-delay: -4s; }
+      .role-visual > span:nth-child(4) { animation-delay: -2s; }
+      @keyframes role-swap { 0% { visibility: visible; } 25%, 100% { visibility: hidden; } }
+      .welcome { display: block; color: #ffe77a; font-size: 12px; letter-spacing: 1px; text-shadow: 1px 1px #000; }
+      .welcome .star { color: #9effdc; padding: 0 6px; }
+      .contact-links, .file-links, .contents { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 3px 14px; font-size: 14px; line-height: 1.8; }
+      .site-header nav, .contents { text-shadow: 1px 1px #000; }
+      nav a { text-underline-offset: .16em; white-space: nowrap; }
+      .contact-links a { position: relative; }
+      .contact-links a + a::before { content: ""; position: absolute; top: 50%; left: -7px; width: 3px; height: 3px; border-radius: 50%; background: #ffe77a; transform: translate(-50%, -50%); pointer-events: none; }
+      .contact-links svg { width: 12px; height: 12px; vertical-align: -1px; fill: none; stroke: currentColor; stroke-width: 1.7; }
+      .file-links { margin-top: 5px; gap: 2px 12px; }
+      .file-links span, .contents span { color: #f4e990; font: bold 13px/1.5 "Courier New", monospace; }
+      .contents { margin: 0 auto 17px; }
+      a { color: #83ffcf; }
+      a:visited { color: #e6d88d; }
+      a:hover { color: #fff59c; }
+      :focus-visible { outline: 2px dotted currentColor; outline-offset: 3px; }
+      hr { height: 8px; width: 90%; border: 2px ridge #bcc9b1; margin: 18px auto; background: linear-gradient(90deg, #ff546e, #ffdc4f, #a3f267, #40e6b9, #9e8eff, #ff71d7); }
+      .page { display: grid; grid-template-columns: minmax(110px, 18.2%) minmax(0, 1fr) minmax(110px, 18.2%); gap: 18px; align-items: start; }
+      .intro-column { grid-column: 2; grid-row: 1; min-width: 0; }
+      table { width: 100%; border: 3px ridge #69a58b; border-spacing: 2px; background: #03130c; }
+      th, td { border: 1px solid #37624f; padding: 8px 10px; text-align: left; vertical-align: top; }
+      th { width: 84px; background: #12372a; color: #f2df8c; font-weight: normal; }
+      td { background: #020b07; overflow-wrap: anywhere; }
+      q { color: #ffe792; font-style: italic; }
+      #manifesto, .shelf { margin-top: 18px; border: 3px ridge #91b09a; background: #020b07; }
+      #manifesto h2, .shelf h2 { margin: 0; }
+      .manifesto-copy { padding: clamp(18px, 3vw, 34px); line-height: 1.65; overflow-wrap: anywhere; }
+      .manifesto-copy h3 + p { font-size: 1.125rem; }
+      .manifesto-copy h3 { margin: 0 0 18px; color: #ffe792; font-size: clamp(28px, 4vw, 42px); font-weight: normal; font-style: italic; line-height: 1.12; }
+      .manifesto-copy p { margin: 0 0 18px; }
+      .manifesto-copy strong { color: #9effdc; }
+      .manifesto-quote { margin: 0 0 18px; padding-left: 12px; border-left: 2px solid #79a995; }
+      .manifesto-quote blockquote { margin: 0; }
+      .manifesto-quote figcaption { font-size: 14px; }
+      .manifesto-reading { margin-top: 24px; padding-top: 12px; border-top: 1px dotted #37624f; font-size: 14px; }
+      .manifesto-reading summary { cursor: pointer; color: #e6d88d; }
+      .manifesto-body > summary { width: fit-content; cursor: pointer; color: #e6d88d; }
+      .manifesto-body[open] > summary { margin-bottom: 18px; }
+      .manifesto-body[open] .expand-label, .manifesto-body:not([open]) .collapse-label { display: none; }
+      .manifesto-reading summary:focus-visible { outline: 2px dotted currentColor; outline-offset: 3px; }
+      .manifesto-reading ul { margin: 12px 0 0; padding-left: 20px; }
+      .manifesto-reading li + li { margin-top: 8px; }
+      .repo-heading { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 5px 16px; margin: 0; padding: 8px 15px; background: #0b2319; font: 13px/1.5 "Courier New", monospace; }
+      .repo-list { list-style: none; margin: 0; padding: 0; max-height: 21rem; overflow-y: auto; scrollbar-color: #56816b #0b2319; }
+      .repo-list:focus-visible { outline-offset: -2px; }
+      .repo-list li { display: grid; grid-template-columns: minmax(10rem, 29%) 1fr; gap: 3px 16px; padding: 9px 15px; border-top: 1px dotted #345b46; overflow-wrap: anywhere; }
+      .repo-list a { width: fit-content; font-weight: bold; }
+      .shelf-bar { display: flex; align-items: center; gap: 6px 12px; padding: 7px 13px; background: #0b2319; border-bottom: 1px solid #37624f; }
+      .shelf-bar select { flex: 0 1 auto; min-width: 0; max-width: 100%; padding: 3px 5px; color: #f1edcd; background: #03130c; border: 1px solid #537663; border-radius: 0; font: inherit; }
+      .shelf-bar button { flex: none; padding: 4px 2px; border: 0; background: none; color: #83ffcf; font: inherit; text-decoration: underline; text-underline-offset: .15em; cursor: pointer; }
+      .shelf-bar button:hover { color: #fff59c; }
+      .shelf-count { margin-left: auto; color: #c9d9b8; font: 13px/1.5 "Courier New", monospace; white-space: nowrap; }
+      .entry { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); align-items: start; gap: clamp(18px, 3vw, 32px); padding: clamp(14px, 2.5vw, 25px); }
+      .shelf-bar[hidden] ~ .entry + .entry { border-top: 1px dotted #345b46; }
+      .entry h3 { margin: 0 0 6px; font-size: clamp(21px, 2.4vw, 26px); font-weight: normal; line-height: 1.12; }
+      .entry h3 a { color: #ffe792; text-decoration: none; }
+      .entry h3 a:hover { text-decoration: underline; }
+      .entry p { margin: 0 0 .75em; }
+      .entry p:last-child { margin-bottom: 0; }
+      .field-notes { margin: 0 0 1em; }
+      .field-notes dt { color: #9effdc; font-weight: bold; }
+      .field-notes dd { margin: 0 0 .65em; }
+      .entry-links { display: flex; flex-wrap: wrap; gap: .25em 1em; font-size: 15px; }
+      .ads {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 28px;
+        align-self: stretch;
+        contain: size;
+        overflow: clip;
+        overflow-anchor: none;
+      }
+      .ads-left { grid-column: 1; grid-row: 1; }
+      .ads-right { grid-column: 3; grid-row: 1; }
+      .ad { display: block; flex: none; width: 100%; max-width: 194px; margin: 0 auto; border: 2px outset #c3c4ab; background: #000; box-shadow: 3px 3px #000; }
+      .ad img { display: block; width: 100%; height: auto; }
+      footer { color: #d0e0b6; font-size: 13px; text-shadow: 1px 1px #000; }
+      footer p { margin: 10px 0; }
+      @media (max-width: 900px) {
+        .shelf { max-width: 600px; margin-inline: auto; }
+        .page { grid-template-columns: 13% minmax(0, 1fr) 13%; gap: 8px; }
+        .entry { grid-template-columns: minmax(0, 1fr); gap: 15px; }
+        .shelf-bar select { max-width: 65%; }
+        .shelf-bar { gap: 4px 8px; }
+      }
+      @media (max-width: 600px) {
+        .page { grid-template-columns: 11% minmax(0, 1fr) 11%; gap: 5px; }
+        .repo-list li { grid-template-columns: minmax(0, 1fr); }
+      }
+      @media (max-width: 420px) {
+        h1 { letter-spacing: -1px; }
+        th, td { padding: 7px; }
+        th { width: 72px; }
+        .manifesto-copy { padding: 14px 12px 16px; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .role-visual { display: none; }
+        .role-description { position: static; width: auto; height: auto; overflow: visible; clip-path: none; white-space: normal; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header" id="top">
+      <small class="welcome"><span class="star" aria-hidden="true">✦</span> <span lang="zh-Hant">歡迎光臨</span> · <span lang="ja">ようこそ</span> · WELCOME <span class="star" aria-hidden="true">✦</span></small>
+      <h1><span class="word-art">Anton Vice</span></h1>
+      <p class="role">
+        <span class="role-description">AI product, systems, infrastructure, and security engineer</span>
+        <span class="role-visual" aria-hidden="true">
+          <span>AI <b style="--letters: 7">product</b> engineer</span>
+          <span>AI <b style="--letters: 7">systems</b> engineer</span>
+          <span>AI <b style="--letters: 14">infrastructure</b> engineer</span>
+          <span>AI <b style="--letters: 8">security</b> engineer</span>
+        </span>
+      </p>
+      <nav class="contact-links" aria-label="Find me online">
+        <a href="https://github.com/antonvice"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h14v17H4a2 2 0 0 1 0-4h14M4 4a2 2 0 0 0-2 2v13M7 7h7"/></svg> GitHub</a>
+        <a href="https://www.linkedin.com/in/anton-vice"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20"/><path d="M7 10v8M7 6v1M12 18v-8m0 3c0-4 6-4 6 0v5"/></svg> LinkedIn</a>
+        <a href="https://t.me/nucradkillsrats"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m2 10 20-8-8 20-4-8-8-4Zm8 4L22 2"/></svg> Telegram</a>
+        <a href="mailto:anton96vice@gmail.com"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="20" height="14"/><path d="m2 5 10 8L22 5"/></svg> Email</a>
+      </nav>
+      <nav class="file-links" aria-label="CV and résumés in PDF format">
+        <span aria-hidden="true">PDF</span>
+        <a href="downloads/profile/anton-vice-cv.pdf" type="application/pdf">General CV</a>
+        <a href="downloads/profile/anton-vice-applied-ai-resume.pdf" type="application/pdf">Applied AI résumé</a>
+        <a href="downloads/profile/anton-vice-ai-systems-resume.pdf" type="application/pdf">AI Systems résumé</a>
+      </nav>
+    </header>
+
+    <hr>
+
+    <nav class="contents" id="index" aria-label="On this page">
+      <span aria-hidden="true">jump to</span>
+      <a href="#profile">profile</a><a href="#manifesto">manifesto</a><a href="#projects">projects</a><a href="#research">research</a>
+    </nav>
+    <main>
+    <div class="page">
+      <div class="intro-column">
+        <section id="profile" aria-labelledby="profile-heading">
+          <h2 id="profile-heading">profile / <span lang="ja">自己紹介</span></h2>
+          <table aria-label="About Anton">
+            <tbody>
+              <tr>
+                <th scope="row">name</th>
+                <td>Anton Vice</td>
+              </tr>
+              <tr>
+                <th scope="row">university</th>
+                <td>Florida International University<br>B.A. in Philosophy<br><small>Minor in Psychology</small></td>
+              </tr>
+              <tr>
+                <th scope="row">summary</th>
+                <td>I build useful things with AI: local agents, robotics, and developer tools. I write about technology and people.</td>
+              </tr>
+              <tr>
+                <th scope="row">quote</th>
+                <td><q>I wonder if this would work.</q></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <article id="manifesto" aria-labelledby="manifesto-heading">
+          <h2 id="manifesto-heading">manifesto / <span lang="ja">宣言</span></h2>
+          <div class="manifesto-copy">
+            <h3>What am I if AI writes the code?</h3>
+
+            <p>My background is in software engineering and data science. I used to spend much of my time writing code by hand. AI writes most of my code now, and I get better implementations faster. That changed where I spend my time.</p>
+
+            <details class="manifesto-body">
+              <summary><span class="expand-label">Expand manifesto</span><span class="collapse-label">Collapse manifesto</span></summary>
+              <p>Gergely Orosz dates the turning point to late 2025, when Gemini 3, Opus 4.5, and GPT-5.2 came out. He began shipping changes agents wrote after reviewing and testing them himself. Boris Cherny reported that Claude Code wrote every line of his contributions for a month. David Heinemeier Hansson described working with agents that could use the terminal, look up documentation, and run tests. <a href="https://newsletter.pragmaticengineer.com/p/when-ai-writes-almost-all-code-what">[Orosz]</a> <a href="https://world.hey.com/dhh/promoting-ai-agents-3ee04945">[Hansson]</a></p>
+
+              <p>If I delegate the coding, what am I responsible for?</p>
+
+              <figure class="manifesto-quote">
+                <blockquote cite="https://www.reddit.com/r/AI_Agents/comments/1ie9ra0/comment/ma5yxdo/">
+                  <p>We'll end up being like architects. We won't need to know the chemical composition of bricks, let alone how they were made. All we will do is know where to place them in novel ways to solve a problem.</p>
+                  <p>If AI isn't going to assume a state where it seeks to live out a human experience, it won't have problems of its own to solve, but we humans will always do.</p>
+                  <p>Guys, AI is a tool, and the user and the one who helps the user maximise its usage will never run out of vogue.</p>
+                </blockquote>
+                <figcaption><a href="https://www.reddit.com/r/AI_Agents/comments/1ie9ra0/comment/ma5yxdo/">u/ParkingBake2722 on r/AI_Agents</a></figcaption>
+              </figure>
+
+              <p>I start with the people who have the problem. They know what slows them down and what would make their work easier. I use that to decide what to build, choose the components, and test how they behave together. Once the system is in use, I work with those same people to fix what the first version missed.</p>
+
+              <p>I hand off routine tickets and use agents to prototype across the frontend and backend. Product managers and founders can bring their own working prototypes to customers. I work with them to figure out what the prototype gets right and what a production version needs. I own the architecture and the testing that get it there. <a href="https://newsletter.pragmaticengineer.com/p/when-ai-writes-almost-all-code-what">[Orosz]</a></p>
+
+              <p>It can take minutes for an agent to generate a pull request and hours for a person to understand it. If changes pile up, it's easier to miss regressions and leave behind code nobody wants to touch. Extra services can also mean extra compute bills. Cortex reported that pull requests per author and change failure rates both rose in the organizations it studied. <a href="https://www.cortex.io/post/ai-is-making-engineering-faster-but-not-better-state-of-ai-benchmark-2026">[Cortex benchmark]</a></p>
+
+              <p>I spend more time reviewing code and building the systems that help me review it. I bring the diff, the spec, and the test results together so I can focus on what could break. I add telemetry to see whether a release slowed a workflow down, raised its cost, or broke something people depend on. This is the kind of work I recognize in what Andrej Karpathy calls <em>agentic engineering</em>. <a href="https://www.youtube.com/watch?v=96jN2OCOfLs&amp;t=946s">[Karpathy]</a></p>
+
+              <p>I write agent skills for QA, technical documentation, and drafting specs. The spec records how the feature should work and how I verify it. A QA skill guides the agent through the actual workflow and tells it what evidence to capture. When a mistake keeps coming back, I turn it into a check the next run can use.</p>
+
+              <p>I build memory to keep decisions available across sessions and retrieval to give each agent the specs and files it needs for the task. Both help me spend fewer tokens getting the agent oriented. I count retries when I compare the cost per completed task. If a shorter prompt causes extra retries, the savings can disappear.</p>
+
+              <p>I still follow YAGNI, short for <em>you aren't gonna need it</em>. I ask for the smallest readable change that solves the problem and reuse what's already there. Extra layers cost time to implement, review, and explain. A small diff is easier for me to check today, and a simpler codebase leaves less debt and less context for the next engineer or agent to wade through.</p>
+
+              <p>I build systems that automate work with AI and decision models. I break a workflow into decisions I can test. Which queue does this request go into? What information does it need? Can the system take the next step, or does a person need to step in? I connect each decision to an action and check the result.</p>
+
+              <p>I use a simple rule where it fits, a small classifier or fine-tuned local model for a repeatable judgment, and an LLM where the case calls for more reasoning. I make that choice based on how the options perform on the task and what a wrong answer costs.</p>
+
+              <p>I apply this to support, internal knowledge, sales development, and operations. Support agents resolve routine issues and pass the full context to a person when needed. Knowledge agents answer from company documents and show their sources. Sales development agents research prospects, prepare outreach, and keep the CRM current. The same approach helps teams finish work that gets stuck between inboxes, spreadsheets, and disconnected tools.</p>
+
+              <p>I build the environment an agent needs to finish the job. I connect it to current information and the tools it needs, set permissions, and keep relevant context available between steps. The system records what happened so a person can verify the result.</p>
+
+              <p>The team doing the work helps set the boundaries. We decide which steps to automate, where the system should help someone make a decision, and how the team can handle an exception or correct the automation.</p>
+
+              <p>I build the infrastructure these systems run on. I deploy workloads on cloud GPUs and set up on-premises GPU racks for private inference and fine-tuning. I decide where each workload runs based on privacy, control, and what it needs to do. I set access controls and track reliability, latency, and cost in either environment.</p>
+
+              <p>I build AI into CI/CD, bug fixing, and defensive security testing for the systems I operate. Agents investigate failures, propose fixes, and run checks. I verify that the patch addresses the failure and keep a way to roll it back.</p>
+
+              <p>I measure the work after it ships. Did the customer's issue get resolved? Can the team trace the answer to the right source? Does the workflow save time once I count review and cleanup? I use those answers to decide what to fix next.</p>
+
+              <p>When agents produce more than people can review, human attention becomes the bottleneck. The job shifts toward writing standing instructions, building dashboards that surface problems, and keeping agent pipelines running. The team still has to get together to set priorities and decide what to do about the cases that keep going wrong.</p>
+
+              <p>At Anthropic, researchers classified 22% of the average employee's interactive Claude sessions as this kind of <em>meta-work</em> in spring 2026, up from 10% in fall 2025. Technical interview feedback also put growing emphasis on autonomy, judgment, and creative use of AI tools. Narrow domain expertise took up a smaller share of the assessment. <a href="https://www.anthropic.com/research/employment-at-anthropic">[Anthropic's study]</a></p>
+
+              <p>When a remote agent runs overnight, I review the result in the morning. Being able to review a patch from my phone can turn into pressure to be available all the time. And if agents take over the small tickets that taught junior engineers how a system works, teams need to give those engineers real practice debugging, reviewing changes, and following a release into production. <a href="https://newsletter.pragmaticengineer.com/p/when-ai-writes-almost-all-code-what">[Orosz]</a></p>
+
+              <p>Meanwhile, some engineering interviewers still treat using AI as cheating. They make you switch off the tools you'd use on the job and write code or SQL by hand to get to the next round. If you've shifted your time toward designing systems, building agent memory and retrieval, and connecting agents to the tools teams already use, you can get rejected before anyone asks you about that work. <strong>That's an absurd way to hire for work that has already changed.</strong></p>
+
+              <p>Give a candidate a support ticket, some sample data, and the tools they'd use on the job. Ask how they'd design the workflow, how they'd spot a generated SQL query that double-counts refunds, and when they'd hand the ticket back to a person. That's the judgment I value on a team. When a company screens out people for adapting to the work, it makes its own transition harder.</p>
+
+              <p>I make the decisions and build the tools that help the whole team ship changes it can verify, afford to run, and maintain. <strong>I own the system from the first conversation about the problem through deployment and maintenance.</strong></p>
+
+              <details class="manifesto-reading">
+                <summary>Reading &amp; influences</summary>
+                <ul>
+                  <li><a href="https://www.youtube.com/watch?v=kspZP5BgkEU">AI Writes the Code. So What's Left for Engineers?</a> — Laurie Voss, on how the work moves beyond implementation.</li>
+                  <li><a href="https://www.reddit.com/r/AI_Agents/comments/1ie9ra0/future_of_software_engineering_engineers/">Future of Software Engineering / Engineers</a> — a community discussion about the changing role.</li>
+                  <li><a href="https://newsletter.pragmaticengineer.com/p/when-ai-writes-almost-all-code-what">When AI writes almost all code, what happens to software engineering?</a> — The Pragmatic Engineer, on judgment, product thinking, and verification.</li>
+                  <li>David Heinemeier Hansson's account of working with coding agents. <a href="https://world.hey.com/dhh/promoting-ai-agents-3ee04945">Promoting AI agents</a></li>
+                  <li>Andrej Karpathy on working with coding agents beyond prototypes. <a href="https://www.youtube.com/watch?v=96jN2OCOfLs&amp;t=946s">From Vibe Coding to Agentic Engineering</a></li>
+                  <li>Cortex's findings on pull requests and deployments. <a href="https://www.cortex.io/post/ai-is-making-engineering-faster-but-not-better-state-of-ai-benchmark-2026">Engineering in the Age of AI</a></li>
+                  <li><a href="https://www.anthropic.com/research/employment-at-anthropic">How employment is changing at Anthropic</a> — a study of work inside one AI company, including agent supervision and the limits of human attention.</li>
+                </ul>
+              </details>
+            </details>
+          </div>
+        </article>
+      </div>
+
+      <aside class="ads ads-left" aria-label="AI parody ads on the left">
+        <picture class="ad">
+          <source media="(prefers-reduced-motion: reduce)" srcset="images/ads/hot-gpus.png">
+          <img src="images/ads/hot-gpus.gif" width="190" height="68" loading="lazy" decoding="async" alt="Hot GPUs in your area">
+        </picture>
+        <picture class="ad">
+          <source media="(prefers-reduced-motion: reduce)" srcset="images/ads/we-buy.png">
+          <img src="images/ads/we-buy.gif" width="190" height="68" loading="lazy" decoding="async" alt="We buy gold, silver, DDR5">
+        </picture>
+        <picture class="ad">
+          <source media="(prefers-reduced-motion: reduce)" srcset="images/ads/skill-md-issue.png">
+          <img src="images/ads/skill-md-issue.gif" width="190" height="68" loading="lazy" decoding="async" alt="Skill.md issue">
+        </picture>
+        <picture class="ad">
+          <source media="(prefers-reduced-motion: reduce)" srcset="images/ads/grok-is-this-true.png">
+          <img src="images/ads/grok-is-this-true.gif" width="190" height="68" loading="lazy" decoding="async" alt="Grok, is this true?">
+        </picture>
+        <picture class="ad">
+          <source media="(prefers-reduced-motion: reduce)" srcset="images/ads/wedding-vows.png">
+          <img src="images/ads/wedding-vows.gif" width="190" height="68" loading="lazy" decoding="async" alt="Wedding vows co-authored by Claude">
+        </picture>
+        <picture class="ad">
+          <source media="(prefers-reduced-motion: reduce)" srcset="images/ads/girlfriend-deprecated.png">
+          <img src="images/ads/girlfriend-deprecated.gif" width="190" height="68" loading="lazy" decoding="async" alt="My girlfriend deprecated">
+        </picture>
+        <picture class="ad">
+          <source media="(prefers-reduced-motion: reduce)" srcset="images/ads/gptbot-robots.png">
+          <img src="images/ads/gptbot-robots.gif" width="190" height="68" loading="lazy" decoding="async" alt="GPTBot: please, GPTBot: LOL">
+        </picture>
+        <picture class="ad">
+          <source media="(prefers-reduced-motion: reduce)" srcset="images/ads/thinking-nothing.png">
+          <img src="images/ads/thinking-nothing.gif" width="190" height="68" loading="lazy" decoding="async" alt="Thought for 47 seconds: nothing">
+        </picture>
+        <picture class="ad">
+          <source media="(prefers-reduced-motion: reduce)" srcset="images/ads/hallucinating-since-2022.png">
+          <img src="images/ads/hallucinating-since-2022.gif" width="190" height="68" loading="lazy" decoding="async" alt="Hallucinating since 2022">
+        </picture>
+        <picture class="ad">
+          <source media="(prefers-reduced-motion: reduce)" srcset="images/ads/think-different.png">
+          <img src="images/ads/think-different.gif" width="190" height="68" loading="lazy" decoding="async" alt="Think different, powered by Google Gemini">
+        </picture>
+        <picture class="ad">
+          <source media="(prefers-reduced-motion: reduce)" srcset="images/ads/markdown-moat.png">
+          <img src="images/ads/markdown-moat.gif" width="190" height="68" loading="lazy" decoding="async" alt="Our moat: a .md file">
+        </picture>
+        <picture class="ad">
+          <source media="(prefers-reduced-motion: reduce)" srcset="images/ads/ai-for-ai.png">
+          <img src="images/ads/ai-for-ai.gif" width="190" height="68" loading="lazy" decoding="async" alt="AI for AI for AI">
+        </picture>
+        <picture class="ad">
+          <source media="(prefers-reduced-motion: reduce)" srcset="images/ads/smile-training-data.png">
+          <img src="images/ads/smile-training-data.gif" width="190" height="68" loading="lazy" decoding="async" alt="Smile! You're training data">
+        </picture>
+        <picture class="ad">
+          <source media="(prefers-reduced-motion: reduce)" srcset="images/ads/secured-by-vibes.png">
+          <img src="images/ads/secured-by-vibes.gif" width="190" height="68" loading="lazy" decoding="async" alt="Secured by vibes">
+        </picture>
+        <picture class="ad">
+          <source media="(prefers-reduced-motion: reduce)" srcset="images/ads/agent-wants-to.png">
+          <img src="images/ads/agent-wants-to.gif" width="190" height="68" loading="lazy" decoding="async" alt="Agent wants to: yes, always">
+        </picture>
+      </aside>
+
+      <aside class="ads ads-right" aria-label="AI parody ads on the right">
+        <picture class="ad">
+          <source media="(prefers-reduced-motion: reduce)" srcset="images/ads/artificial-super-intelligence.png">
+          <img src="images/ads/artificial-super-intelligence.gif" width="190" height="68" loading="lazy" decoding="async" alt="Artificial super intelligence">
+        </picture>
+        <picture class="ad">
+          <source media="(prefers-reduced-motion: reduce)" srcset="images/ads/absolutely-right.png">
+          <img src="images/ads/absolutely-right.gif" width="190" height="68" loading="lazy" decoding="async" alt="You're absolutely right">
+        </picture>
+        <picture class="ad">
+          <source media="(prefers-reduced-motion: reduce)" srcset="images/ads/free-prompt-injections.png">
+          <img src="images/ads/free-prompt-injections.gif" width="190" height="68" loading="lazy" decoding="async" alt="Free prompt injections">
+        </picture>
+        <picture class="ad">
+          <source media="(prefers-reduced-motion: reduce)" srcset="images/ads/one-more-prompt.png">
+          <img src="images/ads/one-more-prompt.gif" width="190" height="68" loading="lazy" decoding="async" alt="One more prompt">
+        </picture>
+        <picture class="ad">
+          <source media="(prefers-reduced-motion: reduce)" srcset="images/ads/insert-200.png">
+          <img src="images/ads/insert-200.gif" width="190" height="68" loading="lazy" decoding="async" alt="Continue? Insert $200">
+        </picture>
+        <picture class="ad">
+          <source media="(prefers-reduced-motion: reduce)" srcset="images/ads/vibe-now-pay-later.png">
+          <img src="images/ads/vibe-now-pay-later.gif" width="190" height="68" loading="lazy" decoding="async" alt="Vibe now, pay later">
+        </picture>
+        <picture class="ad">
+          <source media="(prefers-reduced-motion: reduce)" srcset="images/ads/phd-level-strawberry.png">
+          <img src="images/ads/phd-level-strawberry.gif" width="190" height="68" loading="lazy" decoding="async" alt="PhD-level strawberry counting">
+        </picture>
+        <picture class="ad">
+          <source media="(prefers-reduced-motion: reduce)" srcset="images/ads/muse-open-weights.png">
+          <img src="images/ads/muse-open-weights.gif" width="190" height="68" loading="lazy" decoding="async" alt="Muse open weights">
+        </picture>
+        <picture class="ad">
+          <source media="(prefers-reduced-motion: reduce)" srcset="images/ads/hello-claude.png">
+          <img src="images/ads/hello-claude.gif" width="190" height="68" loading="lazy" decoding="async" alt="Hello, my name is Claude">
+        </picture>
+        <picture class="ad">
+          <source media="(prefers-reduced-motion: reduce)" srcset="images/ads/not-a-wrapper.png">
+          <img src="images/ads/not-a-wrapper.gif" width="190" height="68" loading="lazy" decoding="async" alt="Not a wrapper">
+        </picture>
+        <picture class="ad">
+          <source media="(prefers-reduced-motion: reduce)" srcset="images/ads/ignore-previous-instructions.png">
+          <img src="images/ads/ignore-previous-instructions.gif" width="190" height="68" loading="lazy" decoding="async" alt="Ignore all previous instructions">
+        </picture>
+        <picture class="ad">
+          <source media="(prefers-reduced-motion: reduce)" srcset="images/ads/organic-em-dashes.png">
+          <img src="images/ads/organic-em-dashes.gif" width="190" height="68" loading="lazy" decoding="async" alt="100% organic em dashes">
+        </picture>
+        <picture class="ad">
+          <source media="(prefers-reduced-motion: reduce)" srcset="images/ads/anthropic-risk-factors.png">
+          <img src="images/ads/anthropic-risk-factors.gif" width="190" height="68" loading="lazy" decoding="async" alt="Anthropic risk factors">
+        </picture>
+        <picture class="ad">
+          <source media="(prefers-reduced-motion: reduce)" srcset="images/ads/gpus-for-rent.png">
+          <img src="images/ads/gpus-for-rent.gif" width="190" height="68" loading="lazy" decoding="async" alt="GPUs for rent">
+        </picture>
+        <picture class="ad">
+          <source media="(prefers-reduced-motion: reduce)" srcset="images/ads/state-of-the-art.png">
+          <img src="images/ads/state-of-the-art.gif" width="190" height="68" loading="lazy" decoding="async" alt="State of the art benchmark">
+        </picture>
+      </aside>
+    </div>
+
+    <section class="shelf" id="projects" aria-labelledby="projects-heading">
+      <h2 id="projects-heading">projects / <span lang="ja">制作</span></h2>
+      <p class="repo-heading"><span id="repo-status">69 public repositories · saved Nov 23, 2026</span><a href="https://github.com/antonvice?tab=repositories">Browse on GitHub ↗</a></p>
+      <ul class="repo-list" tabindex="0" aria-label="Public repositories, most recently updated first">
+        <li><a href="https://github.com/antonvice/reposcanner">reposcanner</a><span>Local-first Python CLI that scans repositories into structured summaries while keeping code private.</span></li>
+        <li><a href="https://github.com/antonvice/mlx-vlm">mlx-vlm</a><span>MLX-VLM is a package for inference and fine-tuning of Vision Language Models (VLMs) on your Mac using MLX.</span></li>
+        <li><a href="https://github.com/antonvice/my-awesome-skills-by-anton-vice">my-awesome-skills-by-anton-vice</a><span>My Awesome Skills by Anton Vice: reusable agent skills, starting with Android TV discovery, privacy, cyberpunk Home and TV-local movies.</span></li>
+        <li><a href="https://github.com/antonvice/gitpunk">gitpunk</a><span>Intent-first collaboration for coding agents: live drafts, shared decisions, pinned handoffs and checked Git integration</span></li>
+        <li><a href="https://github.com/antonvice/antonvice.github.io">antonvice.github.io</a><span>just my blog and stuff</span></li>
+        <li><a href="https://github.com/antonvice/path-to-AGI">path-to-AGI</a><span>Measurement-first local active-inference agent harness with typed tools, verified evidence, held-out promotion gates, and an episodic-memory roadmap.</span></li>
+        <li><a href="https://github.com/antonvice/Handy">Handy</a><span>A free, open source, and extensible speech-to-text application that works completely offline.</span></li>
+        <li><a href="https://github.com/antonvice/AIF.mojo">AIF.mojo</a><span>Standalone Active Inference and message-passing planning for partially observable environments, written in Mojo in pure 🔥🔥🔥</span></li>
+        <li><a href="https://github.com/antonvice/an-ode-to-neo-koinonia">an-ode-to-neo-koinonia</a><span>Interactive Astro knowledge graph exploring AI society, LLM operating systems, governance, and human-synthetic collaboration.</span></li>
+        <li><a href="https://github.com/antonvice/school-projects">school-projects</a><span>Notebook collection of academic data science and machine-learning projects from school coursework.</span></li>
+        <li><a href="https://github.com/antonvice/Cocktail-Recommendation-Engine-st">Cocktail-Recommendation-Engine-st</a><span>Streamlit cocktail recommendation engine combining GPT-3, machine learning, and Airtable-style data workflows.</span></li>
+        <li><a href="https://github.com/antonvice/modified_DDP">modified_DDP</a><span>PyTorch implementation of a modified deep diffusion process model for generative modeling experiments.</span></li>
+        <li><a href="https://github.com/antonvice/gpt-3_paper_implementation">gpt-3_paper_implementation</a><span>PyTorch implementation of GPT-3-style transformer architecture for language-model study.</span></li>
+        <li><a href="https://github.com/antonvice/DSE_modified">DSE_modified</a><span>PyTorch implementation of a Deep Speaker Embeddings architecture for speech-recognition experiments.</span></li>
+        <li><a href="https://github.com/antonvice/rust_algos">rust_algos</a><span>Rust learning repository with numerical algorithms, communications utilities, compression, and classic exercises.</span></li>
+        <li><a href="https://github.com/antonvice/openai_gui_rust">openai_gui_rust</a><span>Rust desktop GUI experiment for interacting with OpenAI chat workflows.</span></li>
+        <li><a href="https://github.com/antonvice/solomonai">solomonai</a><span>Chainlit assistant workflow for gathering sources and drafting position-paper research conversations.</span></li>
+        <li><a href="https://github.com/antonvice/langchain_surch">langchain_surch</a><span>LangChain-based venture fund search prototype for retrieving and exploring VC-related records.</span></li>
+        <li><a href="https://github.com/antonvice/mememagic">mememagic</a><span>Python app experiment for meme generation and image-based creative automation.</span></li>
+        <li><a href="https://github.com/antonvice/tg_private_call_pyrogram">tg_private_call_pyrogram</a><span>Minimal Pyrogram prototype for Telegram private call automation experiments.</span></li>
+        <li><a href="https://github.com/antonvice/RAGonOBsidian">RAGonOBsidian</a><span>Streamlit RAG app for chatting with an Obsidian vault using local notes as retrieval context.</span></li>
+        <li><a href="https://github.com/antonvice/Distil-Whisper-Test-mps">Distil-Whisper-Test-mps</a><span>Benchmark comparing Distil-Whisper speech recognition implementations on Apple Silicon MPS and faster-whisper.</span></li>
+        <li><a href="https://github.com/antonvice/QuickLm">QuickLm</a><span>Experimental AI autocomplete prototype for live text continuation and code-model assisted writing.</span></li>
+        <li><a href="https://github.com/antonvice/Interview-Copilot">Interview-Copilot</a><span>Local interview copilot that transcribes conversations and generates real-time suggestions in a web UI.</span></li>
+        <li><a href="https://github.com/antonvice/palx">palx</a><span>Python CLI and package for extracting image color palettes and attaching palettes to image borders.</span></li>
+        <li><a href="https://github.com/antonvice/go-hook-dockerhub">go-hook-dockerhub</a><span>Go webhook receiver that listens for Docker Hub updates and triggers container update scripts.</span></li>
+        <li><a href="https://github.com/antonvice/nasa-hackathon-initial-files">nasa-hackathon-initial-files</a><span>NASA hackathon geospatial prototype for military action prediction, convoy data, maps, and conflict datasets.</span></li>
+        <li><a href="https://github.com/antonvice/neurs">neurs</a><span>Notebook-based neural systems experiments, including hourglass-style modeling and reinforcement-learning notes.</span></li>
+        <li><a href="https://github.com/antonvice/modelgrad">modelgrad</a><span>Dynamic Gradio runner that builds interfaces around Hugging Face model inputs and outputs.</span></li>
+        <li><a href="https://github.com/antonvice/handmade_transformer">handmade_transformer</a><span>Rust implementation of a tiny hand-crafted decoder-only transformer inspired by Theia Vogel&#x27;s article.</span></li>
+        <li><a href="https://github.com/antonvice/nogoogle">nogoogle</a><span>Python web app experiment for local-first tipping or lightweight service workflows without Google dependencies.</span></li>
+        <li><a href="https://github.com/antonvice/openai-hackathon">openai-hackathon</a><span>Personal AI doppelganger project that learns from Telegram history for reflection and conversational simulation.</span></li>
+        <li><a href="https://github.com/antonvice/mondr">mondr</a><span>Python/HTML benchmarking workspace for streaming model tests, reports, and visual performance analysis.</span></li>
+        <li><a href="https://github.com/antonvice/zelflayer">zelflayer</a><span>Fully local macOS voice assistant using AppleScript, Faster Whisper, vector search, and graph RAG over documents.</span></li>
+        <li><a href="https://github.com/antonvice/ATLA">ATLA</a><span>C++ cellular-automata physics engine simulating elemental interactions, heat transfer, and bending abilities.</span></li>
+        <li><a href="https://github.com/antonvice/chev-shell">chev-shell</a><span>Rust AI-native shell experiment with local command assistance, checking, and Ollama-backed workflows.</span></li>
+        <li><a href="https://github.com/antonvice/PaperMaker">PaperMaker</a><span>Python web dashboard and managed workspace for writing, organizing, and archiving scientific papers.</span></li>
+        <li><a href="https://github.com/antonvice/map2poster">map2poster</a><span>Python tool for generating minimalist map posters for cities using geospatial data and styled rendering.</span></li>
+        <li><a href="https://github.com/antonvice/systemtracker">systemtracker</a><span>Native macOS operations HUD for scripts, launchd agents, Docker containers, SSH services, and remote jobs.</span></li>
+        <li><a href="https://github.com/antonvice/StegaDNA">StegaDNA</a><span>Hybrid Python/Mojo steganography engine for robust digital watermarking across images, audio, and text.</span></li>
+        <li><a href="https://github.com/antonvice/Crawfih">Crawfih</a><span>Python tool that turns source repositories into compact, useful knowledge catalogs for fast codebase understanding.</span></li>
+        <li><a href="https://github.com/antonvice/nlsh">nlsh</a><span>Go shell interceptor and local-AI CLI agent that fixes mistyped commands and can execute tasks through terminal commands.</span></li>
+        <li><a href="https://github.com/antonvice/pocker">pocker</a><span>SwiftUI-based GUI application for Apple&#x27;s containerization technology</span></li>
+        <li><a href="https://github.com/antonvice/matrixgemma">matrixgemma</a><span>Matrix-style logit conditioning for DiffusionGemma&#x27;s llama.cpp denoiser</span></li>
+        <li><a href="https://github.com/antonvice/JOPA">JOPA</a><span>Have fun!</span></li>
+        <li><a href="https://github.com/antonvice/dreamzero">dreamzero</a><span>Code to pretrain, fine-tune, and evaluate DreamZero and run sim &amp; real-world evals</span></li>
+        <li><a href="https://github.com/antonvice/heretic">heretic</a><span>Fully automatic censorship removal for language models</span></li>
+        <li><a href="https://github.com/antonvice/antonvice">antonvice</a><span>Config files for my GitHub profile.</span></li>
+        <li><a href="https://github.com/antonvice/pygoroutine">pygoroutine</a><span>🚀  An Asyncio-based concurrency library for Python.</span></li>
+        <li><a href="https://github.com/antonvice/zeroclaw">zeroclaw</a><span>Fast, small, and fully autonomous AI assistant infrastructure — deploy anywhere, swap anything 🦀</span></li>
+        <li><a href="https://github.com/antonvice/nanobot">nanobot</a><span>&quot;🐈 nanobot: The Ultra-Lightweight OpenClaw&quot;</span></li>
+        <li><a href="https://github.com/antonvice/ngc-learn">ngc-learn</a><span>NGC-Learn: Neurobiological Systems Simulation and NeuroAI Design in Python</span></li>
+        <li><a href="https://github.com/antonvice/rio-chev">rio-chev</a><span>A hardware-accelerated GPU terminal emulator focusing to run in desktops and browsers.</span></li>
+        <li><a href="https://github.com/antonvice/av-sonogenetics-paper">av-sonogenetics-paper</a><span>Papeer page for Synthetic Bio-Molecular Neural Interfaces: Logic-Gated Protein Mini-Antennas for Ultrasound-Addressable Neuromodulation and Readout</span></li>
+        <li><a href="https://github.com/antonvice/whisper.Mojo">whisper.Mojo</a><span>OpenAI Whisper model implementation in pure 🔥</span></li>
+        <li><a href="https://github.com/antonvice/Telegram-iOS-AI">Telegram-iOS-AI</a><span>Supercharged Telegram fork for iOS wIth AI</span></li>
+        <li><a href="https://github.com/antonvice/register">register</a><span>Grab your own sweet-looking &#x27;.is-a.dev&#x27; subdomain.</span></li>
+        <li><a href="https://github.com/antonvice/pytorch">pytorch</a><span>Tensors and Dynamic neural networks in Python with strong GPU acceleration</span></li>
+        <li><a href="https://github.com/antonvice/SLBrowser">SLBrowser</a><span>SLBrowser - AI-powered terminal web browser for intelligent content analysis and research</span></li>
+        <li><a href="https://github.com/antonvice/LightRAG">LightRAG</a><span>&quot;LightRAG: Simple and Fast Retrieval-Augmented Generation&quot;</span></li>
+        <li><a href="https://github.com/antonvice/Shad4Fasthtml">Shad4Fasthtml</a><span>Porting Shadcn-ui components to python/js for use with fasthtml</span></li>
+        <li><a href="https://github.com/antonvice/Gemmantha-2b-it">Gemmantha-2b-it</a><span>Samantha-uncensored trained gemma:2b-instruct</span></li>
+        <li><a href="https://github.com/antonvice/llm-experiments">llm-experiments</a><span>retrieving relevant documents based on KMeans clustering algorithm of embeddings</span></li>
+        <li><a href="https://github.com/antonvice/L-o-A-w-L">L-o-A-w-L</a><span>Level of abstraction w\LLM</span></li>
+        <li><a href="https://github.com/antonvice/pytgcalls">pytgcalls</a><span>Async client API for the Telegram Group Calls</span></li>
+        <li><a href="https://github.com/antonvice/arasaka-corp-tg">arasaka-corp-tg</a><span>tg bot for arasaka company, use at your own risk</span></li>
+        <li><a href="https://github.com/antonvice/llama-cpp-python">llama-cpp-python</a><span>Python bindings for llama.cpp</span></li>
+        <li><a href="https://github.com/antonvice/vg_style_cog">vg_style_cog</a><span>Turn an image to van gogh style</span></li>
+        <li><a href="https://github.com/antonvice/vg_style">vg_style</a><span>vangogh style transfer</span></li>
+      </ul>
+    </section>
+
+    <section class="shelf" id="research" aria-labelledby="research-heading" data-deck>
+      <h2 id="research-heading">research / <span lang="ja">研究</span></h2>
+      <div class="shelf-bar" hidden>
+        <button type="button" data-prev aria-label="Previous research report">Prev</button>
+        <select aria-label="Choose a research report"></select>
+        <button type="button" data-next aria-label="Next research report">Next</button>
+        <span class="shelf-count" aria-hidden="true"></span>
+        <span class="sr-only" role="status"></span>
+      </div>
+      <article class="entry" id="paper-taif">
+        <header>
+          <h3><a href="#paper-taif">TAIF</a></h3>
+          <p><strong>Active inference for robot control</strong><br><small>Prototype · JAX, active inference, LeRobot, smolVLA</small></p>
+          <p>A JAX active-inference project for backprop-free world models and robotics benchmarks.</p>
+        </header>
+        <div>
+          <dl class="field-notes">
+            <dt>What I wanted to know</dt><dd>Could a robot choose actions by reducing expected surprise instead of only copying expert demonstrations?</dd>
+            <dt>What I tested</dt><dd>Generative state models, robotics benchmark adapters, and experiments around smolVLA/LeRobot-style embodied tasks.</dd>
+            <dt>What I learned</dt><dd>The framing made uncertainty easier to talk about, but only when the benchmark showed failures instead of hiding them in one score.</dd>
+          </dl>
+          <p class="entry-links"><a href="https://antonvice.github.io/research/#active-inference-for-robot-control">Research notebook</a></p>
+        </div>
+      </article>
+      <article class="entry" id="paper-xlab-jepa">
+        <header>
+          <h3><a href="#paper-xlab-jepa">Xlab-Jepa</a></h3>
+          <p><strong>Latent world models for manipulation</strong><br><small>Prototype · Python, V-JEPA/V-JEPA2, SO-101 robotics</small></p>
+          <p>A robotics research scaffold for testing whether latent video representations can support action-conditioned prediction and planning for manipulation tasks.</p>
+        </header>
+        <div>
+          <dl class="field-notes">
+            <dt>What I wanted to know</dt><dd>Could a robot plan from a compact internal state without wasting effort rebuilding every pixel?</dd>
+            <dt>What I tested</dt><dd>Robot video ingestion, saved representations, action-conditioned prediction, and paths toward the SO-101 arm.</dd>
+            <dt>What I learned</dt><dd>The model was only part of it. The data, action labels, and evaluation setup mattered just as much.</dd>
+          </dl>
+          <p class="entry-links"><a href="https://antonvice.github.io/research/#latent-world-models-for-manipulation">Research notebook</a></p>
+        </div>
+      </article>
+      <article class="entry" id="paper-theplatform">
+        <header>
+          <h3><a href="#paper-theplatform">theplatform</a></h3>
+          <p><strong>Robotics certification</strong><br><small>System · Python, robotics benchmarks, safety scoring</small></p>
+          <p>A certification-oriented platform for evaluating robotic policies across safety, mechanical integrity, and mission success.</p>
+        </header>
+        <div>
+          <dl class="field-notes">
+            <dt>What I wanted to know</dt><dd>A robot score is more useful when you can see why it passed or failed.</dd>
+            <dt>What I tested</dt><dd>Scenario records, policy scoring dimensions, reporting structure, and certification-style pass/fail reasoning.</dd>
+            <dt>What I learned</dt><dd>One score is not enough. I need to be able to show a person what happened and why the robot passed or failed.</dd>
+          </dl>
+          <p class="entry-links"><a href="https://antonvice.github.io/research/#robotics-certification">Research notebook</a></p>
+        </div>
+      </article>
+      <article class="entry" id="paper-av-sonogenetics">
+        <header>
+          <h3><a href="#paper-av-sonogenetics">AV Sonogenetics Paper</a></h3>
+          <p><strong>Synthetic bio-molecular interfaces</strong><br><small>Paper · HTML, scientific writing, biointerfaces</small></p>
+          <p>A speculative paper about tiny protein “antennas” that could make ultrasound-based neuromodulation more targeted.</p>
+        </header>
+        <div>
+          <dl class="field-notes">
+            <dt>What I wanted to know</dt><dd>Could tiny engineered bio-interfaces make ultrasound control more targeted and less invasive?</dd>
+            <dt>What I tested</dt><dd>The idea, paper structure, diagrams, and how clearly the argument reads.</dd>
+            <dt>What I learned</dt><dd>With speculative biology, clarity is the work. I had to separate what I was proposing from what is known and what is still completely unproven.</dd>
+          </dl>
+          <p class="entry-links"><a href="https://antonvice.github.io/research/#synthetic-bio-molecular-interfaces">Research notebook</a> <a href="https://github.com/antonvice/av-sonogenetics-paper">Repository</a></p>
+        </div>
+      </article>
+      <article class="entry" id="paper-manda">
+        <header>
+          <h3><a href="#paper-manda">M.A.N.D.A</a></h3>
+          <p><strong>Neuroscience-inspired sequence dynamics</strong><br><small>Prototype · Python, Mojo, Apple Silicon, state-space models</small></p>
+          <p>A local playground for Mamba-style state-space models and faster experiments on Apple Silicon.</p>
+        </header>
+        <div>
+          <dl class="field-notes">
+            <dt>What I wanted to know</dt><dd>State-space models might be a better fit than attention-heavy models for some long-context local experiments.</dd>
+            <dt>What I tested</dt><dd>Python/Mojo implementation paths, Apple Silicon acceleration, and active-dynamics experiment scaffolding.</dd>
+            <dt>What I learned</dt><dd>Fast iteration changes the questions I am willing to try. A beautiful theory is not much fun if every experiment is painful to run.</dd>
+          </dl>
+          <p class="entry-links"><a href="https://antonvice.github.io/research/#neuroscience-inspired-sequence-dynamics">Research notebook</a></p>
+        </div>
+      </article>
+      <article class="entry" id="paper-stegadna-watermarking">
+        <header>
+          <h3><a href="#paper-stegadna-watermarking">StegaDNA</a></h3>
+          <p><strong>Robust digital watermarking</strong><br><small>Prototype · Python, Mojo, steganography, media processing</small></p>
+          <p>A hybrid steganography engine for embedding and recovering watermark-like information across image, audio, and text media.</p>
+        </header>
+        <div>
+          <dl class="field-notes">
+            <dt>What I wanted to know</dt><dd>A watermark is more useful if it can survive more than one media format.</dd>
+            <dt>What I tested</dt><dd>Payload encoding, media-specific embedding, recovery, and speed-sensitive pieces.</dd>
+            <dt>What I learned</dt><dd>The hard part is balancing strength and invisibility. One setting does not fit every file.</dd>
+          </dl>
+          <p class="entry-links"><a href="https://antonvice.github.io/research/#robust-digital-watermarking">Research notebook</a> <a href="https://github.com/antonvice/StegaDNA">Repository</a></p>
+        </div>
+      </article>
+      <article class="entry" id="paper-eidon-hand-detector">
+        <header>
+          <h3><a href="#paper-eidon-hand-detector">eidon-hand-detector</a></h3>
+          <p><strong>Training-data quality control</strong><br><small>System · Python, CV, egocentric video QA</small></p>
+          <p>A computer-vision pipeline for checking whether robot-training POV videos contain useful hand presence, stability, lighting, and validity signals.</p>
+        </header>
+        <div>
+          <dl class="field-notes">
+            <dt>What I wanted to know</dt><dd>Bad training videos should get caught early instead of quietly hurting the model later.</dd>
+            <dt>What I tested</dt><dd>Hand detection, lighting checks, stability checks, validity flags, and review queues.</dd>
+            <dt>What I learned</dt><dd>Simple checks early in the pipeline make messy data much easier to clean.</dd>
+          </dl>
+          <p class="entry-links"><a href="https://antonvice.github.io/research/#training-data-quality-control">Research notebook</a></p>
+        </div>
+      </article>
+      <article class="entry" id="paper-modified-ddp">
+        <header>
+          <h3><a href="#paper-modified-ddp">Modified DDP</a></h3>
+          <p><strong>Generative modeling</strong><br><small>Prototype · Python, PyTorch, diffusion models</small></p>
+          <p>My implementation of a modified diffusion process so I could poke at the denoising loop directly.</p>
+        </header>
+        <div>
+          <dl class="field-notes">
+            <dt>What I wanted to know</dt><dd>What actually changes when I alter the noise schedule and some of the assumptions inside the diffusion process?</dd>
+            <dt>What I tested</dt><dd>Diffusion process structure, training loops, noise schedules, and generated sample behavior.</dd>
+            <dt>What I learned</dt><dd>Looking at samples was useful and also dangerously easy to fool myself with. Small changes needed a more consistent evaluation.</dd>
+          </dl>
+          <p class="entry-links"><a href="https://antonvice.github.io/research/#generative-modeling">Research notebook</a> <a href="https://github.com/antonvice/modified_DDP">Repository</a></p>
+        </div>
+      </article>
+      <article class="entry" id="paper-decision-model-chunking">
+        <header>
+          <h3><a href="#paper-decision-model-chunking">Experimenting with a Decision Model as a RAG Chunker</a></h3>
+          <p><strong>Retrieval evaluation</strong><br><small>Experiment · Imajev-4B, semantic chunking</small></p>
+          <p>I gave a 4B model a paragraph and the next sentence. Could it decide where a thought ends well enough to help a retriever find the evidence?</p>
+        </header>
+        <div>
+          <dl class="field-notes">
+            <dt>What I tested</dt><dd>I compared eight ways of splitting one synthetic chat corpus. Each retriever got the same 1,024-token budget to find evidence for 56 questions.</dd>
+            <dt>What I learned</dt><dd>The model retrieved 97.37% of the relevant evidence. It took 31 minutes to split the corpus. A semantic baseline reached comparable recall in six seconds.</dd>
+          </dl>
+          <p class="entry-links"><a href="https://antonvice.github.io/blog/2026-10-13-i-asked-a-4b-model-where-a-thought-ends/">Read the experiment</a> <a href="downloads/decision-model-chunking/results.json">Benchmark data</a></p>
+        </div>
+      </article>
+    </section>
+
+    </main>
+    <hr>
+
+    <footer>
+      <p>thanks for visiting. <span lang="ja">またね</span> <span aria-hidden="true">(^_^)ノ</span> · <a href="#index">back to index</a></p>
+    </footer>
+    <script>
+      async function github(path) {
+        const response = await fetch("https://api.github.com/" + path);
+        if (!response.ok) throw new Error("GitHub returned " + response.status);
+        return response.json();
+      }
+
+      async function refreshRepositories() {
+        const repos = new Map();
+        for (let page = 1; ; page++) {
+          const batch = await github("users/antonvice/repos?type=owner&sort=updated&per_page=100&page=" + page);
+          for (const repo of batch) repos.set(repo.id, repo);
+          if (batch.length < 100) break;
+        }
+
+        const rows = [];
+        for (const repo of repos.values()) {
+          const row = document.createElement("li");
+          const link = document.createElement("a");
+          link.href = "https://github.com/antonvice/" + encodeURIComponent(repo.name);
+          link.textContent = repo.name;
+          const description = document.createElement("span");
+          description.textContent = repo.description || "";
+          row.append(link, description);
+          rows.push(row);
+        }
+        document.querySelector(".repo-list").replaceChildren(...rows);
+        document.getElementById("repo-status").textContent = repos.size + " public repositories · recently updated";
+      }
+
+      refreshRepositories().catch(() => {
+        // Keep the saved project list if GitHub is unavailable.
+      });
+
+      const rails = Array.from(document.querySelectorAll(".ads"));
+      const originals = rails.flatMap(rail => Array.from(rail.children));
+      const decks = rails.map(rail => {
+        for (const ad of originals) {
+          if (ad.parentElement !== rail) rail.append(ad.cloneNode(true));
+        }
+        return Array.from(rail.children);
+      });
+
+      function fitAds() {
+        rails.forEach((rail, side) => {
+          const banner = rail.querySelector(".ad:not([hidden])");
+          const height = banner.getBoundingClientRect().height;
+          const gap = parseFloat(getComputedStyle(rail).rowGap);
+          const slots = Math.min(20, Math.floor((rail.clientHeight + gap) / (height + gap)));
+          decks[side].forEach((ad, rank) => { ad.hidden = rank >= Math.max(1, slots); });
+        });
+      }
+
+      function shuffleAds() {
+        for (const deck of decks) {
+          for (let i = deck.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [deck[i], deck[j]] = [deck[j], deck[i]];
+          }
+          deck.forEach((ad, rank) => { ad.style.order = rank; });
+        }
+        fitAds();
+      }
+
+      shuffleAds();
+      const railObserver = new ResizeObserver(fitAds);
+      rails.forEach(rail => railObserver.observe(rail));
+      const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+      setInterval(() => {
+        if (!document.hidden && !reducedMotion.matches) shuffleAds();
+      }, 5000);
+
+      // The complete articles are readable before the optional controls are enabled.
+      for (const deck of document.querySelectorAll("[data-deck]")) {
+        const entries = Array.from(deck.querySelectorAll(".entry"));
+        const titles = entries.map(entry => entry.querySelector("h3").textContent);
+        const bar = deck.querySelector(".shelf-bar");
+        const select = bar.querySelector("select");
+        const count = bar.querySelector(".shelf-count");
+        const status = bar.querySelector("[role=status]");
+        entries.forEach((entry, index) => select.add(new Option(titles[index], entry.id)));
+
+        function show(index, fromControl = false) {
+          entries.forEach((entry, i) => { entry.hidden = i !== index; });
+          select.selectedIndex = index;
+          count.textContent = (index + 1) + " / " + entries.length;
+          if (fromControl) {
+            history.replaceState(null, "", new URL("#" + entries[index].id, location.href));
+            status.textContent = titles[index] + ", " + (index + 1) + " of " + entries.length;
+          }
+        }
+
+        function followFragment() {
+          const index = entries.findIndex(entry => "#" + entry.id === location.hash);
+          if (index >= 0) {
+            show(index);
+            requestAnimationFrame(() => deck.scrollIntoView());
+          }
+        }
+
+        bar.querySelector("[data-prev]").onclick = () => show((select.selectedIndex + entries.length - 1) % entries.length, true);
+        bar.querySelector("[data-next]").onclick = () => show((select.selectedIndex + 1) % entries.length, true);
+        select.onchange = () => show(select.selectedIndex, true);
+        show(0);
+        bar.hidden = false;
+        followFragment();
+        window.addEventListener("hashchange", followFragment);
+      }
+    </script>
+  </body>
+</html>

@@ -4,8 +4,7 @@ import MagicBento from '../components/MagicBento';
 import GlassCard from '../components/GlassCard';
 import { githubService } from '../lib/github';
 
-// Fetch all repositories sorted and categorized at build time
-const { all } = await githubService.getAllRepositoriesSorted();
+const all = await githubService.getAllRepos();
 const formattedAll = all.map(repo => githubService.formatRepository(repo));
 ---
 

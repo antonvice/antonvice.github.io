@@ -1,0 +1,19 @@
+Source supplied by Anton: https://t.me/dev_meme/8547
+
+The post serves a 704 x 848 H.264 video containing 30 animated banners
+in a three-column, ten-row grid. Each GIF is a separate crop of that video,
+preserving the full 35.9-second recording at 10 fps, resized to 190 x 68.
+Matching PNGs contain the first GIF frame for reduced-motion display.
+
+Crop: 228 x 82; x = 12, 243, 472; y = 10 + (84 * row), with rows 0–9.
+GIF encoding: 64-color palette, no dithering, infinite loop.
+
+Each side of the profile samples up to 20 of the 30 original GIFs without
+replacement. Both sides shuffle independently every five seconds. The
+available height determines how many banners fit above the projects section.
+Reduced-motion mode displays the matching PNGs and keeps their order still.
+
+To rebuild the older rotation-*.gif composites from the repository root:
+node scripts/build-ad-rotations.mjs
+
+All files are same-origin assets; the page does not load media from Telegram.
